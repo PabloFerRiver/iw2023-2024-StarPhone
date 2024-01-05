@@ -26,14 +26,15 @@ import java.util.List;
 // TODO: @RolesAllowed("ROLE_CUSTOMER") + import jakarta
 @AnonymousAllowed
 @CssImport("./styles/styles.css")
-@PageTitle("Bloquear Número")
-@Route(value = "/bloquearnumero", layout = menu.class)
+@PageTitle("Números Desconocidos")
+@Route(value = "/numerosdesconocidos", layout = menu.class)
 public class blockNumberUserView extends VerticalLayout {
     Select<Integer> lines;
     VerticalLayout bodyDiv, centerDiv, confirmSquare;
     HorizontalLayout titleDiv, footerDiv;
     H3 titleDelete;
-    IntegerField phoneNumberToBlock;
+    Select<String> actions;
+    IntegerField phoneNumberToBlockUnblock;
     Button confirmar;
 
     private final MobileLineService mobileService;
@@ -56,6 +57,13 @@ public class blockNumberUserView extends VerticalLayout {
         getStyle().set("font-family", "Kavoon");
 
         // Campos formulario
+        actions = new Select<String>();
+        actions.addClassName("activefield");
+        actions.setLabel("Acción:");
+        actions.setItems("Bloquear", "Desbloquear");
+        actions.setValue("Bloquear");
+        actions.setId("actions");
+
         List<Contract> contracts = contractService.getContractsByUser_Id(authenticatedUser.get().get().getId());
         List<MobileLine> mobileLines = new ArrayList<>();
         for (var c : contracts) {
@@ -72,9 +80,9 @@ public class blockNumberUserView extends VerticalLayout {
         lines.setLabel("Línea:");
         lines.setItems(phoneNumberlines);
 
-        phoneNumberToBlock = new IntegerField("Número a bloquear:");
-        phoneNumberToBlock.addClassName("activefield");
-        phoneNumberToBlock.setId("phoneNumberToBlock");
+        phoneNumberToBlockUnblock = new IntegerField("Número de teléfono:");
+        phoneNumberToBlockUnblock.addClassName("activefield");
+        phoneNumberToBlockUnblock.setId("phoneNumberToBlockUnblock");
 
         confirmar = new Button("Confirmar");
         confirmar.addClassName("activebutton");
@@ -90,7 +98,7 @@ public class blockNumberUserView extends VerticalLayout {
 
         confirmSquare = new VerticalLayout();
         confirmSquare.setWidth("380px");
-        confirmSquare.setHeight("400px");
+        confirmSquare.setHeight("450px");
         confirmSquare.setPadding(false);
         confirmSquare.setSpacing(false);
         confirmSquare.setAlignItems(Alignment.CENTER);
@@ -103,16 +111,18 @@ public class blockNumberUserView extends VerticalLayout {
         titleDiv.setAlignItems(Alignment.CENTER);
         titleDiv.getStyle().set("border-radius", "12px 12px 0 0");
         titleDiv.getStyle().set("background-color", "rgb(135, 206, 235)");
-        titleDelete = new H3("Bloquear número");
+        titleDelete = new H3("Números Desconocidos");
         titleDelete.getStyle().set("font-size", "28px");
         titleDelete.getStyle().set("color", "white");
         titleDiv.add(titleDelete);
         confirmSquare.add(titleDiv);
 
-        bodyDiv = new VerticalLayout(lines, phoneNumberToBlock, confirmar);
+        bodyDiv = new VerticalLayout(actions, lines, phoneNumberToBlockUnblock, confirmar);
         bodyDiv.setWidthFull();
         bodyDiv.setJustifyContentMode(JustifyContentMode.START);
         bodyDiv.setAlignItems(Alignment.CENTER);
+        bodyDiv.setPadding(false);
+        bodyDiv.setSpacing(false);
         bodyDiv.getStyle().set("background-color", "rgb(255, 255, 255)");
         bodyDiv.getStyle().set("border-radius", "0 0 12px 12px");
         confirmSquare.add(bodyDiv);
@@ -128,18 +138,33 @@ public class blockNumberUserView extends VerticalLayout {
     }
 
     public void onBlockNumberButton() {
-        String nText = "";
-        if (blockedNumbersService.isBlockedNumberByPhoneNumber(phoneNumberToBlock.getValue(), lines.getValue())) {
-            nText = "El número ya está bloqueado!";
-            Notification.show(nText).addThemeVariants(NotificationVariant.LUMO_ERROR);
-        } else if (lines.getValue() != null && phoneNumberToBlock.getValue() != null) {
-
-            mobileService.blockNumber(phoneNumberToBlock.getValue(), lines.getValue());
-            nText = "Número bloqueado con éxito!";
-            Notification.show(nText).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+        if (lines.getValue() != null && phoneNumberToBlockUnblock.getValue() != null) {
+            if (actions.getValue().equals("Bloquear")) {
+                String nText = "";
+                if (blockedNumbersService.isBlockedNumberByPhoneNumber(phoneNumberToBlockUnblock.getValue(),
+                        lines.getValue())) {
+                    nText = "El número ya está bloqueado!";
+                    Notification.show(nText).addThemeVariants(NotificationVariant.LUMO_ERROR);
+                } else {
+                    mobileService.blockNumber(phoneNumberToBlockUnblock.getValue(), lines.getValue());
+                    nText = "Número bloqueado con éxito!";
+                    Notification.show(nText).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                }
+            } else if (actions.getValue().equals("Desbloquear")) {
+                String nText = "";
+                if (!blockedNumbersService.isBlockedNumberByPhoneNumber(phoneNumberToBlockUnblock.getValue(),
+                        lines.getValue())) {
+                    nText = "El número no está bloqueado!";
+                    Notification.show(nText).addThemeVariants(NotificationVariant.LUMO_ERROR);
+                } else {
+                    mobileService.unblockNumber(phoneNumberToBlockUnblock.getValue(), lines.getValue());
+                    nText = "Número desbloqueado con éxito!";
+                    Notification.show(nText).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                }
+            }
         } else {
-            nText = "Algo falló! Revise los datos introducidos.";
-            Notification.show(nText).addThemeVariants(NotificationVariant.LUMO_ERROR);
+            Notification.show("Algo falló! Revise los datos introducidos.")
+                    .addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
     }
 }

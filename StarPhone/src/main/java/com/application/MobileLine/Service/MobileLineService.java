@@ -4,6 +4,7 @@ import com.application.MobileLine.Entities.BlockedNumbers;
 import com.application.MobileLine.Entities.MobileLine;
 import com.application.MobileLine.Repository.MobileLineRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +30,25 @@ public class MobileLineService {
         }
     }
 
+    public void unblockNumber(int phoneNumberToUnblock, int phoneNumber) {
+        BlockedNumbers unblockedNumber = new BlockedNumbers();
+        MobileLine mLine = mobileLineRepository.findByPhoneNumber(phoneNumber);
+        unblockedNumber.setBlockedNumber(phoneNumberToUnblock);
+
+        List<BlockedNumbers> bl = new ArrayList<>();
+        for (BlockedNumbers u : mLine.getBlockedNumbers()) {
+            if (!u.getBlockedNumber().equals(unblockedNumber.getBlockedNumber())) {
+                bl.add(u);
+            }
+        }
+        mLine.setBlockedNumbers(bl);
+        try {
+            mobileLineRepository.save(mLine);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
     public List<MobileLine> getMobileLineByContractId(UUID contract_id) {
         return mobileLineRepository.findMobileLineByContract_Id(contract_id);
     }
@@ -37,7 +57,6 @@ public class MobileLineService {
         MobileLine mobileLine = mobileLineRepository.findByPhoneNumber(phoneNumber);
         if (mobileLine.getId() != null) {
             mobileLine.setShareData(shareData);
-            System.out.println(mobileLine.getPhoneNumber() + "SD//" + mobileLine.getShareData());
             mobileLineRepository.save(mobileLine);
         }
 
@@ -47,7 +66,6 @@ public class MobileLineService {
         MobileLine mobileLine = mobileLineRepository.findByPhoneNumber(phoneNumber);
         if (mobileLine.getId() != null) {
             mobileLine.setRoaming(roaming);
-            System.out.println(mobileLine.getPhoneNumber() + "R//" + mobileLine.getShareData());
             mobileLineRepository.save(mobileLine);
         }
     }

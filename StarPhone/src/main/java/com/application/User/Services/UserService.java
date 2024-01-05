@@ -151,7 +151,6 @@ public class UserService implements UserDetailsService {
 
     public boolean deleteByDNI(String dni) {
         User u = getUserByDNI(dni);
-        System.out.println(u.getId());
         if (u.getId() != null) {
             userRepository.delete(u);
             return true;
@@ -171,7 +170,6 @@ public class UserService implements UserDetailsService {
     public void removeRole(String username, Role role) {
         Optional<User> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
-            System.out.println("Eliminando rol " + role + " a usuario " + username);
             user.get().getRoles().remove(role);
             userRepository.save(user.get());
         }

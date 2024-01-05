@@ -109,7 +109,7 @@ public class menu extends AppLayout {
         }
 
         if (accessChecker.hasAccess(blockNumberUserView.class)) {
-            navItem = new SideNavItem("Bloquear Número", blockNumberUserView.class,
+            navItem = new SideNavItem("Números Desconocidos", blockNumberUserView.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);

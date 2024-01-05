@@ -38,8 +38,6 @@ public class MobileLine extends AbstractEntity {
     @Column(name = "phoneNumber")
     private Integer phoneNumber;
 
-
-
     @Column(name = "roaming", nullable = false)
     private boolean roaming;
 
@@ -99,7 +97,8 @@ public class MobileLine extends AbstractEntity {
     public void setRoaming(boolean roaming) {
         this.roaming = roaming;
     }
-    //get roaming
+
+    // get roaming
     public boolean getRoaming() {
         return roaming;
     }
