@@ -1,6 +1,7 @@
 package com.application.User.Views;
 
 import com.application.MobileLine.Views.blockNumberUserView;
+import com.application.MobileLine.Views.consultUserView;
 import com.application.MobileLine.Views.feesViewMenu;
 import com.application.MobileLine.Views.shareDataAndRoamingView;
 import com.application.User.Entities.User;
@@ -123,6 +124,12 @@ public class menu extends AppLayout {
 
         if (accessChecker.hasAccess(feesViewMenu.class)) {
             navItem = new SideNavItem("Tarifas", feesViewMenu.class,
+                    LineAwesomeIcon.GLOBE_SOLID.create());
+            navItem.addClassName("sideNavItem");
+            nav.addItem(navItem);
+        }
+        if (accessChecker.hasAccess(feesViewMenu.class)) {
+            navItem = new SideNavItem("Consultar Información Linea", consultUserView.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);
