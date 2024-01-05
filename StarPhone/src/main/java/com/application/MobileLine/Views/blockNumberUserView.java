@@ -18,13 +18,12 @@ import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+import jakarta.annotation.security.PermitAll;
 
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: @RolesAllowed("ROLE_CUSTOMER") + import jakarta
-@AnonymousAllowed
+@PermitAll
 @CssImport("./styles/styles.css")
 @PageTitle("Números Desconocidos")
 @Route(value = "/numerosdesconocidos", layout = menu.class)

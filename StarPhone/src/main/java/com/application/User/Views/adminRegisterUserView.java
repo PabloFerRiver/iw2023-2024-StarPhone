@@ -3,6 +3,7 @@ package com.application.User.Views;
 import com.application.User.Services.UserService;
 import com.application.User.Entities.Role;
 import com.application.User.Entities.User;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -17,12 +18,12 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+import jakarta.annotation.security.RolesAllowed;
+
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-@AnonymousAllowed
-// TODO: @RolesAllowed("ROLE_ADMIN") + import jakarta.annotation
+@RolesAllowed("ROLE_ADMIN")
 @CssImport("./styles/styles.css")
 @PageTitle("Registrar Usuario")
 @Route(value = "/registrarusuario", layout = menu.class)
@@ -188,6 +189,7 @@ public class adminRegisterUserView extends VerticalLayout {
             if (service.registerUserByAdmin(binder.getBean())) {
                 String text = new String("Genial. Registrado correctamente!!");
                 Notification.show(text).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                UI.getCurrent().navigate("/menu");
             } else {
                 String text = new String("Algo falló! Revise los datos.");
                 Notification.show(text).addThemeVariants(NotificationVariant.LUMO_ERROR);

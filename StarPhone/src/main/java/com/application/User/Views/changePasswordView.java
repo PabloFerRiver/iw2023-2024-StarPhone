@@ -12,9 +12,9 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+import jakarta.annotation.security.PermitAll;
 
-@AnonymousAllowed
+@PermitAll
 @PageTitle("Cambiar Credenciales")
 @Route(value = "/cambiarcredenciales", layout = menu.class)
 @CssImport("./styles/styles.css")

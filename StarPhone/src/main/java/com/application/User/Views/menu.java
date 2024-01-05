@@ -26,16 +26,9 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
-//import jakarta.annotation.security.PermitAll;
 
-@AnonymousAllowed
-// TODO: @PermitAll
-// import jakarta.annotation.security.PermitAll;
 @CssImport("./styles/styles.css")
 @PageTitle("Menu")
-@Route(value = "/menu")
 public class menu extends AppLayout {
     // TODO: Cambiar diferentes LineAwesomeIcon por cada navegación
 

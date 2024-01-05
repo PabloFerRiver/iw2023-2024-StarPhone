@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// TODO: @RolesAllowed("ROLE_CUSTOMER") + import jakarta
+// TODO: @RolesAllowed("") + import jakarta
 @AnonymousAllowed
 @CssImport("./styles/styles.css")
 @PageTitle("Consultar información Linea")
@@ -146,9 +146,9 @@ public class consultUserView extends VerticalLayout {
                     .map(Object::toString)
                     .collect(Collectors.joining(", "));
 
-            text.setText("Total llamadas: " + mobileLine.getTotalCalls() + "\n" +
-                    "Total datos: " + mobileLine.getTotalData() + "\n" +
-                    "Total SMS: " + mobileLine.getTotalSMS() + "\n" +
+            text.setText("Total llamadas: " + mobileLine.getTotalCallsToday() + "\n" +
+                    "Total datos: " + mobileLine.getTotalDataToday() + "\n" +
+                    "Total SMS: " + mobileLine.getTotalSMSToday() + "\n" +
                     "Compartir datos: " + text1 + "\n" +
                     "Numeros bloqueados: " + cadenaDeNumeros + "\n" +
                     "Roaming: " + text2 + "\n" +

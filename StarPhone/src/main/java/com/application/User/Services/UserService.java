@@ -196,5 +196,4 @@ public class UserService implements UserDetailsService {
     public int count() {
         return (int) userRepository.count();
     }
-
 }

@@ -1,8 +1,13 @@
 package com.application.User.Views;
 
 import com.application.User.Services.UserService;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import com.application.User.Entities.Role;
 import com.application.User.Entities.User;
+import com.application.User.Security.AuthenticatedUser;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H3;
@@ -15,12 +20,11 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+import jakarta.annotation.security.RolesAllowed;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-@AnonymousAllowed
-// TODO: @RolesAllowed("ROLE_ADMIN") + import jakarta.annotation
+@RolesAllowed({ "ROLE_ADMIN", "ROLE_CUSTOMERSUPPORT" })
 @CssImport("./styles/styles.css")
 @PageTitle("Modificar Usuario")
 @Route(value = "/modificarusuario", layout = menu.class)
@@ -30,16 +34,20 @@ public class modifyDataUserView extends VerticalLayout {
             bodySubDiv4, footerDiv;
     VerticalLayout center, bodyDiv, registerForm;
     H3 titleRegister;
-    private final TextField username, DNI;
-    private final EmailField email;
-    private final IntegerField phoneNumber;
-    private final PasswordField password, repeatPassword;
-    private final Select<Role> role;
-    private final Button confirmar;
+    TextField username, DNI;
+    EmailField email;
+    IntegerField phoneNumber;
+    PasswordField password, repeatPassword;
+    Select<Role> role;
+    Button confirmar;
     private final UserService userService;
+    private final AuthenticatedUser authenticatedUser;
+    private final PasswordEncoder passwordEncoder;
 
-    public modifyDataUserView(UserService service) {
+    public modifyDataUserView(UserService service, AuthenticatedUser authUser, PasswordEncoder pwEncoder) {
         userService = service;
+        authenticatedUser = authUser;
+        passwordEncoder = pwEncoder;
         setWidthFull();
         setHeightFull();
         addClassName("mainView");
@@ -97,6 +105,8 @@ public class modifyDataUserView extends VerticalLayout {
         role.setLabel("Rol inicial:");
         role.setItems(Role.CUSTOMER, Role.MARKETING, Role.FINANCE, Role.CUSTOMERSUPPORT, Role.ADMIN);
         role.setId("rol");
+        if (authenticatedUser.get().get().getRoles().contains(Role.CUSTOMERSUPPORT))
+            role.setEnabled(false);
 
         confirmar = new Button("Confirmar");
         confirmar.addClassName("modifyformbutton");
@@ -155,7 +165,7 @@ public class modifyDataUserView extends VerticalLayout {
         if (!username.getValue().isEmpty())
             u.setUsername(username.getValue());
 
-        if (!phoneNumber.getValue().equals(0))
+        if (phoneNumber.getValue() != null && !phoneNumber.getValue().equals(0))
             u.setPhoneNumber(phoneNumber.getValue());
 
         if (!email.getValue().isEmpty())
@@ -163,9 +173,8 @@ public class modifyDataUserView extends VerticalLayout {
 
         if (!password.getValue().isEmpty() && !repeatPassword.getValue().isEmpty() &&
                 password.getValue().equals(repeatPassword.getValue()))
-            u.setPassword(password.getValue());
-
-        if (!role.getValue().equals(null)) {
+            u.setPassword(passwordEncoder.encode(password.getValue()));
+        if (role.getValue() != null) {
             u.getRoles().clear();
             u.addRole(role.getValue());
         }
@@ -173,6 +182,7 @@ public class modifyDataUserView extends VerticalLayout {
         if (userService.saveUser(u)) {
             String text = new String("Genial. Datos modificados correctamente!!");
             Notification.show(text).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            UI.getCurrent().navigate("/menu");
         } else {
             String text = new String("Algo falló! Revise los datos.");
             Notification.show(text).addThemeVariants(NotificationVariant.LUMO_ERROR);

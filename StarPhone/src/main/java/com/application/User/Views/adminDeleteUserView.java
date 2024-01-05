@@ -1,6 +1,7 @@
 package com.application.User.Views;
 
 import com.application.User.Services.UserService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -9,14 +10,14 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+import jakarta.annotation.security.RolesAllowed;
+
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import java.util.List;
 
-@AnonymousAllowed
-// TODO: @RolesAllowed("ROLE_ADMIN") + import jakarta.annotation
+@RolesAllowed({ "ROLE_ADMIN", "ROLE_CUSTOMERSUPPORT" })
 @CssImport("./styles/styles.css")
 @PageTitle("Borrar Usuario")
 @Route(value = "/borrarusuario", layout = menu.class)
@@ -129,6 +130,7 @@ public class adminDeleteUserView extends VerticalLayout {
         if (userService.deleteByDNI(DNI.getValue())) {
             String text = new String("Genial. Eliminado correctamente!!");
             Notification.show(text).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            UI.getCurrent().navigate("/menu");
         } else {
             String text = new String("Algo falló! Inténtelo de nuevo.");
             Notification.show(text).addThemeVariants(NotificationVariant.LUMO_ERROR);

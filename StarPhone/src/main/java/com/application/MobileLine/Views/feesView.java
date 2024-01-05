@@ -18,7 +18,6 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 @AnonymousAllowed
-// TODO: @PermitAll + import jakarta.annotation.security.PermitAll;
 @CssImport("./styles/styles.css")
 @PageTitle("Tarifas")
 @Route(value = "/starphonetarifas")
@@ -68,7 +67,7 @@ public class feesView extends VerticalLayout {
         }
 
         centerDiv.add(contratos);
-        butCont = new Button("Continuar");
+        butCont = new Button("Registrarse");
         butCont.setWidth("245px");
         butCont.setHeight("70px");
         butCont.getStyle().set("font-size", "26px");

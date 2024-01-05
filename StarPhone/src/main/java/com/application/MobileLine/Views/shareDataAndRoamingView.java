@@ -17,13 +17,12 @@ import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+import jakarta.annotation.security.RolesAllowed;
 
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: @RolesAllowed("ROLE_CUSTOMER") + import jakarta
-@AnonymousAllowed
+@RolesAllowed({ "ROLE_ADMIN", "ROLE_CUSTOMERSUPPORT" })
 @CssImport("./styles/styles.css")
 @PageTitle("Roaming&DatosCompartidos")
 @Route(value = "/roaming&datoscompartidos", layout = menu.class)
