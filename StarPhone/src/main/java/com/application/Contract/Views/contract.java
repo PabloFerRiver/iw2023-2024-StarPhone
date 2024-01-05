@@ -26,7 +26,7 @@ public class contract extends VerticalLayout {
         titleDiv.getStyle().set("border-radius", "12px 12px 0 0");
         titleDiv.getStyle().set("background-color", "rgb(135, 206, 235)");
         titleText = new H3(title);
-        titleText.getStyle().set("font-size", "24px");
+        titleText.getStyle().set("font-size", "26px");
         titleText.getStyle().set("color", "white");
         titleDiv.add(titleText);
         add(titleDiv);

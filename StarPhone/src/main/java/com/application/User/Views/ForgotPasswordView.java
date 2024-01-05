@@ -3,149 +3,138 @@ package com.application.User.Views;
 import com.application.User.Entities.User;
 import com.application.User.Services.UserEmailService;
 import com.application.User.Services.UserService;
-import com.application.views.main.MainView;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import java.util.UUID;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
-import com.vaadin.flow.component.Component;
+
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.Pre;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.Random;
 
 //TODO: @PermitAll + import jakarta.annotation.security.PermitAll;
 @AnonymousAllowed
-@PageTitle("Recuperar")
+@PageTitle("Recuperar Credenciales")
 @Route(value = "/recuperarcredenciales")
-public class ForgotPasswordView extends VerticalLayout {
+public class forgotPasswordView extends VerticalLayout {
 
-    private EmailField email = new EmailField("E-mail");
-    private User usu;
-    private UserService userService;
-    private final PasswordEncoder encoder;
-    private UserEmailService userEmail;
+    VerticalLayout bodyDiv, centerDiv, confirmSquare;
+    HorizontalLayout titleDiv, footerDiv;
+    H3 confirmTitle;
+    EmailField email;
+    Button confirmar;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final UserEmailService userEmailService;
 
-    private Button cancel = new Button("Cancelar", event1 -> {
-        Notification.show("Ha sido cancelada la recuperacion de contraseña");
-        UI.getCurrent().navigate(MainView.class);
-        // A real application would also save the updated person
-        // using the application's backend
-    });
+    public forgotPasswordView(UserService uService, PasswordEncoder pEncoder, UserEmailService uEmailService) {
+        userService = uService;
+        passwordEncoder = pEncoder;
+        userEmailService = uEmailService;
+        setWidthFull();
+        setHeightFull();
+        addClassName("mainView");
+        setPadding(false);
+        setSpacing(false);
+        getStyle().set("font-family", "Kavoon");
 
-    private Button crear = new Button("Mandar correo");
+        // Campos formulario
+        email = new EmailField("Email:");
+        email.addClassName("activefield");
+        email.setId("email");
+        email.setRequired(true);
 
-    public ForgotPasswordView(UserService uService, PasswordEncoder encoder, UserEmailService uEmail) {
-        // TODO: Hacer vista de recuperar contraseña
-        this.userService = uService;
-        this.encoder = encoder;
-        this.userEmail = uEmail;
+        confirmar = new Button("Confirmar");
+        confirmar.addClassName("activebutton");
+        confirmar.addClickListener(e -> onGetNewCredentialsClick());
+        // ---------------------------
 
-        add(createTitle());
-        add(createFormLayout());
-        add(createButtonLayout());
+        centerDiv = new VerticalLayout();
+        centerDiv.setWidthFull();
+        centerDiv.setPadding(false);
+        centerDiv.setSpacing(false);
+        centerDiv.setAlignItems(Alignment.CENTER);
+        centerDiv.setJustifyContentMode(JustifyContentMode.CENTER);
 
-        crear.addClickListener(event2 -> {
+        confirmSquare = new VerticalLayout();
+        confirmSquare.setWidth("350px");
+        confirmSquare.setHeight("300px");
+        confirmSquare.setPadding(false);
+        confirmSquare.setSpacing(false);
+        confirmSquare.setAlignItems(Alignment.CENTER);
+        confirmSquare.getStyle().set("border-radius", "12px");
 
-            try {
+        titleDiv = new HorizontalLayout();
+        titleDiv.setWidthFull();
+        titleDiv.setHeight("60px");
+        titleDiv.setJustifyContentMode(JustifyContentMode.CENTER);
+        titleDiv.setAlignItems(Alignment.CENTER);
+        titleDiv.getStyle().set("border-radius", "12px 12px 0 0");
+        titleDiv.getStyle().set("background-color", "rgb(135, 206, 235)");
+        confirmTitle = new H3("Recuperar Credenciales");
+        confirmTitle.getStyle().set("font-size", "28px");
+        confirmTitle.getStyle().set("color", "white");
+        titleDiv.add(confirmTitle);
+        confirmSquare.add(titleDiv);
 
-                String password;
-                // Obtengo usuario a partir de su correo
-                try {
-                    usu = this.userService.loadUserByEmail(email.getValue());
-                } catch (UsernameNotFoundException dive) {
-                    Notification.show("No se ha encontrado el usuario asociado a ese correo. Inténtelo de nuevo");
-                    UI.getCurrent().navigate(ForgotPasswordView.class);
+        bodyDiv = new VerticalLayout(email, confirmar);
+        bodyDiv.setWidthFull();
+        bodyDiv.setJustifyContentMode(JustifyContentMode.START);
+        bodyDiv.setAlignItems(Alignment.CENTER);
+        bodyDiv.getStyle().set("background-color", "rgb(255, 255, 255)");
+        bodyDiv.getStyle().set("border-radius", "0 0 12px 12px");
+        confirmSquare.add(bodyDiv);
+        expand(bodyDiv);
 
-                }
+        centerDiv.add(confirmSquare);
+        add(centerDiv);
+        expand(centerDiv);
+    }
 
-                // Genero contraseña y se la asocio al usuario
-                password = RecuperarContraseña(usu, email.getValue());
-                usu.setPassword(this.encoder.encode(password));
-                // Activo usuario si no lo esta
-                if (!usu.getActivate()) {
-                    usu.setActivate(true);
-                }
-                // Actualizo usuario
-                userService.updateUser(usu);
-                // Envio correo
-                userEmail.sendForgotPasswordEmail(usu, password, null);
-                UI.getCurrent().navigate(loginView.class);
-                Notification.show("Ha sido enviado");
+    public void onGetNewCredentialsClick() {
+        confirmar.setEnabled(false);
+        User user = userService.getUserByEmail(email.getValue());
+        String nText = "";
+        if (user.getId() != null && user.getActivate() == true) {
+            String passWord = UUID.randomUUID().toString().substring(0, 8);
+            user.setPassword(passwordEncoder.encode(passWord));
 
-            } catch (UsernameNotFoundException dive) {
-                Notification.show("Ha sido enviado");
-                UI.getCurrent().navigate(loginView.class);
+            Button closeButton = new Button(new Icon("lumo", "cross"));
+            closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
+            closeButton.getElement().setAttribute("aria-label", "Close");
+            Notification n = new Notification();
+
+            if (userService.saveUser(user)) {
+                userEmailService.sendForgotPasswordEmail(user, passWord);
+                closeButton.addClickListener(event -> {
+                    n.close();
+                    UI.getCurrent().getPage().setLocation("/login");
+                });
+                Pre text = new Pre("Genial. Por favor, revisa tu email!\nClick en la cruz para continuar.");
+                HorizontalLayout layout = new HorizontalLayout(text, closeButton);
+                layout.setAlignItems(Alignment.CENTER);
+                n.add(layout);
+                n.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                n.open();
+            } else {
+                nText = "Algo falló! Contacte con un operador.";
+                Notification.show(nText).addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
-
-        });
-
-    }
-
-    private Component createTitle() {
-        return new H3("Recuperar contraseña");
-    }
-
-    private Component createFormLayout() {
-        FormLayout formLayout = new FormLayout();
-        email.setErrorMessage("Por favor, introduzca bien su email");
-        formLayout.add(email);
-        formLayout.setResponsiveSteps(
-                new ResponsiveStep("1px", 1),
-                new ResponsiveStep("600px", 2),
-                new ResponsiveStep("700px", 3));
-        return formLayout;
-
-    }
-
-    private Component createButtonLayout() {
-        HorizontalLayout buttonLayout = new HorizontalLayout();
-        buttonLayout.addClassName("button-layout");
-        crear.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonLayout.add(crear);
-        buttonLayout.add(cancel);
-        return buttonLayout;
-    }
-
-    public String RecuperarContraseña(User usu, String email) {
-
-        return crearcontraseña();
-
-    }
-
-    private String crearcontraseña() {
-
-        String[] symbols = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "B", "c", "d", "E", "ñ" };
-        int length = 10;
-        Random random;
-
-        try {
-            random = SecureRandom.getInstanceStrong();
-            StringBuilder ab = new StringBuilder(length);
-            for (int i = 0; i < length; i++) {
-                int indexRandom = random.nextInt(symbols.length);
-                ab.append(symbols[indexRandom]);
-            }
-
-            String password = ab.toString();
-
-            return password;
-
-        } catch (NoSuchAlgorithmException e) {
-
+        } else {
+            nText = "Datos incorrectos! Revise los datos introducidos.";
+            Notification.show(nText).addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
-        return null;
-
     }
 
 }

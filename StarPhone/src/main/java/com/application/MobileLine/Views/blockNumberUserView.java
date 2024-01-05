@@ -141,6 +141,5 @@ public class blockNumberUserView extends VerticalLayout {
             nText = "Algo falló! Revise los datos introducidos.";
             Notification.show(nText).addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
-
     }
 }

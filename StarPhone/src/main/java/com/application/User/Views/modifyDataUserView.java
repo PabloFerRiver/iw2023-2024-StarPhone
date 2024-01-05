@@ -151,7 +151,7 @@ public class modifyDataUserView extends VerticalLayout {
     }
 
     public void onModifyButtonClick() {
-        User u = userService.findUserByDNI(DNI.getValue());
+        User u = userService.getUserByDNI(DNI.getValue());
         if (!username.getValue().isEmpty())
             u.setUsername(username.getValue());
 

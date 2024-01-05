@@ -40,11 +40,12 @@ public class UserEmailService implements EmailService {
     }
 
     @Override
-    public boolean sendForgotPasswordEmail(User usu, String password, String imagen) {
+    public boolean sendForgotPasswordEmail(User usu, String password) {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
+        String asunto = "Solicitud de Recuperación de Credenciales";
         String body = "Su nueva contraseña es: " + password;
-        String asunto = "Solicitud de reestablecimiento de contraseña";
+
         try {
             helper.setFrom(defaultMail);
             helper.setTo(usu.getEmail());
@@ -57,7 +58,5 @@ public class UserEmailService implements EmailService {
         }
         return true;
     }
-
-
 
 }

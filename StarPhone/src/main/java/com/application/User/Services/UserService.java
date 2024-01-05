@@ -131,7 +131,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findFullUsernameByUsernamePart(partusername);
     }
 
-    public User findUserByDNI(String dni) {
+    public User getUserByDNI(String dni) {
         Optional<User> user = userRepository.findByDNI(dni);
         if (user.isPresent()) {
             return user.get();
@@ -140,8 +140,17 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    public User getUserByEmail(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            return new User();
+        }
+    }
+
     public boolean deleteByDNI(String dni) {
-        User u = findUserByDNI(dni);
+        User u = getUserByDNI(dni);
         System.out.println(u.getId());
         if (u.getId() != null) {
             userRepository.delete(u);
