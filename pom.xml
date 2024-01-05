@@ -9,7 +9,7 @@
     </parent>
     <!-- Project from https://start.vaadin.com/project/e0c3a0bb-af87-4075-a9cd-939635fb257c -->
     <groupId>com.example.application</groupId>
-    <artifactId>StarPhonePackage</artifactId>
+    <artifactId>mytodo</artifactId>
     <name>StarPhonePackage</name>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
