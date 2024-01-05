@@ -122,6 +122,13 @@ public class menu extends AppLayout {
             nav.addItem(navItem);
         }
 
+        if (accessChecker.hasAccess(changePasswordView.class)) {
+            navItem = new SideNavItem("Cambiar Credenciales", changePasswordView.class,
+                    LineAwesomeIcon.GLOBE_SOLID.create());
+            navItem.addClassName("sideNavItem");
+            nav.addItem(navItem);
+        }
+
         if (accessChecker.hasAccess(feesViewMenu.class)) {
             navItem = new SideNavItem("Tarifas", feesViewMenu.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());

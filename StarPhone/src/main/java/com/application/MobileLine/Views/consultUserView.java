@@ -4,12 +4,9 @@ import com.application.Contract.Entities.Contract;
 import com.application.Contract.Service.ContractService;
 import com.application.MobileLine.Entities.BlockedNumbers;
 import com.application.MobileLine.Entities.MobileLine;
-import com.application.MobileLine.Service.BlockedNumbersService;
 import com.application.MobileLine.Service.MobileLineService;
 import com.application.User.Security.AuthenticatedUser;
 import com.application.User.Views.menu;
-import com.vaadin.flow.component.Html;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H3;
@@ -19,8 +16,6 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
-import com.vaadin.flow.component.textfield.IntegerField;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
@@ -41,18 +36,15 @@ public class consultUserView extends VerticalLayout {
     H3 titleDelete;
 
     Button confirmar;
-public Paragraph text=new Paragraph(" ");
+    public Paragraph text = new Paragraph(" ");
     private final MobileLineService mobileService;
     private final AuthenticatedUser authenticatedUser;
     private final ContractService contractService;
-    private final BlockedNumbersService blockedNumbersService;
 
-    public consultUserView(AuthenticatedUser authUser, MobileLineService mService, ContractService cService,
-                               BlockedNumbersService blockedNumbersService) {
+    public consultUserView(AuthenticatedUser authUser, MobileLineService mService, ContractService cService) {
         this.authenticatedUser = authUser;
         this.mobileService = mService;
         this.contractService = cService;
-        this.blockedNumbersService = blockedNumbersService;
 
         setWidthFull();
         setHeightFull();
@@ -77,8 +69,6 @@ public Paragraph text=new Paragraph(" ");
         lines.addClassName("activefield");
         lines.setLabel("Línea:");
         lines.setItems(phoneNumberlines);
-
-
 
         confirmar = new Button("Consultar");
         confirmar.addClassName("activebutton");
@@ -113,7 +103,7 @@ public Paragraph text=new Paragraph(" ");
         titleDiv.add(titleDelete);
         confirmSquare.add(titleDiv);
 
-        bodyDiv = new VerticalLayout(lines, confirmar,text);
+        bodyDiv = new VerticalLayout(lines, confirmar, text);
         bodyDiv.setWidthFull();
         bodyDiv.setJustifyContentMode(JustifyContentMode.START);
         bodyDiv.setAlignItems(Alignment.CENTER);
@@ -136,18 +126,18 @@ public Paragraph text=new Paragraph(" ");
             MobileLine mobileLine = mobileService.getMobileLineByPhoneNumber(lines.getValue());
             String text1;
             String text2;
-            if(mobileLine.getShareData()==true){
-                 text1 = new String(" Activado");}
-            else{
-                 text1 = new String(" Desactivado");
+            if (mobileLine.getShareData() == true) {
+                text1 = new String(" Activado");
+            } else {
+                text1 = new String(" Desactivado");
             }
 
-            if(mobileLine.getRoaming()==true){
-                 text2 = new String(" Activado");}
-            else{
-                 text2 = new String(" Desactivado");
+            if (mobileLine.getRoaming() == true) {
+                text2 = new String(" Activado");
+            } else {
+                text2 = new String(" Desactivado");
             }
-            List<BlockedNumbers> blocked=mobileLine.getBlockedNumbers();
+            List<BlockedNumbers> blocked = mobileLine.getBlockedNumbers();
             List<Integer> listabloqueo = new ArrayList<>();
             for (var m : blocked) {
                 listabloqueo.add(m.getBlockedNumber());
@@ -156,33 +146,21 @@ public Paragraph text=new Paragraph(" ");
                     .map(Object::toString)
                     .collect(Collectors.joining(", "));
 
-
-
-
-            text.setText ("Total llamadas: " + mobileLine.getTotalCalls() + "\n" +
+            text.setText("Total llamadas: " + mobileLine.getTotalCalls() + "\n" +
                     "Total datos: " + mobileLine.getTotalData() + "\n" +
                     "Total SMS: " + mobileLine.getTotalSMS() + "\n" +
                     "Compartir datos: " + text1 + "\n" +
-                    "Numeros bloqueados: " +cadenaDeNumeros+"\n"+
-                    "Roaming: " + text2+"\n" +
+                    "Numeros bloqueados: " + cadenaDeNumeros + "\n" +
+                    "Roaming: " + text2 + "\n" +
                     "Contrato: " + mobileLine.getContract().getId());
             text.getStyle().set("white-space", "pre-line");
             text.getStyle().set("font-size", "20px");
             text.getStyle().set("font-weight", "bold");
 
-
-
-
-
-
-
-
-
         } else {
             Notification.show("Por favor, seleccione una línea", 3000, Notification.Position.MIDDLE)
                     .addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
-
 
     }
 }

@@ -1,7 +1,7 @@
 package com.application.User.Views;
 
+import com.application.User.Security.AuthenticatedUser;
 import com.application.User.Services.UserService;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H3;
@@ -9,27 +9,29 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.EmailField;
-import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 @AnonymousAllowed
-@PageTitle("Activar Usuario")
-@Route(value = "/activaruser")
+@PageTitle("Cambiar Credenciales")
+@Route(value = "/cambiarcredenciales", layout = menu.class)
 @CssImport("./styles/styles.css")
-public class activateUserView extends VerticalLayout {
+public class changePasswordView extends VerticalLayout {
 
     VerticalLayout bodyDiv, centerDiv, confirmSquare;
     HorizontalLayout titleDiv, footerDiv;
     H3 confirmTitle;
-    EmailField email;
-    TextField confirmCode;
+    PasswordField password, repeatPassword;
     Button confirmar;
     private final UserService userService;
+    private final AuthenticatedUser authenticatedUser;
 
-    public activateUserView(UserService uService) {
+    public changePasswordView(UserService uService, AuthenticatedUser authUser) {
+        userService = uService;
+        authenticatedUser = authUser;
+
         setWidthFull();
         setHeightFull();
         addClassName("mainView");
@@ -38,19 +40,19 @@ public class activateUserView extends VerticalLayout {
         getStyle().set("font-family", "Kavoon");
 
         // Campos formulario
-        email = new EmailField("Email:");
-        email.addClassName("activefield");
-        email.setId("email");
-        email.setRequired(true);
+        password = new PasswordField("Contraseña");
+        password.addClassName("activefield");
+        password.setRequired(true);
+        password.setId("password");
 
-        confirmCode = new TextField("Código de activación:");
-        confirmCode.addClassName("activefield");
-        confirmCode.setId("confirmCode");
-        confirmCode.setRequired(true);
+        repeatPassword = new PasswordField("Repetir Contraseña");
+        repeatPassword.addClassName("activefield");
+        repeatPassword.setRequired(true);
+        repeatPassword.setId("repeatPassword");
 
         confirmar = new Button("Confirmar");
         confirmar.addClassName("activebutton");
-        confirmar.addClickListener(e -> onActivateuserClick());
+        confirmar.addClickListener(e -> onChangePasswordButton());
         // ---------------------------
 
         centerDiv = new VerticalLayout();
@@ -75,13 +77,13 @@ public class activateUserView extends VerticalLayout {
         titleDiv.setAlignItems(Alignment.CENTER);
         titleDiv.getStyle().set("border-radius", "12px 12px 0 0");
         titleDiv.getStyle().set("background-color", "rgb(135, 206, 235)");
-        confirmTitle = new H3("Activar Usuario");
+        confirmTitle = new H3("Cambiar Credenciales");
         confirmTitle.getStyle().set("font-size", "28px");
         confirmTitle.getStyle().set("color", "white");
         titleDiv.add(confirmTitle);
         confirmSquare.add(titleDiv);
 
-        bodyDiv = new VerticalLayout(email, confirmCode, confirmar);
+        bodyDiv = new VerticalLayout(password, repeatPassword, confirmar);
         bodyDiv.setWidthFull();
         bodyDiv.setJustifyContentMode(JustifyContentMode.START);
         bodyDiv.setAlignItems(Alignment.CENTER);
@@ -95,20 +97,18 @@ public class activateUserView extends VerticalLayout {
         centerDiv.add(confirmSquare);
         add(centerDiv);
         expand(centerDiv);
-
-        userService = uService;
     }
 
-    public void onActivateuserClick() {
-        if (!email.getValue().isEmpty() && !confirmCode.getValue().isEmpty()) {
+    public void onChangePasswordButton() {
+        if (!password.getValue().isEmpty() && !repeatPassword.getValue().isEmpty()) {
             confirmar.setEnabled(false);
-            if (userService.isActivated(email.getValue())) {
-                UI.getCurrent().getPage().setLocation("/");
-            } else if (userService.activateUserCode(email.getValue(), confirmCode.getValue())) {
-                UI.getCurrent().getPage().setLocation("/menu");
+            if (password.getValue().equals(repeatPassword.getValue())) {
+                userService.changePassword(authenticatedUser.get().get(), password.getValue());
+                Notification.show("Contraseña cambiada correctamente")
+                        .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             } else {
-                Notification.show("Código de activación incorrecto").addThemeVariants(NotificationVariant.LUMO_ERROR);
-                UI.getCurrent().getPage().setLocation("/activateuser");
+                Notification.show("No coinciden las contraseñas").addThemeVariants(NotificationVariant.LUMO_ERROR);
+                confirmar.setEnabled(true);
             }
         } else {
             Notification.show("Rellene todos los campos!").addThemeVariants(NotificationVariant.LUMO_ERROR);

@@ -87,12 +87,14 @@ public class UserService implements UserDetailsService {
             user.get().setActivate(true);
             user.get().addRole(Role.CUSTOMER);
             user.get().setActivateCode("");
-            userRepository.save(user.get());
-            return true;
-
-        } else {
-            return false;
+            try {
+                userRepository.save(user.get());
+                return true;
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
+        return false;
     }
 
     public User loadUserByEmail(String email) throws UsernameNotFoundException {
@@ -104,10 +106,6 @@ public class UserService implements UserDetailsService {
         } else {
             return new User(); // Devolver un usuario vacío, como no encontrado
         }
-    }
-
-    public void updateUser(User user) {
-        userRepository.save(user);
     }
 
     public boolean isActivated(String email) {
@@ -152,18 +150,25 @@ public class UserService implements UserDetailsService {
     public boolean deleteByDNI(String dni) {
         User u = getUserByDNI(dni);
         if (u.getId() != null) {
-            userRepository.delete(u);
-            return true;
-        } else {
-            return false;
+            try {
+                userRepository.delete(u);
+                return true;
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
+        return false;
     }
 
     public void giveRole(String username, Role role) {
         Optional<User> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
             user.get().addRole(role);
-            userRepository.save(user.get());
+            try {
+                userRepository.save(user.get());
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
     }
 
@@ -171,7 +176,20 @@ public class UserService implements UserDetailsService {
         Optional<User> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
             user.get().getRoles().remove(role);
-            userRepository.save(user.get());
+            try {
+                userRepository.save(user.get());
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+    }
+
+    public void changePassword(User user, String password) {
+        user.setPassword(passwordEncoder.encode(password));
+        try {
+            userRepository.save(user);
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 
