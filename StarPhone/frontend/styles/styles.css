@@ -50,7 +50,7 @@
 /*REGISTER*/
 .bodysregister {
     width: 100%;
-    height: 25%;
+    height: auto;
     justify-content: center;
     align-items: center;
     gap: 70px;
@@ -60,13 +60,11 @@
     width: 300px;
     height: 125px;
     padding: 0;
-    margin-top: 10px;
 }
 
 .registerformbutton {
     width: 150px;
     height: 50px;
-    margin-top: -40px;
     padding: 0;
     border: 3px solid black;
     cursor: pointer;
@@ -79,7 +77,8 @@ vaadin-date-picker.registerformfield::part(label),
 vaadin-email-field.registerformfield::part(label), 
 vaadin-password-field.registerformfield::part(label),
 vaadin-select.registerformfield::part(label),
-vaadin-combo-box.registerformfield::part(label) {
+vaadin-combo-box.registerformfield::part(label),
+vaadin-number-field.registerformfield::part(label) {
     color: black;
     font-size: 18px;
 }
@@ -90,7 +89,8 @@ vaadin-date-picker.registerformfield::part(input-field),
 vaadin-email-field.registerformfield::part(input-field),
 vaadin-password-field.registerformfield::part(input-field),
 vaadin-select.registerformfield::part(input-field),
-vaadin-combo-box.registerformfield::part(input-field) {
+vaadin-combo-box.registerformfield::part(input-field),
+vaadin-number-field.registerformfield::part(input-field) {
     border: 2px solid black;
     font-size: 16px;
 }
@@ -101,7 +101,8 @@ vaadin-date-picker.registerformfield::part(error-message),
 vaadin-email-field.registerformfield::part(error-message),
 vaadin-password-field.registerformfield::part(error-message),
 vaadin-select.registerformfield::part(error-message),
-vaadin-combo-box.registerformfield::part(error-message) {
+vaadin-combo-box.registerformfield::part(error-message),
+vaadin-number-field.registerformfield::part(error-message) {
     color: red;
     font-size: 15px;
 }
@@ -235,7 +236,7 @@ vaadin-app-layout::part(navbar) {
 /*MENUPARTEADMIN*/
 .bodysmodify {
     width: 100%;
-    height: 25%;
+    height: auto;
     justify-content: center;
     align-items: center;
     gap: 70px;
@@ -250,7 +251,6 @@ vaadin-app-layout::part(navbar) {
 .modifyformbutton {
     width: 150px;
     height: 50px;
-    margin-top: -40px;
     padding: 0;
     border: 3px solid black;
     cursor: pointer;
@@ -262,7 +262,8 @@ vaadin-date-picker.modifyformfield::part(label),
 vaadin-email-field.modifyformfield::part(label), 
 vaadin-password-field.modifyformfield::part(label),
 vaadin-select.modifyformfield::part(label),
-vaadin-combo-box.modifyformfield::part(label) {
+vaadin-combo-box.modifyformfield::part(label),
+vaadin-number-field.modifyformfield::part(label) {
     color: black;
     font-size: 18px;
 }
@@ -273,7 +274,8 @@ vaadin-date-picker.modifyformfield::part(input-field),
 vaadin-email-field.modifyformfield::part(input-field),
 vaadin-password-field.modifyformfield::part(input-field),
 vaadin-select.modifyformfield::part(input-field),
-vaadin-combo-box.modifyformfield::part(input-field) {
+vaadin-combo-box.modifyformfield::part(input-field),
+vaadin-number-field.modifyformfield::part(input-field) {
     border: 2px solid black;
     font-size: 16px;
 }

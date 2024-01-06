@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "mobileline", indexes = {
-        @Index(name = "idx_contract", columnList = "contract_id", unique = false),
+        @Index(name = "id_contract", columnList = "contract_id", unique = false),
         @Index(name = "mobLinePhoneNum", columnList = "phoneNumber", unique = true)
 })
 public class MobileLine extends AbstractEntity {

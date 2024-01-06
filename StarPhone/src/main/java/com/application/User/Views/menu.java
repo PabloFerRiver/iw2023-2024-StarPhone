@@ -2,7 +2,10 @@ package com.application.User.Views;
 
 import com.application.MobileLine.Views.blockNumberUserView;
 import com.application.MobileLine.Views.consultUserView;
+import com.application.MobileLine.Views.createFeeView;
+import com.application.MobileLine.Views.deleteFeeView;
 import com.application.MobileLine.Views.feesViewMenu;
+import com.application.MobileLine.Views.modifyFeeView;
 import com.application.MobileLine.Views.shareDataAndRoamingView;
 import com.application.User.Entities.User;
 import com.application.User.Security.AuthenticatedUser;
@@ -80,13 +83,6 @@ public class menu extends AppLayout {
             nav.addItem(navItem);
         }
 
-        if (accessChecker.hasAccess(adminDeleteUserView.class)) {
-            navItem = new SideNavItem("Borrar Usuario", adminDeleteUserView.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
-            navItem.addClassName("sideNavItem");
-            nav.addItem(navItem);
-        }
-
         if (accessChecker.hasAccess(modifyDataUserView.class)) {
             navItem = new SideNavItem("Modificar Usuario", modifyDataUserView.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());
@@ -94,8 +90,36 @@ public class menu extends AppLayout {
             nav.addItem(navItem);
         }
 
+        if (accessChecker.hasAccess(adminDeleteUserView.class)) {
+            navItem = new SideNavItem("Borrar Usuario", adminDeleteUserView.class,
+                    LineAwesomeIcon.GLOBE_SOLID.create());
+            navItem.addClassName("sideNavItem");
+            nav.addItem(navItem);
+        }
+
         if (accessChecker.hasAccess(rolManagementView.class)) {
             navItem = new SideNavItem("Gestionar Roles", rolManagementView.class,
+                    LineAwesomeIcon.GLOBE_SOLID.create());
+            navItem.addClassName("sideNavItem");
+            nav.addItem(navItem);
+        }
+
+        if (accessChecker.hasAccess(createFeeView.class)) {
+            navItem = new SideNavItem("Crear Tarifa", createFeeView.class,
+                    LineAwesomeIcon.GLOBE_SOLID.create());
+            navItem.addClassName("sideNavItem");
+            nav.addItem(navItem);
+        }
+
+        if (accessChecker.hasAccess(modifyFeeView.class)) {
+            navItem = new SideNavItem("Modificar Tarifa", modifyFeeView.class,
+                    LineAwesomeIcon.GLOBE_SOLID.create());
+            navItem.addClassName("sideNavItem");
+            nav.addItem(navItem);
+        }
+
+        if (accessChecker.hasAccess(deleteFeeView.class)) {
+            navItem = new SideNavItem("Eliminar Tarifa", deleteFeeView.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);
@@ -128,6 +152,7 @@ public class menu extends AppLayout {
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);
         }
+
         if (accessChecker.hasAccess(feesViewMenu.class)) {
             navItem = new SideNavItem("Consultar Consumos Línea", consultUserView.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());

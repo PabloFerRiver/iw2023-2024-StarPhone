@@ -54,7 +54,7 @@ public class feesView extends VerticalLayout {
         contratos.setAlignItems(Alignment.CENTER);
         contratos.getStyle().set("gap", "60px");
 
-        List<Fee> fees = feeService.findAll();
+        List<Fee> fees = feeService.getAll();
 
         for (Fee fee : fees) {
             cont = new contract(fee.getTitle(),

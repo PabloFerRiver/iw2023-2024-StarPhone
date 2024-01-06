@@ -59,8 +59,8 @@ public class adminRegisterUserView extends VerticalLayout {
         center.setJustifyContentMode(JustifyContentMode.CENTER);
 
         registerForm = new VerticalLayout();
-        registerForm.setWidth("1200px");
-        registerForm.setHeight("700px");
+        registerForm.setWidth("1150px");
+        registerForm.setHeight("680px");
         registerForm.setPadding(false);
         registerForm.setSpacing(false);
         registerForm.setAlignItems(Alignment.CENTER);
@@ -138,7 +138,7 @@ public class adminRegisterUserView extends VerticalLayout {
         titleDiv.getStyle().set("border-radius", "12px 12px 0 0");
         titleDiv.getStyle().set("background-color", "rgb(135, 206, 235)");
         titleRegister = new H3("Registrar Usuario");
-        titleRegister.getStyle().set("font-size", "32px");
+        titleRegister.getStyle().set("font-size", "28px");
         titleRegister.getStyle().set("color", "white");
         titleDiv.add(titleRegister);
         registerForm.add(titleDiv);
@@ -152,18 +152,24 @@ public class adminRegisterUserView extends VerticalLayout {
 
         bodySubDiv1 = new HorizontalLayout(name, surname, DNI);
         bodySubDiv1.setSpacing(false);
+        bodySubDiv1.setPadding(false);
         bodySubDiv1.addClassName("bodysregister");
+        bodySubDiv1.getStyle().set("margin-top", "30px");
         bodySubDiv2 = new HorizontalLayout(username, birthdate, role);
         bodySubDiv2.setSpacing(false);
+        bodySubDiv2.setPadding(false);
         bodySubDiv2.addClassName("bodysregister");
         bodySubDiv3 = new HorizontalLayout(email, password, repeatPassword);
         bodySubDiv3.setSpacing(false);
+        bodySubDiv3.setPadding(false);
         bodySubDiv3.addClassName("bodysregister");
         bodySubDiv4 = new HorizontalLayout(phoneNumber, city, country);
         bodySubDiv4.setSpacing(false);
+        bodySubDiv4.setPadding(false);
         bodySubDiv4.addClassName("bodysregister");
         bodySubDiv5 = new HorizontalLayout(confirmar);
         bodySubDiv5.setSpacing(false);
+        bodySubDiv5.setPadding(false);
         bodySubDiv5.addClassName("bodysregister");
 
         bodyDiv.add(bodySubDiv1, bodySubDiv2, bodySubDiv3, bodySubDiv4, bodySubDiv5);

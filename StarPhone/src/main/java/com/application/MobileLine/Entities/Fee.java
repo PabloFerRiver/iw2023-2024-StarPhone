@@ -4,14 +4,14 @@ import com.application.General.AbstractEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+
 import java.util.UUID;
 
 @Entity
 @Table(name = "fee", indexes = {
-        @Index(name = "idx_fee", columnList = "id", unique = false)
+        @Index(name = "id_fee", columnList = "id", unique = false)
 })
 public class Fee extends AbstractEntity {
 
@@ -22,7 +22,7 @@ public class Fee extends AbstractEntity {
     private UUID id;
 
     @NotEmpty
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", unique = true, nullable = false)
     private String title;
 
     @NotEmpty
@@ -38,22 +38,22 @@ public class Fee extends AbstractEntity {
     private String descriptionTV;
 
     @NotNull
-    @Column(name = "availableData", nullable = false)
-    private Double availableData;
+    @Column(name = "monthlyData", nullable = false)
+    private Double monthlyData;
 
     @NotNull
-    @Column(name = "availableCalls", nullable = false)
-    private int availableCalls;
+    @Column(name = "monthlyCalls", nullable = false)
+    private int monthlyCalls;
 
     @NotNull
-    @Column(name = "availableSMS", nullable = false)
-    private int availableSMS;
+    @Column(name = "monthlySMS", nullable = false)
+    private int monthlySMS;
 
-    @NotEmpty
+    @NotNull
     @Column(name = "monthlyprice", nullable = false)
     private double monthlyprice;
 
-    @NotEmpty
+    @NotNull
     @Column(name = "maxMobileLines", nullable = false)
     private int maxMobileLines;
 
@@ -94,32 +94,32 @@ public class Fee extends AbstractEntity {
         return descriptionTV;
     }
 
-    public void setDescription(String descriptionTV) {
+    public void setDescriptionTV(String descriptionTV) {
         this.descriptionTV = descriptionTV;
     }
 
-    public Double getAvailableData() {
-        return this.availableData;
+    public Double getMonthlyData() {
+        return this.monthlyData;
     }
 
-    public void setAvailableData(Double availableData) {
-        this.availableData = availableData;
+    public void setMonthlyData(Double monthlyData) {
+        this.monthlyData = monthlyData;
     }
 
-    public int getAvailableCalls() {
-        return this.availableCalls;
+    public int getMonthlyCalls() {
+        return this.monthlyCalls;
     }
 
-    public void setAvailableCalls(int availableCalls) {
-        this.availableCalls = availableCalls;
+    public void setMonthlyCalls(int monthlyCalls) {
+        this.monthlyCalls = monthlyCalls;
     }
 
-    public int getAvailableSMS() {
-        return this.availableSMS;
+    public int getMonthlySMS() {
+        return this.monthlySMS;
     }
 
-    public void setAvailableSMS(int availableSMS) {
-        this.availableSMS = availableSMS;
+    public void setMonthlySMS(int monthlySMS) {
+        this.monthlySMS = monthlySMS;
     }
 
     public double getMonthlyprice() {

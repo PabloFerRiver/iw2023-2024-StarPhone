@@ -63,8 +63,8 @@ public class modifyDataUserView extends VerticalLayout {
         center.setJustifyContentMode(JustifyContentMode.CENTER);
 
         registerForm = new VerticalLayout();
-        registerForm.setWidth("1200px");
-        registerForm.setHeight("500px");
+        registerForm.setWidth("1100px");
+        registerForm.setHeight("550px");
         registerForm.setPadding(false);
         registerForm.setSpacing(false);
         registerForm.setAlignItems(Alignment.CENTER);
@@ -107,6 +107,8 @@ public class modifyDataUserView extends VerticalLayout {
         role.setId("rol");
         if (authenticatedUser.get().get().getRoles().contains(Role.CUSTOMERSUPPORT))
             role.setEnabled(false);
+        if (authenticatedUser.get().get().getRoles().contains(Role.ADMIN))
+            role.setEnabled(true);
 
         confirmar = new Button("Confirmar");
         confirmar.addClassName("modifyformbutton");
@@ -124,7 +126,7 @@ public class modifyDataUserView extends VerticalLayout {
         titleDiv.getStyle().set("border-radius", "12px 12px 0 0");
         titleDiv.getStyle().set("background-color", "rgb(135, 206, 235)");
         titleRegister = new H3("Modificar Datos Usuario");
-        titleRegister.getStyle().set("font-size", "32px");
+        titleRegister.getStyle().set("font-size", "28px");
         titleRegister.getStyle().set("color", "white");
         titleDiv.add(titleRegister);
         registerForm.add(titleDiv);
@@ -138,16 +140,20 @@ public class modifyDataUserView extends VerticalLayout {
 
         bodySubDiv1 = new HorizontalLayout(DNI);
         bodySubDiv1.setSpacing(false);
+        bodySubDiv1.setPadding(false);
         bodySubDiv1.addClassName("bodysmodify");
         bodySubDiv1.getStyle().set("margin-top", "30px");
         bodySubDiv2 = new HorizontalLayout(username, phoneNumber, role);
         bodySubDiv2.setSpacing(false);
+        bodySubDiv2.setPadding(false);
         bodySubDiv2.addClassName("bodysmodify");
         bodySubDiv3 = new HorizontalLayout(email, password, repeatPassword);
         bodySubDiv3.setSpacing(false);
+        bodySubDiv3.setPadding(false);
         bodySubDiv3.addClassName("bodysmodify");
         bodySubDiv4 = new HorizontalLayout(confirmar);
         bodySubDiv4.setSpacing(false);
+        bodySubDiv4.setPadding(false);
         bodySubDiv4.addClassName("bodysmodify");
 
         bodyDiv.add(bodySubDiv1, bodySubDiv2, bodySubDiv3, bodySubDiv4);

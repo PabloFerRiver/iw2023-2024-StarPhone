@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+
 @Entity
 @Table(name = "customerline")
 public class CustomerLine {
@@ -17,7 +18,6 @@ public class CustomerLine {
     @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "id")
     private UUID id;
-
 
     @NotNull
     @Column(name = "name")
@@ -31,16 +31,16 @@ public class CustomerLine {
     @Column(name = "carrier")
     private String carrier;
 
-
     @Column(name = "phoneNumber")
     private String phoneNumber;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "customerline_id")
-    private List<DataUsageRecord> dataUsageRecord=new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "customerline_id")
-    private List<CallRecord> callRecords=new ArrayList<>();
+    private List<DataUsageRecord> dataUsageRecord = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "customerline_id")
+    private List<CallRecord> callRecords = new ArrayList<>();
 
     public UUID getId() {
         return id;
@@ -100,10 +100,15 @@ public class CustomerLine {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         CustomerLine that = (CustomerLine) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(carrier, that.carrier) && Objects.equals(phoneNumber, that.phoneNumber) && Objects.equals(dataUsageRecord, that.dataUsageRecord) && Objects.equals(callRecords, that.callRecords);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(surname, that.surname)
+                && Objects.equals(carrier, that.carrier) && Objects.equals(phoneNumber, that.phoneNumber)
+                && Objects.equals(dataUsageRecord, that.dataUsageRecord)
+                && Objects.equals(callRecords, that.callRecords);
     }
 
     @Override
@@ -111,4 +116,3 @@ public class CustomerLine {
         return Objects.hash(id);
     }
 }
-

@@ -2,33 +2,25 @@ package com.application.MobileLine.Views;
 
 import com.application.Contract.Entities.Contract;
 import com.application.Contract.Service.ContractService;
-import com.application.MobileLine.Entities.BlockedNumbers;
 import com.application.MobileLine.Entities.MobileLine;
-import com.application.MobileLine.Service.BlockedNumbersService;
 import com.application.MobileLine.Service.MobileLineService;
 import com.application.User.Security.AuthenticatedUser;
 import com.application.User.Views.menu;
-import com.vaadin.flow.component.Html;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
-import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextArea;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+//TODO: TERMINAR VISTA
 
 // TODO: @RolesAllowed("ROLE_CUSTOMER") + import jakarta
 @AnonymousAllowed
@@ -43,18 +35,15 @@ public class queryComplaintView extends VerticalLayout {
     TextArea textArea;
 
     Button confirmar;
-    public Paragraph text=new Paragraph(" ");
+    public Paragraph text = new Paragraph(" ");
     private final MobileLineService mobileService;
     private final AuthenticatedUser authenticatedUser;
     private final ContractService contractService;
-    private final BlockedNumbersService blockedNumbersService;
 
-    public queryComplaintView(AuthenticatedUser authUser, MobileLineService mService, ContractService cService,
-                           BlockedNumbersService blockedNumbersService) {
+    public queryComplaintView(AuthenticatedUser authUser, MobileLineService mService, ContractService cService) {
         this.authenticatedUser = authUser;
         this.mobileService = mService;
         this.contractService = cService;
-        this.blockedNumbersService = blockedNumbersService;
 
         setWidthFull();
         setHeightFull();
@@ -86,10 +75,6 @@ public class queryComplaintView extends VerticalLayout {
         textArea.setRequired(true);
         textArea.setHeight("300px");
         textArea.setWidth("600px");
-
-
-
-
 
         confirmar = new Button("Enviar");
         confirmar.addClassName("activebutton");
@@ -124,7 +109,7 @@ public class queryComplaintView extends VerticalLayout {
         titleDiv.add(titleDelete);
         confirmSquare.add(titleDiv);
 
-        bodyDiv = new VerticalLayout(lines,textArea, confirmar);
+        bodyDiv = new VerticalLayout(lines, textArea, confirmar);
         bodyDiv.setWidthFull();
         bodyDiv.setJustifyContentMode(JustifyContentMode.START);
         bodyDiv.setAlignItems(Alignment.CENTER);
@@ -143,7 +128,6 @@ public class queryComplaintView extends VerticalLayout {
     }
 
     public void onData() {
-
 
     }
 }

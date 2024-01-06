@@ -147,6 +147,7 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    @Transactional
     public boolean deleteByDNI(String dni) {
         User u = getUserByDNI(dni);
         if (u.getId() != null) {

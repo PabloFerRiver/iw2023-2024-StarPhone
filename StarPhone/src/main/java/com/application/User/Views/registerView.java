@@ -39,17 +39,20 @@ public class registerView extends VerticalLayout {
             bodySubDiv4, bodySubDiv5, footerDiv;
     VerticalLayout center, bodyDiv, registerForm;
     H3 titleRegister;
-    private final TextField name, surname, username, country, DNI, city;
-    private final DatePicker birthdate;
-    private final EmailField email;
-    private final IntegerField phoneNumber;
-    private final PasswordField password, repeatPassword;
-    private final Select<String> fees;
-    private final Button confirmar;
-    private final BeanValidationBinder<User> binder;
-    private final UserService service;
+    TextField name, surname, username, country, DNI, city;
+    DatePicker birthdate;
+    EmailField email;
+    IntegerField phoneNumber;
+    PasswordField password, repeatPassword;
+    Select<String> fees;
+    Button confirmar;
 
-    public registerView(UserService service, FeeService feeService) {
+    private final BeanValidationBinder<User> binder;
+    private final UserService userService;
+
+    public registerView(UserService uService, FeeService feeService) {
+        userService = uService;
+
         setWidthFull();
         setHeightFull();
         addClassName("mainView");
@@ -121,7 +124,7 @@ public class registerView extends VerticalLayout {
         repeatPassword.addClassName("registerformfield");
         repeatPassword.setId("repeatPassword");
 
-        List<Fee> feesList = feeService.findAll();
+        List<Fee> feesList = feeService.getAll();
         List<String> titles = new ArrayList<>();
         fees = new Select<>();
         fees.addClassName("registerformfield");
@@ -162,18 +165,24 @@ public class registerView extends VerticalLayout {
 
         bodySubDiv1 = new HorizontalLayout(name, surname, DNI);
         bodySubDiv1.setSpacing(false);
+        bodySubDiv1.setPadding(false);
         bodySubDiv1.addClassName("bodysregister");
+        bodySubDiv1.getStyle().set("margin-top", "30px");
         bodySubDiv2 = new HorizontalLayout(username, birthdate, fees);
         bodySubDiv2.setSpacing(false);
+        bodySubDiv2.setPadding(false);
         bodySubDiv2.addClassName("bodysregister");
         bodySubDiv3 = new HorizontalLayout(email, password, repeatPassword);
         bodySubDiv3.setSpacing(false);
+        bodySubDiv3.setPadding(false);
         bodySubDiv3.addClassName("bodysregister");
         bodySubDiv4 = new HorizontalLayout(phoneNumber, city, country);
         bodySubDiv4.setSpacing(false);
+        bodySubDiv4.setPadding(false);
         bodySubDiv4.addClassName("bodysregister");
         bodySubDiv5 = new HorizontalLayout(confirmar);
         bodySubDiv5.setSpacing(false);
+        bodySubDiv5.setPadding(false);
         bodySubDiv5.addClassName("bodysregister");
 
         bodyDiv.add(bodySubDiv1, bodySubDiv2, bodySubDiv3, bodySubDiv4, bodySubDiv5);
@@ -186,7 +195,6 @@ public class registerView extends VerticalLayout {
         expand(center);
 
         // Registro USUARIO
-        this.service = service;
         binder = new BeanValidationBinder<>(User.class);
         binder.bindInstanceFields(this);
         binder.setBean(new User());
@@ -199,7 +207,7 @@ public class registerView extends VerticalLayout {
             closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
             closeButton.getElement().setAttribute("aria-label", "Close");
             Notification not = new Notification();
-            if (service.registerUser(binder.getBean())) {
+            if (userService.registerUser(binder.getBean())) {
                 closeButton.addClickListener(event -> {
                     not.close();
                     UI.getCurrent().getPage().setLocation("/activaruser");

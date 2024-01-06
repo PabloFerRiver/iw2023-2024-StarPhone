@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "contract", indexes = {
-        @Index(name = "idx_user", columnList = "user_id, fee_id", unique = false)
+        @Index(name = "id_userfee", columnList = "user_id, fee_id", unique = true)
 })
 public class Contract extends AbstractEntity {
     @Id

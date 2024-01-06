@@ -89,7 +89,7 @@ public class consultUserView extends VerticalLayout {
 
         confirmSquare = new VerticalLayout();
         confirmSquare.setWidth("400px");
-        confirmSquare.setHeight("auto");
+        confirmSquare.setHeight("400px");
         confirmSquare.setPadding(false);
         confirmSquare.setSpacing(false);
         confirmSquare.setAlignItems(Alignment.CENTER);
@@ -119,8 +119,7 @@ public class consultUserView extends VerticalLayout {
         shareDataText = new H4("");
         shareDataText.getStyle().set("font-size", "22px");
 
-        bodyDiv = new VerticalLayout(period, lines, confirmar, dataText, callsText, smsText, roamingText,
-                shareDataText);
+        bodyDiv = new VerticalLayout(period, lines, confirmar);
         bodyDiv.setWidthFull();
         bodyDiv.setJustifyContentMode(JustifyContentMode.START);
         bodyDiv.setAlignItems(Alignment.CENTER);
@@ -140,6 +139,8 @@ public class consultUserView extends VerticalLayout {
 
     public void onGetConsume() {
         if (lines.getValue() != null) {
+            confirmSquare.setHeight("auto");
+            confirmar.setEnabled(false);
             MobileLine mobileLine = mobileService.getMobileLineByPhoneNumber(lines.getValue());
             boolean roaming = mobileLine.getRoaming();
             boolean shareData = mobileLine.getShareData();
@@ -173,6 +174,7 @@ public class consultUserView extends VerticalLayout {
                 text = new String(" Desactivado");
             }
             shareDataText.setText("Compartir datos: " + text);
+            bodyDiv.add(dataText, callsText, smsText, roamingText, shareDataText);
         } else {
             Notification.show("Por favor, rellene todos los campos")
                     .addThemeVariants(NotificationVariant.LUMO_ERROR);

@@ -112,7 +112,7 @@ public class shareDataAndRoamingView extends VerticalLayout {
 
         confirmSquare = new VerticalLayout();
         confirmSquare.setWidth("420px");
-        confirmSquare.setHeight("530px");
+        confirmSquare.setHeight("550px");
         confirmSquare.setPadding(false);
         confirmSquare.setSpacing(false);
         confirmSquare.setAlignItems(Alignment.CENTER);
