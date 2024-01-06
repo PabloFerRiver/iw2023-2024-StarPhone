@@ -129,7 +129,7 @@ public class menu extends AppLayout {
             nav.addItem(navItem);
         }
         if (accessChecker.hasAccess(feesViewMenu.class)) {
-            navItem = new SideNavItem("Consultar Información Linea", consultUserView.class,
+            navItem = new SideNavItem("Consultar Consumos Línea", consultUserView.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);
