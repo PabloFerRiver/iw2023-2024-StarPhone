@@ -4,7 +4,8 @@ import com.application.Contract.Entities.Contract;
 import com.application.Contract.Service.ContractService;
 import com.application.MobileLine.Entities.MobileLine;
 import com.application.MobileLine.Service.MobileLineService;
-import com.application.User.Security.AuthenticatedUser;
+import com.application.User.Entities.User;
+import com.application.User.Services.UserService;
 import com.application.User.Views.menu;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -15,6 +16,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
@@ -27,20 +29,21 @@ import java.util.List;
 @PageTitle("Roaming&DatosCompartidos")
 @Route(value = "/roaming&datoscompartidos", layout = menu.class)
 public class shareDataAndRoamingView extends VerticalLayout {
-    AuthenticatedUser authenticatedUser;
     VerticalLayout bodyDiv, centerDiv, confirmSquare;
     HorizontalLayout titleDiv, footerDiv;
     H3 titleSDR;
     Select<String> actions;
     Select<Integer> lines;
     RadioButtonGroup<String> answer;
+    TextField DNI;
     Button confirmar;
 
+    private final UserService userService;
     private final ContractService contractService;
     private final MobileLineService mobileLineService;
 
-    public shareDataAndRoamingView(AuthenticatedUser authUser, ContractService cService, MobileLineService mLService) {
-        authenticatedUser = authUser;
+    public shareDataAndRoamingView(UserService uService, ContractService cService, MobileLineService mLService) {
+        userService = uService;
         contractService = cService;
         mobileLineService = mLService;
 
@@ -59,21 +62,34 @@ public class shareDataAndRoamingView extends VerticalLayout {
         actions.setValue("Roaming");
         actions.setId("actions");
 
-        List<Contract> contracts = contractService.getContractsByUser_Id(authenticatedUser.get().get().getId());
+        DNI = new TextField("DNI:");
+        DNI.addClassName("activefield");
+        DNI.setHelperText("Introduzca DNI con letra");
+        DNI.setId("DNI");
+
         List<MobileLine> mobileLines = new ArrayList<>();
-        for (var c : contracts) {
-            mobileLines.addAll(mobileLineService.getMobileLineByContractId(c.getId()));
-        }
-
         List<Integer> phoneNumberlines = new ArrayList<>();
-        for (var m : mobileLines) {
-            phoneNumberlines.add(m.getPhoneNumber());
-        }
-
         lines = new Select<Integer>();
         lines.addClassName("activefield");
         lines.setLabel("Línea:");
         lines.setItems(phoneNumberlines);
+
+        DNI.addValueChangeListener(event -> {
+            User user = userService.getUserByDNI(event.getValue());
+            System.out.println(user.getId());
+            List<Contract> contracts = contractService
+                    .getContractsByUser_Id(user.getId());
+            for (var c : contracts) {
+                mobileLines.addAll(mobileLineService.getMobileLineByContractId(c.getId()));
+            }
+
+            for (var m : mobileLines) {
+                phoneNumberlines.add(m.getPhoneNumber());
+            }
+            if (phoneNumberlines.size() > 0) {
+                lines.setItems(phoneNumberlines);
+            }
+        });
 
         answer = new RadioButtonGroup<String>();
         answer.addClassName("activefield");
@@ -95,8 +111,8 @@ public class shareDataAndRoamingView extends VerticalLayout {
         centerDiv.setJustifyContentMode(JustifyContentMode.CENTER);
 
         confirmSquare = new VerticalLayout();
-        confirmSquare.setWidth("400px");
-        confirmSquare.setHeight("450px");
+        confirmSquare.setWidth("420px");
+        confirmSquare.setHeight("530px");
         confirmSquare.setPadding(false);
         confirmSquare.setSpacing(false);
         confirmSquare.setAlignItems(Alignment.CENTER);
@@ -115,7 +131,7 @@ public class shareDataAndRoamingView extends VerticalLayout {
         titleDiv.add(titleSDR);
         confirmSquare.add(titleDiv);
 
-        bodyDiv = new VerticalLayout(actions, lines, answer, confirmar);
+        bodyDiv = new VerticalLayout(actions, DNI, lines, answer, confirmar);
         bodyDiv.setWidthFull();
         bodyDiv.setJustifyContentMode(JustifyContentMode.START);
         bodyDiv.setAlignItems(Alignment.CENTER);
