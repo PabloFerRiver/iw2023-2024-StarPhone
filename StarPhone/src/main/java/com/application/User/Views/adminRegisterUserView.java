@@ -100,8 +100,7 @@ public class adminRegisterUserView extends VerticalLayout {
 
         phoneNumber = new IntegerField("Teléfono:");
         phoneNumber.addClassName("registerformfield");
-        phoneNumber.setHelperText("Si no posee uno, deje el 0. " +
-                "En caso contrario, omita el prefijo internacional.");
+        phoneNumber.setHelperText("9 dígitos. Omita el prefijo internacional.");
         phoneNumber.setId("phoneNumber");
 
         email = new EmailField("Correo Electrónico:");
@@ -190,7 +189,8 @@ public class adminRegisterUserView extends VerticalLayout {
 
     public void onRegisterButtonClick() {
 
-        if (binder.validate().isOk() && password.getValue().equals(repeatPassword.getValue())) {
+        if (binder.validate().isOk() && password.getValue().equals(repeatPassword.getValue()) &&
+                phoneNumber.getValue() >= 100000000 && phoneNumber.getValue() <= 999999999) {
             binder.getBean().addRole(role.getValue());
             if (service.registerUserByAdmin(binder.getBean())) {
                 String text = new String("Genial. Registrado correctamente!!");

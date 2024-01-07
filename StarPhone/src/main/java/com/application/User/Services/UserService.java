@@ -1,6 +1,7 @@
 package com.application.User.Services;
 
 import com.application.Contract.Entities.Contract;
+import com.application.Contract.Entities.Status;
 import com.application.Contract.Service.ContractService;
 import com.application.MobileLine.Entities.MobileLine;
 import com.application.MobileLine.Service.MobileLineService;
@@ -95,8 +96,11 @@ public class UserService implements UserDetailsService {
             user.get().setActivateCode("");
 
             // Actualizamos contrato
-            Contract contract = contractService.getContractByUserIdAndStatus(user.get().getId(), "IN PROGRESS");
-            contract.setStatus("ACTIVE");
+            // getContractByUserIdAndStatus() en este caso solo devolverá un contrato, en
+            // otros quizás más de uno
+            List<Contract> c = contractService.getContractByUserIdAndStatus(user.get().getId(), "EN PROCESO");
+            Contract contract = c.get(0);
+            contract.setStatus(Status.ACTIVO);
 
             // Creamos Línea de Móvil y la asociamos al contrato anterior
             MobileLine mobileLine = new MobileLine();

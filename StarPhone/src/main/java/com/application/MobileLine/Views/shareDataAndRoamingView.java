@@ -58,7 +58,7 @@ public class shareDataAndRoamingView extends VerticalLayout {
         actions = new Select<String>();
         actions.addClassName("activefield");
         actions.setLabel("Acción:");
-        actions.setItems("Roaming", "Share Data");
+        actions.setItems("Roaming", "Datos Compartidos");
         actions.setValue("Roaming");
         actions.setId("actions");
 
@@ -76,7 +76,6 @@ public class shareDataAndRoamingView extends VerticalLayout {
 
         DNI.addValueChangeListener(event -> {
             User user = userService.getUserByDNI(event.getValue());
-            System.out.println(user.getId());
             List<Contract> contracts = contractService
                     .getContractsByUserId(user.getId());
             for (var c : contracts) {
@@ -95,7 +94,6 @@ public class shareDataAndRoamingView extends VerticalLayout {
         answer.addClassName("activefield");
         answer.setLabel("Estado:");
         answer.setItems("Activar", "Desactivar");
-        answer.setValue("Share Data");
         answer.setId("answer");
 
         confirmar = new Button("Confirmar");

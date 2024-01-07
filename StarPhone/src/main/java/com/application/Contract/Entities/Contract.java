@@ -5,7 +5,6 @@ import com.application.MobileLine.Entities.MobileLine;
 import com.application.User.Entities.User;
 import com.application.MobileLine.Entities.Fee;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -17,7 +16,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "contract", indexes = {
         @Index(name = "id_userfee", columnList = "user_id, fee_id", unique = true),
-        @Index(name = "id_userstatus", columnList = "user_id, status", unique = true)
 })
 public class Contract extends AbstractEntity {
     @Id
@@ -36,9 +34,10 @@ public class Contract extends AbstractEntity {
     @NotNull
     private Fee fee;
 
-    @NotEmpty
+    @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private String status;
+    private Status status;
 
     @NotNull
     @Column(name = "startDate", nullable = false)
@@ -81,11 +80,11 @@ public class Contract extends AbstractEntity {
         this.fee = fee;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

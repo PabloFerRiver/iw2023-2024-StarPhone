@@ -84,8 +84,7 @@ public class modifyDataUserView extends VerticalLayout {
 
         phoneNumber = new IntegerField("Teléfono:");
         phoneNumber.addClassName("modifyformfield");
-        phoneNumber.setHelperText("Si no posee uno, deje el 0. " +
-                "En caso contrario, omita el prefijo internacional.");
+        phoneNumber.setHelperText("9 dígitos. Omita el prefijo internacional.");
         phoneNumber.setId("phoneNumber");
 
         email = new EmailField("Correo Electrónico:");
@@ -171,7 +170,8 @@ public class modifyDataUserView extends VerticalLayout {
         if (!username.getValue().isEmpty())
             u.setUsername(username.getValue());
 
-        if (phoneNumber.getValue() != null && !phoneNumber.getValue().equals(0))
+        if (phoneNumber.getValue() != null && !phoneNumber.getValue().equals(0) &&
+                phoneNumber.getValue() >= 100000000 && phoneNumber.getValue() <= 999999999)
             u.setPhoneNumber(phoneNumber.getValue());
 
         if (!email.getValue().isEmpty())

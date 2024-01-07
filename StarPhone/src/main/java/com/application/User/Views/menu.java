@@ -1,5 +1,8 @@
 package com.application.User.Views;
 
+import com.application.Contract.Views.createContractView;
+import com.application.Contract.Views.deleteContractView;
+import com.application.Contract.Views.modifyContractView;
 import com.application.MobileLine.Views.blockNumberUserView;
 import com.application.MobileLine.Views.consultUserView;
 import com.application.MobileLine.Views.createFeeView;
@@ -127,6 +130,27 @@ public class menu extends AppLayout {
 
         if (accessChecker.hasAccess(deleteFeeView.class)) {
             navItem = new SideNavItem("Eliminar Tarifa", deleteFeeView.class,
+                    LineAwesomeIcon.GLOBE_SOLID.create());
+            navItem.addClassName("sideNavItem");
+            nav.addItem(navItem);
+        }
+
+        if (accessChecker.hasAccess(createContractView.class)) {
+            navItem = new SideNavItem("Crear Contrato", createContractView.class,
+                    LineAwesomeIcon.GLOBE_SOLID.create());
+            navItem.addClassName("sideNavItem");
+            nav.addItem(navItem);
+        }
+
+        if (accessChecker.hasAccess(modifyContractView.class)) {
+            navItem = new SideNavItem("Modificar Contrato", modifyContractView.class,
+                    LineAwesomeIcon.GLOBE_SOLID.create());
+            navItem.addClassName("sideNavItem");
+            nav.addItem(navItem);
+        }
+
+        if (accessChecker.hasAccess(deleteContractView.class)) {
+            navItem = new SideNavItem("Eliminar Contrato", deleteContractView.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);
