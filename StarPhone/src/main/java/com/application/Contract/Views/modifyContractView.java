@@ -34,7 +34,7 @@ import com.vaadin.flow.router.Route;
 public class modifyContractView extends VerticalLayout {
 
     HorizontalLayout titleDiv, centerDiv, bodySubDiv1, bodySubDiv2, bodySubDiv3,
-            bodySubDiv4, footerDiv;
+            bodySubDiv4;
     VerticalLayout center, bodyDiv, registerForm;
     H3 titleCreate;
     TextField DNI;

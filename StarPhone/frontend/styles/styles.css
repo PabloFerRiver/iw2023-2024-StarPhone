@@ -224,6 +224,10 @@ vaadin-app-layout::part(navbar) {
     background-color: rgb(135, 206, 235);
 }
 
+vaadin-app-layout::part(drawer) {
+    width: 300px;
+}
+
 .sideNavItem {
     width: auto;
     height: auto;
@@ -231,9 +235,7 @@ vaadin-app-layout::part(navbar) {
     align-items: center;
     font-size: 18px;
 }
-/*-----------------------------------*/
 
-/*MENUPARTEADMIN*/
 .bodysmodify {
     width: 100%;
     height: auto;
@@ -285,5 +287,10 @@ vaadin-button.modifyformbutton::part(label)
     color: black;
     font-size: 18px;
     font-weight: 500;
+}
+
+.personaldatafield {
+    font-size: 22px;
+    margin-top: 5px;
 }
 /*-----------------------------------*/

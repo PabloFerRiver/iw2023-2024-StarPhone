@@ -30,7 +30,7 @@ import java.util.List;
 @Route(value = "/roaming&datoscompartidos", layout = menu.class)
 public class shareDataAndRoamingView extends VerticalLayout {
     VerticalLayout bodyDiv, centerDiv, confirmSquare;
-    HorizontalLayout titleDiv, footerDiv;
+    HorizontalLayout titleDiv;
     H3 titleSDR;
     Select<String> actions;
     Select<Integer> lines;

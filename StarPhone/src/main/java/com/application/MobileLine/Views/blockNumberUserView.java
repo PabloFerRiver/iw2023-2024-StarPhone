@@ -30,7 +30,7 @@ import java.util.List;
 public class blockNumberUserView extends VerticalLayout {
     Select<Integer> lines;
     VerticalLayout bodyDiv, centerDiv, confirmSquare;
-    HorizontalLayout titleDiv, footerDiv;
+    HorizontalLayout titleDiv;
     H3 titleDelete;
     Select<String> actions;
     IntegerField phoneNumberToBlockUnblock;

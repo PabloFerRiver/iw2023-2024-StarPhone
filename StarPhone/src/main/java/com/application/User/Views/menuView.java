@@ -18,7 +18,8 @@ public class menuView extends VerticalLayout {
     HorizontalLayout titleDiv, centerDiv;
     VerticalLayout center, bodyDiv, container;
     H3 titleMenu, p1, p2;
-    AuthenticatedUser authenticatedUser;
+
+    private final AuthenticatedUser authenticatedUser;
 
     public menuView(AuthenticatedUser authUser) {
         authenticatedUser = authUser;

@@ -21,7 +21,7 @@ import jakarta.annotation.security.PermitAll;
 public class changePasswordView extends VerticalLayout {
 
     VerticalLayout bodyDiv, centerDiv, confirmSquare;
-    HorizontalLayout titleDiv, footerDiv;
+    HorizontalLayout titleDiv;
     H3 confirmTitle;
     PasswordField password, repeatPassword;
     Button confirmar;

@@ -22,7 +22,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 public class activateUserView extends VerticalLayout {
 
     VerticalLayout bodyDiv, centerDiv, confirmSquare;
-    HorizontalLayout titleDiv, footerDiv;
+    HorizontalLayout titleDiv;
     H3 confirmTitle;
     EmailField email;
     TextField confirmCode;

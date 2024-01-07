@@ -29,7 +29,7 @@ import java.util.List;
 public class modifyFeeView extends VerticalLayout {
 
     HorizontalLayout titleDiv, centerDiv, bodySubDiv1, bodySubDiv2, bodySubDiv3,
-            bodySubDiv4, bodySubDiv5, footerDiv;
+            bodySubDiv4, bodySubDiv5;
     VerticalLayout center, bodyDiv, registerForm;
     H3 titleModify;
     Select<String> title;

@@ -1,7 +1,6 @@
 package com.application.User.Views;
 
 import com.application.User.Entities.Role;
-import com.application.User.Security.AuthenticatedUser;
 import com.application.User.Services.UserService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -22,9 +21,9 @@ import java.util.List;
 @PageTitle("Gestionar Roles")
 @Route(value = "/gestionarroles", layout = menu.class)
 public class rolManagementView extends VerticalLayout {
-    AuthenticatedUser authenticatedUser;
+
     VerticalLayout bodyDiv, centerDiv, confirmSquare;
-    HorizontalLayout titleDiv, footerDiv;
+    HorizontalLayout titleDiv;
     H3 titleRolManagement;
     Select<String> roleActions;
     Select<Role> role;
@@ -33,9 +32,9 @@ public class rolManagementView extends VerticalLayout {
 
     private final UserService userService;
 
-    public rolManagementView(AuthenticatedUser authUser, UserService uService) {
-        authenticatedUser = authUser;
+    public rolManagementView(UserService uService) {
         userService = uService;
+
         setWidthFull();
         setHeightFull();
         addClassName("mainView");

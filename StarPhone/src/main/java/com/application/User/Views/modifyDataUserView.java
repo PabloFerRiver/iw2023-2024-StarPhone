@@ -31,7 +31,7 @@ import com.vaadin.flow.router.Route;
 public class modifyDataUserView extends VerticalLayout {
 
     HorizontalLayout titleDiv, centerDiv, bodySubDiv1, bodySubDiv2, bodySubDiv3,
-            bodySubDiv4, footerDiv;
+            bodySubDiv4;
     VerticalLayout center, bodyDiv, registerForm;
     H3 titleRegister;
     TextField username, DNI;
@@ -167,31 +167,34 @@ public class modifyDataUserView extends VerticalLayout {
 
     public void onModifyButtonClick() {
         User u = userService.getUserByDNI(DNI.getValue());
-        if (!username.getValue().isEmpty())
-            u.setUsername(username.getValue());
+        if (u.getId() != null) {
+            if (!username.getValue().isEmpty())
+                u.setUsername(username.getValue());
 
-        if (phoneNumber.getValue() != null && !phoneNumber.getValue().equals(0) &&
-                phoneNumber.getValue() >= 100000000 && phoneNumber.getValue() <= 999999999)
-            u.setPhoneNumber(phoneNumber.getValue());
+            if (phoneNumber.getValue() != null && !phoneNumber.getValue().equals(0) &&
+                    phoneNumber.getValue() >= 100000000 && phoneNumber.getValue() <= 999999999)
+                u.setPhoneNumber(phoneNumber.getValue());
 
-        if (!email.getValue().isEmpty())
-            u.setEmail(email.getValue());
+            if (!email.getValue().isEmpty())
+                u.setEmail(email.getValue());
 
-        if (!password.getValue().isEmpty() && !repeatPassword.getValue().isEmpty() &&
-                password.getValue().equals(repeatPassword.getValue()))
-            u.setPassword(passwordEncoder.encode(password.getValue()));
-        if (role.getValue() != null) {
-            u.getRoles().clear();
-            u.addRole(role.getValue());
-        }
+            if (!password.getValue().isEmpty() && !repeatPassword.getValue().isEmpty() &&
+                    password.getValue().equals(repeatPassword.getValue()))
+                u.setPassword(passwordEncoder.encode(password.getValue()));
+            if (role.getValue() != null) {
+                u.getRoles().clear();
+                u.addRole(role.getValue());
+            }
 
-        if (userService.saveUser(u)) {
-            String text = new String("Genial. Datos modificados correctamente!!");
-            Notification.show(text).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-            UI.getCurrent().navigate("/menu");
+            if (userService.saveUser(u)) {
+                Notification.show("Genial. Datos modificados correctamente!!")
+                        .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                UI.getCurrent().navigate("/menu");
+            } else {
+                Notification.show("Algo falló! Revise los datos.").addThemeVariants(NotificationVariant.LUMO_ERROR);
+            }
         } else {
-            String text = new String("Algo falló! Revise los datos.");
-            Notification.show(text).addThemeVariants(NotificationVariant.LUMO_ERROR);
+            Notification.show("Error! Rellene el campo DNI.").addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
     }
 }

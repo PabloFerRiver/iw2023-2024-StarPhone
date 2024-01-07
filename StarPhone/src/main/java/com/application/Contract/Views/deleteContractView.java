@@ -31,7 +31,7 @@ import com.vaadin.flow.router.Route;
 @Route(value = "/eliminarcontrato", layout = menu.class)
 public class deleteContractView extends VerticalLayout {
 
-    HorizontalLayout titleDiv, centerDiv, bodySubDiv1, bodySubDiv2, bodySubDiv3, footerDiv;
+    HorizontalLayout titleDiv, centerDiv, bodySubDiv1, bodySubDiv2, bodySubDiv3;
     VerticalLayout center, bodyDiv, registerForm;
     H3 titleCreate;
     TextField DNI;

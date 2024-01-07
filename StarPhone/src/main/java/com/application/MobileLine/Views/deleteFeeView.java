@@ -26,7 +26,7 @@ import java.util.List;
 public class deleteFeeView extends VerticalLayout {
 
     VerticalLayout bodyDiv, centerDiv, confirmSquare;
-    HorizontalLayout titleDiv, footerDiv;
+    HorizontalLayout titleDiv;
     H3 titleDelete;
     Select<String> titles;
     Button confirmar;

@@ -37,7 +37,7 @@ import java.util.List;
 public class registerView extends VerticalLayout {
 
     HorizontalLayout titleDiv, centerDiv, bodySubDiv1, bodySubDiv2, bodySubDiv3,
-            bodySubDiv4, bodySubDiv5, footerDiv;
+            bodySubDiv4, bodySubDiv5;
     VerticalLayout center, bodyDiv, registerForm;
     H3 titleRegister;
     TextField name, surname, username, country, DNI, city;

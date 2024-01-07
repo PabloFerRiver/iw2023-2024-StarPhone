@@ -24,7 +24,7 @@ import java.util.List;
 public class adminDeleteUserView extends VerticalLayout {
 
     VerticalLayout bodyDiv, centerDiv, confirmSquare;
-    HorizontalLayout titleDiv, footerDiv;
+    HorizontalLayout titleDiv;
     H3 titleDelete;
     ComboBox<String> email;
     ComboBox<String> DNI;
