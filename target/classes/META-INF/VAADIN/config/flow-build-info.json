@@ -1,0 +1,16 @@
+{
+  "productionMode": false,
+  "eagerServerLoad": false,
+  "npmFolder": "E:\\INGENIERIA INFORMATICA\\5º AÑO\\1º Cuatrimestre\\IW\\Main\\iw2023-2024-StarPhone",
+  "node.version": "v20.9.0",
+  "node.download.root": "https://nodejs.org/dist/",
+  "frontendFolder": "E:\\INGENIERIA INFORMATICA\\5º AÑO\\1º Cuatrimestre\\IW\\Main\\iw2023-2024-StarPhone\\frontend",
+  "connect.javaSourceFolder": "E:\\INGENIERIA INFORMATICA\\5º AÑO\\1º Cuatrimestre\\IW\\Main\\iw2023-2024-StarPhone\\src\\main\\java",
+  "javaResourceFolder": "E:\\INGENIERIA INFORMATICA\\5º AÑO\\1º Cuatrimestre\\IW\\Main\\iw2023-2024-StarPhone\\src\\main\\resources",
+  "connect.applicationProperties": "E:\\INGENIERIA INFORMATICA\\5º AÑO\\1º Cuatrimestre\\IW\\Main\\iw2023-2024-StarPhone\\src\\main\\resources\\application.properties",
+  "connect.openApiFile": "E:\\INGENIERIA INFORMATICA\\5º AÑO\\1º Cuatrimestre\\IW\\Main\\iw2023-2024-StarPhone\\target\\generated-resources\\openapi.json",
+  "project.frontend.generated": "E:\\INGENIERIA INFORMATICA\\5º AÑO\\1º Cuatrimestre\\IW\\Main\\iw2023-2024-StarPhone\\frontend\\generated",
+  "pnpm.enable": false,
+  "require.home.node": false,
+  "build.folder": "target"
+}

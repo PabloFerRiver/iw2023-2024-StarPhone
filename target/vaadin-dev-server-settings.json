@@ -1,0 +1,17 @@
+{
+  "frontendFolder": "E:/INGENIERIA INFORMATICA/5º AÑO/1º Cuatrimestre/IW/Main/iw2023-2024-StarPhone/frontend",
+  "themeFolder": "themes",
+  "themeResourceFolder": "E:/INGENIERIA INFORMATICA/5º AÑO/1º Cuatrimestre/IW/Main/iw2023-2024-StarPhone/frontend/generated/jar-resources",
+  "staticOutput": "E:/INGENIERIA INFORMATICA/5º AÑO/1º Cuatrimestre/IW/Main/iw2023-2024-StarPhone/target/classes/META-INF/VAADIN/webapp/VAADIN/static",
+  "generatedFolder": "generated",
+  "statsOutput": "E:\\INGENIERIA INFORMATICA\\5º AÑO\\1º Cuatrimestre\\IW\\Main\\iw2023-2024-StarPhone\\target\\classes\\META-INF\\VAADIN\\config",
+  "frontendBundleOutput": "E:\\INGENIERIA INFORMATICA\\5º AÑO\\1º Cuatrimestre\\IW\\Main\\iw2023-2024-StarPhone\\target\\classes\\META-INF\\VAADIN\\webapp",
+  "devBundleOutput": "E:/INGENIERIA INFORMATICA/5º AÑO/1º Cuatrimestre/IW/Main/iw2023-2024-StarPhone/src/main/dev-bundle/webapp",
+  "devBundleStatsOutput": "E:/INGENIERIA INFORMATICA/5º AÑO/1º Cuatrimestre/IW/Main/iw2023-2024-StarPhone/src/main/dev-bundle/config",
+  "jarResourcesFolder": "E:/INGENIERIA INFORMATICA/5º AÑO/1º Cuatrimestre/IW/Main/iw2023-2024-StarPhone/frontend/generated/jar-resources",
+  "themeName": "mytodo",
+  "clientServiceWorkerSource": "E:\\INGENIERIA INFORMATICA\\5º AÑO\\1º Cuatrimestre\\IW\\Main\\iw2023-2024-StarPhone\\target\\sw.ts",
+  "pwaEnabled": false,
+  "offlineEnabled": false,
+  "offlinePath": "'offline.html'"
+}
