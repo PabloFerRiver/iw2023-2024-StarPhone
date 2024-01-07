@@ -32,7 +32,7 @@ public class UserEmailService implements EmailService {
             helper.setText(body);
             this.mailSender.send(message);
         } catch (MailException | MessagingException ex) {
-            ex.printStackTrace();
+            System.err.println(ex.getMessage());
             return false;
         }
 
@@ -53,7 +53,7 @@ public class UserEmailService implements EmailService {
             helper.setText(body);
             this.mailSender.send(message);
         } catch (MailException | MessagingException ex) {
-            ex.printStackTrace();
+            System.err.println(ex.getMessage());
             return false;
         }
         return true;

@@ -53,7 +53,7 @@ public class queryComplaintView extends VerticalLayout {
         getStyle().set("font-family", "Kavoon");
 
         // Campos formulario
-        List<Contract> contracts = contractService.getContractsByUser_Id(authenticatedUser.get().get().getId());
+        List<Contract> contracts = contractService.getContractsByUserId(authenticatedUser.get().get().getId());
         List<MobileLine> mobileLines = new ArrayList<>();
         for (var c : contracts) {
             mobileLines.addAll(mobileService.getMobileLineByContractId(c.getId()));

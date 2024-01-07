@@ -16,7 +16,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "contract", indexes = {
-        @Index(name = "id_userfee", columnList = "user_id, fee_id", unique = true)
+        @Index(name = "id_userfee", columnList = "user_id, fee_id", unique = true),
+        @Index(name = "id_userstatus", columnList = "user_id, status", unique = true)
 })
 public class Contract extends AbstractEntity {
     @Id
@@ -36,24 +37,23 @@ public class Contract extends AbstractEntity {
     private Fee fee;
 
     @NotEmpty
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private String status;
 
-    @NotEmpty
-    @Column(name = "startDate")
+    @NotNull
+    @Column(name = "startDate", nullable = false)
     private LocalDate startDate;
 
-    @NotEmpty
     @Column(name = "endDate")
     private LocalDate endDate;
 
-    @OneToMany(mappedBy = "contract")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contract")
     private List<MobileLine> mobileLines;
 
-    @OneToMany(mappedBy = "contract")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contract")
     private List<Bill> bills;
 
-    @OneToMany(mappedBy = "contract")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contract")
     private List<QueryComplaint> queryComplaints;
 
     @Override

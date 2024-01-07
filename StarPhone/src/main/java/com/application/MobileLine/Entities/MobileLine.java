@@ -39,28 +39,28 @@ public class MobileLine extends AbstractEntity {
     private Integer phoneNumber;
 
     @Column(name = "roaming", nullable = false)
-    private boolean roaming;
+    private boolean roaming = false;
 
     @Column(name = "shareData", nullable = false)
-    private boolean shareData;
+    private boolean shareData = false;
 
     @Column(name = "totalDataToday", nullable = false)
-    private double totalDataToday;
+    private double totalDataToday = 0;
 
     @Column(name = "totalCallsToday", nullable = false)
-    private int totalCallsToday;
+    private int totalCallsToday = 0;
 
     @Column(name = "totalSMSToday", nullable = false)
-    private int totalSMSToday;
+    private int totalSMSToday = 0;
 
     @Column(name = "totalDataMonth", nullable = false)
-    private double totalDataMonth;
+    private double totalDataMonth = 0;
 
     @Column(name = "totalCallsMonth", nullable = false)
-    private int totalCallsMonth;
+    private int totalCallsMonth = 0;
 
     @Column(name = "totalSMSMonth", nullable = false)
-    private int totalSMSMonth;
+    private int totalSMSMonth = 0;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "mobileLine_id")

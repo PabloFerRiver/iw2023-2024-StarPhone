@@ -21,7 +21,8 @@ import java.util.stream.Collectors;
 @Entity
 
 @Table(name = "user", indexes = {
-        @Index(name = "id_email", columnList = "email", unique = true)
+        @Index(name = "id_email", columnList = "email", unique = true),
+        @Index(name = "id_phoneNumber", columnList = "phoneNumber", unique = true)
 })
 
 public class User extends AbstractEntity implements UserDetails {

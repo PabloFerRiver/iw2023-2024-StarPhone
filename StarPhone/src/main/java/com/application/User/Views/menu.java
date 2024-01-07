@@ -97,6 +97,13 @@ public class menu extends AppLayout {
             nav.addItem(navItem);
         }
 
+        if (accessChecker.hasAccess(changePasswordView.class)) {
+            navItem = new SideNavItem("Cambiar Credenciales", changePasswordView.class,
+                    LineAwesomeIcon.GLOBE_SOLID.create());
+            navItem.addClassName("sideNavItem");
+            nav.addItem(navItem);
+        }
+
         if (accessChecker.hasAccess(rolManagementView.class)) {
             navItem = new SideNavItem("Gestionar Roles", rolManagementView.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());
@@ -134,13 +141,6 @@ public class menu extends AppLayout {
 
         if (accessChecker.hasAccess(shareDataAndRoamingView.class)) {
             navItem = new SideNavItem("Roaming & Datos Compartidos", shareDataAndRoamingView.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
-            navItem.addClassName("sideNavItem");
-            nav.addItem(navItem);
-        }
-
-        if (accessChecker.hasAccess(changePasswordView.class)) {
-            navItem = new SideNavItem("Cambiar Credenciales", changePasswordView.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);

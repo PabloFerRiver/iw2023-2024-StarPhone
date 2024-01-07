@@ -59,7 +59,7 @@ public class consultUserView extends VerticalLayout {
         period.setValue("Hoy");
         period.setId("period");
 
-        List<Contract> contracts = contractService.getContractsByUser_Id(authenticatedUser.get().get().getId());
+        List<Contract> contracts = contractService.getContractsByUserId(authenticatedUser.get().get().getId());
         List<MobileLine> mobileLines = new ArrayList<>();
         for (var c : contracts) {
             mobileLines.addAll(mobileService.getMobileLineByContractId(c.getId()));

@@ -78,7 +78,7 @@ public class shareDataAndRoamingView extends VerticalLayout {
             User user = userService.getUserByDNI(event.getValue());
             System.out.println(user.getId());
             List<Contract> contracts = contractService
-                    .getContractsByUser_Id(user.getId());
+                    .getContractsByUserId(user.getId());
             for (var c : contracts) {
                 mobileLines.addAll(mobileLineService.getMobileLineByContractId(c.getId()));
             }

@@ -1,17 +1,16 @@
 package com.application.User.Views;
 
 import com.application.User.Services.UserService;
+import com.application.Contract.Entities.Contract;
+import com.application.Contract.Service.ContractService;
 import com.application.MobileLine.Entities.Fee;
 import com.application.MobileLine.Service.FeeService;
 import com.application.User.Entities.User;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.Pre;
-import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -26,6 +25,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,9 +49,13 @@ public class registerView extends VerticalLayout {
 
     private final BeanValidationBinder<User> binder;
     private final UserService userService;
+    private final ContractService contractService;
+    private final FeeService feeService;
 
-    public registerView(UserService uService, FeeService feeService) {
+    public registerView(UserService uService, ContractService cService, FeeService fService) {
         userService = uService;
+        contractService = cService;
+        feeService = fService;
 
         setWidthFull();
         setHeightFull();
@@ -108,8 +112,7 @@ public class registerView extends VerticalLayout {
 
         phoneNumber = new IntegerField("Teléfono:");
         phoneNumber.addClassName("registerformfield");
-        phoneNumber.setHelperText("Si no posee uno, deje el 0. " +
-                "En caso contrario, omita el prefijo internacional.");
+        phoneNumber.setHelperText("9 dígitos. Omita el prefijo internacional.");
         phoneNumber.setId("phoneNumber");
 
         email = new EmailField("Correo Electrónico:");
@@ -202,35 +205,26 @@ public class registerView extends VerticalLayout {
 
     public void onRegisterButtonClick() {
 
-        if (binder.validate().isOk() && password.getValue().equals(repeatPassword.getValue())) {
-            Button closeButton = new Button(new Icon("lumo", "cross"));
-            closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
-            closeButton.getElement().setAttribute("aria-label", "Close");
-            Notification not = new Notification();
+        if (binder.validate().isOk() && password.getValue().equals(repeatPassword.getValue()) &&
+                phoneNumber.getValue() >= 100000000 && phoneNumber.getValue() <= 999999999) {
             if (userService.registerUser(binder.getBean())) {
-                closeButton.addClickListener(event -> {
-                    not.close();
-                    UI.getCurrent().getPage().setLocation("/activaruser");
-                });
-                Pre text = new Pre("Genial. Por favor, revisa tu email!\nClick en la cruz para continuar.");
-                HorizontalLayout layout = new HorizontalLayout(text, closeButton);
-                layout.setAlignItems(Alignment.CENTER);
-                not.add(layout);
-                not.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                not.open();
+                Notification.show("Genial. Registrado correctamente, revise su email!!")
+                        .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                Contract contract = new Contract();
+                contract.setUser(userService.getUserByEmail(email.getValue()));
+                contract.setFee(feeService.getFeeByTitle(fees.getValue()));
+                contract.setStatus("IN PROGRESS");
+                contract.setStartDate(LocalDate.now());
+                if (contractService.saveContract(contract)) {
+                    UI.getCurrent().navigate("/activaruser");
+                } else {
+                    Notification.show("Error! Inténtelo de nuevo.")
+                            .addThemeVariants(NotificationVariant.LUMO_ERROR);
+                }
             } else {
-                closeButton.addClickListener(event -> {
-                    not.close();
-                });
-                Pre text = new Pre("Algo falló. Revise los datos, si el fallo persiste, \n" +
-                        "contacte con nosotros.\n Click en la cruz para continuar.");
-                HorizontalLayout layout = new HorizontalLayout(text, closeButton);
-                layout.setAlignItems(Alignment.CENTER);
-                not.add(layout);
-                not.addThemeVariants(NotificationVariant.LUMO_ERROR);
-                not.open();
+                Notification.show("Revise los datos, si el fallo persiste, contacte con nosotros.")
+                        .addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
-
         } else {
             Notification.show("Por favor, revise los datos introducidos.");
         }

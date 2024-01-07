@@ -18,6 +18,15 @@ public class MobileLineService {
         this.mobileLineRepository = mRepository;
     }
 
+    public boolean saveMobileLine(MobileLine mobileLine) {
+        try {
+            mobileLineRepository.save(mobileLine);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public void blockNumber(int phoneNumberToBlock, int phoneNumber) {
         BlockedNumbers blockedNumber = new BlockedNumbers();
         MobileLine mLine = mobileLineRepository.findByPhoneNumber(phoneNumber);

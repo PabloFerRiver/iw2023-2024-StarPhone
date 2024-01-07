@@ -108,7 +108,7 @@ public class activateUserView extends VerticalLayout {
                 UI.getCurrent().getPage().setLocation("/menu");
             } else {
                 Notification.show("Código de activación incorrecto").addThemeVariants(NotificationVariant.LUMO_ERROR);
-                UI.getCurrent().getPage().setLocation("/activateuser");
+                UI.getCurrent().getPage().setLocation("/activaruser");
             }
         } else {
             Notification.show("Rellene todos los campos!").addThemeVariants(NotificationVariant.LUMO_ERROR);

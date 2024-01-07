@@ -1,5 +1,9 @@
 package com.application.User.Services;
 
+import com.application.Contract.Entities.Contract;
+import com.application.Contract.Service.ContractService;
+import com.application.MobileLine.Entities.MobileLine;
+import com.application.MobileLine.Service.MobileLineService;
 import com.application.User.Entities.Role;
 import com.application.User.Entities.User;
 import com.application.User.Repositories.UserRepository;
@@ -21,17 +25,19 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
+    private final ContractService contractService;
+    private final MobileLineService mobileLineService;
 
-    public UserService(UserRepository uRepository, EmailService eService, PasswordEncoder pEncoder) {
-
-        this.userRepository = uRepository;
-        this.emailService = eService;
-        this.passwordEncoder = pEncoder;
+    public UserService(UserRepository uRepository, EmailService eService, PasswordEncoder pEncoder,
+            ContractService cService, MobileLineService mLService) {
+        userRepository = uRepository;
+        emailService = eService;
+        passwordEncoder = pEncoder;
+        contractService = cService;
+        mobileLineService = mLService;
     }
 
     public boolean registerUser(User user) {
-        // TODO: Crear contraro de usuario y asociar una línea en caso de que el número
-        // introducido sea válido, hacer validador de número de teléfono
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActivateCode(UUID.randomUUID().toString().substring(0, 8));
         user.setRegisterDate(LocalDate.now());
@@ -87,8 +93,21 @@ public class UserService implements UserDetailsService {
             user.get().setActivate(true);
             user.get().addRole(Role.CUSTOMER);
             user.get().setActivateCode("");
+
+            // Actualizamos contrato
+            Contract contract = contractService.getContractByUserIdAndStatus(user.get().getId(), "IN PROGRESS");
+            contract.setStatus("ACTIVE");
+
+            // Creamos Línea de Móvil y la asociamos al contrato anterior
+            MobileLine mobileLine = new MobileLine();
+            mobileLine.setUser(user.get());
+            mobileLine.setContract(contract);
+            mobileLine.setPhoneNumber(user.get().getPhoneNumber());
+
             try {
                 userRepository.save(user.get());
+                contractService.saveContract(contract);
+                mobileLineService.saveMobileLine(mobileLine);
                 return true;
             } catch (Exception e) {
                 System.out.println(e);
