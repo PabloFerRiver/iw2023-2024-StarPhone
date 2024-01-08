@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -20,7 +21,7 @@ public class DataUsageRecord {
     private int megaBytes;
 
     @Column(name= "date") // sera del tipo ($date)
-    private String date;
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "customerline_id")
@@ -42,11 +43,11 @@ public class DataUsageRecord {
         this.megaBytes = megaBytes;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
