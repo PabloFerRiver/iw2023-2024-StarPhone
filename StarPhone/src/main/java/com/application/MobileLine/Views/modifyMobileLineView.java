@@ -7,6 +7,7 @@ import com.application.Contract.Entities.Contract;
 import com.application.Contract.Entities.Status;
 import com.application.Contract.Service.ContractService;
 import com.application.MobileLine.Entities.Fee;
+import com.application.MobileLine.Entities.MobileLine;
 import com.application.MobileLine.Service.FeeService;
 import com.application.MobileLine.Service.MobileLineService;
 import com.vaadin.flow.component.UI;
@@ -17,29 +18,32 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
+
 import jakarta.annotation.security.RolesAllowed;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @RolesAllowed({ "ROLE_ADMIN", "ROLE_CUSTOMERSUPPORT" })
 @CssImport("./styles/styles.css")
-@PageTitle("Modificar Contrato")
-@Route(value = "/modificarcontrato", layout = menu.class)
+@PageTitle("Modificar Línea Móvil")
+@Route(value = "/modificarlineamovil", layout = menu.class)
 public class modifyMobileLineView extends VerticalLayout {
 
-    HorizontalLayout titleDiv, centerDiv, bodySubDiv1, bodySubDiv2, bodySubDiv3,
-            bodySubDiv4, bodySubDiv5;
+    HorizontalLayout titleDiv, centerDiv, bodySubDiv1, bodySubDiv2, bodySubDiv3, bodySubDiv4;
     VerticalLayout center, bodyDiv, registerForm;
     H3 titleCreate;
     TextField DNI;
-    Select<String> contractsfees;
-    Select<Status> actualStatus, newStatus;
+    Select<String> contractsFees;
+    Select<Status> status;
+    Select<Integer> lines;
+    RadioButtonGroup<Boolean> roaming, shareData;
     Button confirmar;
     private final ContractService contractService;
     private final UserService userService;
@@ -68,8 +72,8 @@ public class modifyMobileLineView extends VerticalLayout {
         center.setJustifyContentMode(JustifyContentMode.CENTER);
 
         registerForm = new VerticalLayout();
-        registerForm.setWidth("400px");
-        registerForm.setHeight("680px");
+        registerForm.setWidth("800px");
+        registerForm.setHeight("560px");
         registerForm.setPadding(false);
         registerForm.setSpacing(false);
         registerForm.setAlignItems(Alignment.CENTER);
@@ -82,10 +86,35 @@ public class modifyMobileLineView extends VerticalLayout {
         DNI.setHelperText("DNI del Usuario a modificar el Contrato.");
         DNI.setId("DNI");
 
-        contractsfees = new Select<String>();
-        contractsfees.setLabel("Contrato con tarifa:");
-        contractsfees.addClassName("modifyformfield");
-        contractsfees.setId("contractsfees");
+        List<Integer> phoneNumberlines = new ArrayList<>();
+        lines = new Select<Integer>();
+        lines.addClassName("modifyformfield");
+        lines.setLabel("Líneas:");
+        lines.setItems(phoneNumberlines);
+
+        DNI.setValueChangeMode(ValueChangeMode.EAGER);
+        DNI.addValueChangeListener(event -> {
+            User user = userService.getUserByDNI(event.getValue());
+            if (user.getId() != null) {
+                List<MobileLine> mLines = mobileLineService.getMobileLinesByUserId(user.getId());
+                for (MobileLine mL : mLines) {
+                    phoneNumberlines.add(mL.getPhoneNumber());
+                }
+
+                if (phoneNumberlines.size() > 0) {
+                    lines.setItems(phoneNumberlines);
+                    lines.setValue(phoneNumberlines.get(0));
+                }
+            } else {
+                lines.clear();
+            }
+        });
+
+        contractsFees = new Select<String>();
+        contractsFees.setLabel("Contrato con tarifa:");
+        contractsFees.addClassName("modifyformfield");
+        contractsFees.setHelperText("No rellenar si se desea modificar solo el romaing y/o compartir datos.");
+        contractsFees.setId("contractsFees");
 
         List<String> feeTitles = new ArrayList<>();
         DNI.addValueChangeListener(event -> {
@@ -99,22 +128,23 @@ public class modifyMobileLineView extends VerticalLayout {
                 }
 
                 if (feeTitles.size() > 0) {
-                    contractsfees.setItems(feeTitles);
-                    contractsfees.setValue(feeTitles.get(0));
+                    contractsFees.setItems(feeTitles);
                 } else {
-                    contractsfees.setItems("No hay tarifa asociada a este contrato!");
-                    contractsfees.setValue("No hay tarifa asociada a este contrato!");
+                    contractsFees.setItems("No hay tarifa asociada a este contrato!");
                 }
+            } else {
+                contractsFees.clear();
             }
         });
 
-        actualStatus = new Select<Status>();
-        actualStatus.addClassName("modifyformfield");
-        actualStatus.setLabel("Estado del contrato:");
-        actualStatus.setId("actualstatus");
+        status = new Select<Status>();
+        status.addClassName("modifyformfield");
+        status.setLabel("Estado del contrato:");
+        status.setHelperText("No rellenar si se desea modificar solo el romaing y/o compartir datos.");
+        status.setId("actualstatus");
 
         List<Status> contractStatus = new ArrayList<>();
-        contractsfees.addValueChangeListener(event -> {
+        contractsFees.addValueChangeListener(event -> {
             List<Contract> contracts = new ArrayList<>();
             User user = userService.getUserByDNI(DNI.getValue());
             Fee fee = feeService.getFeeByTitle(event.getValue());
@@ -126,23 +156,30 @@ public class modifyMobileLineView extends VerticalLayout {
                 }
 
                 if (contractStatus.size() > 0) {
-                    actualStatus.setItems(contractStatus);
-                    actualStatus.setValue(contractStatus.get(0));
+                    status.setItems(contractStatus);
                 }
                 contractStatus.clear();
+            } else {
+                status.clear();
             }
         });
 
-        newStatus = new Select<Status>();
-        newStatus.addClassName("modifyformfield");
-        newStatus.setLabel("Nuevo estado:");
-        newStatus.setItems(Status.ACTIVO, Status.ENPROCESO, Status.CANCELADO);
-        newStatus.setValue(Status.ENPROCESO);
-        newStatus.setHelperText("CANCELADO, implica la desvinculación de las líneas móviles de dicho contrato.");
-        newStatus.setId("newStatus");
+        roaming = new RadioButtonGroup<>();
+        roaming.addClassName("modifyformfield");
+        roaming.setLabel("Roaming:");
+        roaming.setItems(true, false);
+        roaming.setValue(false);
+        roaming.setId("roaming");
+
+        shareData = new RadioButtonGroup<>();
+        shareData.addClassName("modifyformfield");
+        shareData.setLabel("Compartir datos:");
+        shareData.setItems(true, false);
+        shareData.setValue(false);
+        shareData.setId("shareData");
 
         confirmar = new Button("Confirmar");
-        confirmar.addClassName("registerformbutton");
+        confirmar.addClassName("modifyformbutton");
         confirmar.addClickListener(e -> {
             onModifyButtonClick();
         });
@@ -156,7 +193,7 @@ public class modifyMobileLineView extends VerticalLayout {
         titleDiv.setAlignItems(Alignment.CENTER);
         titleDiv.getStyle().set("border-radius", "12px 12px 0 0");
         titleDiv.getStyle().set("background-color", "rgb(135, 206, 235)");
-        titleCreate = new H3("Modificar Contrato");
+        titleCreate = new H3("Modificar Línea Móvil");
         titleCreate.getStyle().set("font-size", "28px");
         titleCreate.getStyle().set("color", "white");
         titleDiv.add(titleCreate);
@@ -169,29 +206,25 @@ public class modifyMobileLineView extends VerticalLayout {
         bodyDiv.getStyle().set("border-radius", "0 0 12px 12px");
         bodyDiv.getStyle().set("background-color", "rgb(255, 255, 255)");
 
-        bodySubDiv1 = new HorizontalLayout(DNI);
+        bodySubDiv1 = new HorizontalLayout(DNI, lines);
         bodySubDiv1.setSpacing(false);
         bodySubDiv1.setPadding(false);
         bodySubDiv1.addClassName("bodysmodify");
         bodySubDiv1.getStyle().set("margin-top", "30px");
-        bodySubDiv2 = new HorizontalLayout(contractsfees);
+        bodySubDiv2 = new HorizontalLayout(contractsFees, status);
         bodySubDiv2.setSpacing(false);
         bodySubDiv2.setPadding(false);
         bodySubDiv2.addClassName("bodysmodify");
-        bodySubDiv3 = new HorizontalLayout(actualStatus);
+        bodySubDiv3 = new HorizontalLayout(roaming, shareData);
         bodySubDiv3.setSpacing(false);
         bodySubDiv3.setPadding(false);
         bodySubDiv3.addClassName("bodysmodify");
-        bodySubDiv4 = new HorizontalLayout(newStatus);
+        bodySubDiv4 = new HorizontalLayout(confirmar);
         bodySubDiv4.setSpacing(false);
         bodySubDiv4.setPadding(false);
         bodySubDiv4.addClassName("bodysmodify");
-        bodySubDiv5 = new HorizontalLayout(confirmar);
-        bodySubDiv5.setSpacing(false);
-        bodySubDiv5.setPadding(false);
-        bodySubDiv5.addClassName("bodysmodify");
 
-        bodyDiv.add(bodySubDiv1, bodySubDiv2, bodySubDiv3, bodySubDiv4, bodySubDiv5);
+        bodyDiv.add(bodySubDiv1, bodySubDiv2, bodySubDiv3, bodySubDiv4);
         registerForm.add(bodyDiv);
 
         expand(bodyDiv);
@@ -203,34 +236,36 @@ public class modifyMobileLineView extends VerticalLayout {
 
     public void onModifyButtonClick() {
         User user = userService.getUserByDNI(DNI.getValue());
-        if (contractsfees.getValue().equals("No hay tarifa asociada a este contrato!")) {
-            Notification.show("Error! No hay tarifa asociada a este contrato!.")
-                    .addThemeVariants(NotificationVariant.LUMO_ERROR);
-            UI.getCurrent().navigate("/menu");
-        } else if (!actualStatus.isEmpty() && !newStatus.isEmpty()) {
-            Fee fee = feeService.getFeeByTitle(contractsfees.getValue());
-            Contract c = contractService.getContractByUserIdAndFeeIdAndStatus(user.getId(), fee.getId(),
-                    actualStatus.getValue());
-            if (newStatus.getValue().equals(Status.ACTIVO) ||
-                    newStatus.getValue().equals(Status.ENPROCESO)) {
-                c.setStatus(newStatus.getValue());
-                c.setEndDate(null);
-            } else if (newStatus.getValue().equals(Status.CANCELADO)) {
-                mobileLineService.deleteMobileLinesByContractId(c.getId());
-                c.setStatus(newStatus.getValue());
-                c.setEndDate(LocalDate.now());
-            }
-            if (contractService.saveContract(c)) {
-                Notification.show("Contrato modificado correctamente!").addThemeVariants(
-                        NotificationVariant.LUMO_SUCCESS);
+        if (user.getId() != null) {
+            if (contractsFees.getValue() != null
+                    && contractsFees.getValue().equals("No hay tarifa asociada a este contrato!")) {
+                Notification.show("Error! No hay tarifa asociada a este contrato!.")
+                        .addThemeVariants(NotificationVariant.LUMO_ERROR);
                 UI.getCurrent().navigate("/menu");
             } else {
-                Notification.show("Error inesperado! Contacte con un administrador.").addThemeVariants(
-                        NotificationVariant.LUMO_ERROR);
+                MobileLine mLine = mobileLineService.getMobileLineByPhoneNumber(lines.getValue());
+                if (!contractsFees.isEmpty() && !status.isEmpty()) {
+                    Fee fee = feeService.getFeeByTitle(contractsFees.getValue());
+                    Contract c = contractService.getContractByUserIdAndFeeIdAndStatus(user.getId(), fee.getId(),
+                            status.getValue());
+                    mLine.setContract(c);
+                }
+
+                mLine.setRoaming(roaming.getValue());
+                mLine.setShareData(shareData.getValue());
+                if (mobileLineService.saveMobileLine(mLine)) {
+                    Notification.show("Contrato modificado correctamente!").addThemeVariants(
+                            NotificationVariant.LUMO_SUCCESS);
+                    UI.getCurrent().navigate("/menu");
+                } else {
+                    Notification.show("Error inesperado! Contacte con un administrador.")
+                            .addThemeVariants(NotificationVariant.LUMO_ERROR);
+                }
             }
         } else {
-            Notification.show("Error! Rellene todos los campos.").addThemeVariants(
-                    NotificationVariant.LUMO_ERROR);
+            Notification.show("Error! El DNI introducido no está registrado.")
+                    .addThemeVariants(NotificationVariant.LUMO_ERROR);
+
         }
     }
 }

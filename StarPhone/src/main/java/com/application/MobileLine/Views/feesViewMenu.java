@@ -16,8 +16,8 @@ import jakarta.annotation.security.PermitAll;
 
 @PermitAll
 @CssImport("./styles/styles.css")
-@PageTitle("Tarifas")
-@Route(value = "/tarifas", layout = menu.class)
+@PageTitle("Consultar Tarifas")
+@Route(value = "/consultartarifas", layout = menu.class)
 public class feesViewMenu extends VerticalLayout {
 
     VerticalLayout centerDiv;

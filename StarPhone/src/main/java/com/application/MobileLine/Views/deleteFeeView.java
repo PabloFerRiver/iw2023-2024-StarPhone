@@ -22,7 +22,7 @@ import java.util.List;
 @RolesAllowed({ "ROLE_ADMIN", "ROLE_MARKETING" })
 @CssImport("./styles/styles.css")
 @PageTitle("Eliminar Tarifa")
-@Route(value = "/eliminarrtarifa", layout = menu.class)
+@Route(value = "/eliminartarifa", layout = menu.class)
 public class deleteFeeView extends VerticalLayout {
 
     VerticalLayout bodyDiv, centerDiv, confirmSquare;
@@ -75,7 +75,7 @@ public class deleteFeeView extends VerticalLayout {
 
         confirmSquare = new VerticalLayout();
         confirmSquare.setWidth("380px");
-        confirmSquare.setHeight("320px");
+        confirmSquare.setHeight("280px");
         confirmSquare.setPadding(false);
         confirmSquare.setSpacing(false);
         confirmSquare.setAlignItems(Alignment.CENTER);

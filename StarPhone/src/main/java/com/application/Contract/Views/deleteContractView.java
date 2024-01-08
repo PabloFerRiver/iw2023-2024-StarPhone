@@ -18,6 +18,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
+
 import jakarta.annotation.security.RolesAllowed;
 
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ public class deleteContractView extends VerticalLayout {
     H3 titleCreate;
     TextField DNI;
     Select<Status> status;
-    Select<String> contractsfees;
+    Select<String> contractsFees;
     Button confirmar;
     private final ContractService contractService;
     private final UserService userService;
@@ -77,12 +79,13 @@ public class deleteContractView extends VerticalLayout {
         DNI.setHelperText("DNI del Usuario a modificar el Contrato.");
         DNI.setId("DNI");
 
-        contractsfees = new Select<String>();
-        contractsfees.setLabel("Contrato con tarifa:");
-        contractsfees.addClassName("modifyformfield");
-        contractsfees.setId("contractsfees");
+        contractsFees = new Select<String>();
+        contractsFees.setLabel("Contrato con tarifa:");
+        contractsFees.addClassName("modifyformfield");
+        contractsFees.setId("contractsFees");
 
         List<String> feeTitles = new ArrayList<>();
+        DNI.setValueChangeMode(ValueChangeMode.EAGER);
         DNI.addValueChangeListener(event -> {
             List<Contract> contracts = new ArrayList<>();
             User user = userService.getUserByDNI(event.getValue());
@@ -94,12 +97,14 @@ public class deleteContractView extends VerticalLayout {
                 }
 
                 if (feeTitles.size() > 0) {
-                    contractsfees.setItems(feeTitles);
-                    contractsfees.setValue(feeTitles.get(0));
+                    contractsFees.setItems(feeTitles);
+                    contractsFees.setValue(feeTitles.get(0));
                 } else {
-                    contractsfees.setItems("No hay tarifa asociada a este contrato!");
-                    contractsfees.setValue("No hay tarifa asociada a este contrato!");
+                    contractsFees.setItems("No hay tarifa asociada a este contrato!");
+                    contractsFees.setValue("No hay tarifa asociada a este contrato!");
                 }
+            } else {
+                contractsFees.clear();
             }
         });
 
@@ -110,7 +115,7 @@ public class deleteContractView extends VerticalLayout {
         status.setId("actualstatus");
 
         List<Status> contractStatus = new ArrayList<>();
-        contractsfees.addValueChangeListener(event -> {
+        contractsFees.addValueChangeListener(event -> {
             List<Contract> contracts = new ArrayList<>();
             User user = userService.getUserByDNI(DNI.getValue());
             Fee fee = feeService.getFeeByTitle(event.getValue());
@@ -126,6 +131,8 @@ public class deleteContractView extends VerticalLayout {
                     status.setValue(contractStatus.get(0));
                 }
                 contractStatus.clear();
+            } else {
+                status.clear();
             }
         });
 
@@ -162,7 +169,7 @@ public class deleteContractView extends VerticalLayout {
         bodySubDiv1.setPadding(false);
         bodySubDiv1.addClassName("bodysregister");
         bodySubDiv1.getStyle().set("margin-top", "30px");
-        bodySubDiv2 = new HorizontalLayout(contractsfees);
+        bodySubDiv2 = new HorizontalLayout(contractsFees);
         bodySubDiv2.setSpacing(false);
         bodySubDiv2.setPadding(false);
         bodySubDiv2.addClassName("bodysregister");
@@ -187,12 +194,12 @@ public class deleteContractView extends VerticalLayout {
 
     public void onDeleteButtonClick() {
         User user = userService.getUserByDNI(DNI.getValue());
-        if (contractsfees.getValue().equals("No hay tarifa asociada a este contrato!")) {
+        if (contractsFees.getValue().equals("No hay tarifa asociada a este contrato!")) {
             Notification.show("Error! No hay tarifa asociada a este contrato!.")
                     .addThemeVariants(NotificationVariant.LUMO_ERROR);
             UI.getCurrent().navigate("/menu");
-        } else if (user.getId() != null && contractsfees.getValue() != null && status.getValue() != null) {
-            Fee fee = feeService.getFeeByTitle(contractsfees.getValue());
+        } else if (user.getId() != null && contractsFees.getValue() != null && status.getValue() != null) {
+            Fee fee = feeService.getFeeByTitle(contractsFees.getValue());
             if (contractService.deleteContractByUserIdAndFeeIdAndStatus(user.getId(), fee.getId(), status.getValue())) {
                 Notification.show("Contrato eliminado correctamente!").addThemeVariants(
                         NotificationVariant.LUMO_SUCCESS);

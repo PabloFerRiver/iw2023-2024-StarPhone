@@ -8,6 +8,7 @@ import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
@@ -22,7 +23,7 @@ public class consultDataUserView extends VerticalLayout {
     HorizontalLayout titleDiv;
     H3 titleConsult;
     TextField DNI;
-    H4 dni, name, surname, username, city, country, birthdate, phoneNumber, email;
+    H4 dniText, nameText, surnameText, usernameText, cityText, countryText, birthdateText, phoneNumberText, emailText;
 
     private final UserService userService;
 
@@ -44,10 +45,11 @@ public class consultDataUserView extends VerticalLayout {
         centerDiv.setJustifyContentMode(JustifyContentMode.CENTER);
 
         confirmSquare = new VerticalLayout();
-        confirmSquare.setWidth("auto");
-        confirmSquare.setHeight("auto");
+        confirmSquare.setWidth("400px");
+        confirmSquare.setHeight("280px");
         confirmSquare.setPadding(false);
         confirmSquare.setSpacing(false);
+        confirmSquare.setJustifyContentMode(JustifyContentMode.CENTER);
         confirmSquare.setAlignItems(Alignment.CENTER);
         confirmSquare.getStyle().set("border-radius", "12px");
 
@@ -69,56 +71,52 @@ public class consultDataUserView extends VerticalLayout {
         DNI.setHelperText("DNI del usuario a consultar CON letra.");
         DNI.setId("DNI");
 
-        DNI.addValueChangeListener(event -> {
-            User user = userService.getUserByDNI(event.getValue());
-            if (user.getId() != null) {
-                dni.setText("DNI: " + user.getDNI());
-                name.setText("Nombre: " + user.getName());
-                surname.setText("Apellidos: " + user.getSurname());
-                username.setText("Nombre de usuario: " + user.getUsername());
-                city.setText("Ciudad: " + user.getCity());
-                country.setText("País: " + user.getCountry());
-                birthdate.setText("Fecha de nacimiento: " + user.getBirthdate());
-                phoneNumber.setText("Número de teléfono: " + user.getPhoneNumber());
-                email.setText("Correo electrónico: " + user.getEmail());
-            }
-        });
-
-        dni = new H4("DNI: ");
-        dni.addClassName("personaldatafield");
-        dni.setId("dni");
-        name = new H4("Nombre: ");
-        name.addClassName("personaldatafield");
-        name.setId("name");
-        surname = new H4("Apellidos: ");
-        surname.addClassName("personaldatafield");
-        surname.setId("surname");
-        username = new H4("Nombre de usuario: ");
-        username.addClassName("personaldatafield");
-        username.setId("username");
-        city = new H4("Ciudad: ");
-        city.addClassName("personaldatafield");
-        city.setId("city");
-        country = new H4("País: ");
-        country.addClassName("personaldatafield");
-        country.setId("country");
-        birthdate = new H4("Fecha de nacimiento: ");
-        birthdate.addClassName("personaldatafield");
-        birthdate.setId("birthdate");
-        phoneNumber = new H4("Número de teléfono: ");
-        phoneNumber.addClassName("personaldatafield");
-        phoneNumber.setId("phoneNumber");
-        email = new H4("Correo electrónico: ");
-        email.addClassName("personaldatafield");
-        email.setId("email");
-
-        bodyDiv = new VerticalLayout(DNI, dni, name, surname, username, city, country, birthdate, phoneNumber, email);
+        bodyDiv = new VerticalLayout(DNI);
         bodyDiv.setWidthFull();
         bodyDiv.setJustifyContentMode(JustifyContentMode.START);
         bodyDiv.setAlignItems(Alignment.CENTER);
         bodyDiv.getStyle().set("background-color", "rgb(255, 255, 255)");
         bodyDiv.getStyle().set("border-radius", "0 0 12px 12px");
         confirmSquare.add(bodyDiv);
+
+        DNI.setValueChangeMode(ValueChangeMode.EAGER);
+        DNI.addValueChangeListener(event -> {
+            User user = userService.getUserByDNI(event.getValue());
+            if (user.getId() != null) {
+                confirmSquare.setWidth("auto");
+                confirmSquare.setHeight("auto");
+                dniText.setText("DNI: " + user.getDNI());
+                nameText.setText("Nombre: " + user.getName());
+                surnameText.setText("Apellidos: " + user.getSurname());
+                usernameText.setText("Nombre de usuario: " + user.getUsername());
+                cityText.setText("Ciudad: " + user.getCity());
+                countryText.setText("País: " + user.getCountry());
+                birthdateText.setText("Fecha de nacimiento: " + user.getBirthdate());
+                phoneNumberText.setText("Número de teléfono: " + user.getPhoneNumber());
+                emailText.setText("Correo electrónico: " + user.getEmail());
+                bodyDiv.add(dniText, nameText, surnameText, usernameText, cityText, countryText,
+                        birthdateText, phoneNumberText, emailText);
+            }
+        });
+
+        dniText = new H4("");
+        dniText.addClassName("personaldatafield");
+        nameText = new H4("");
+        nameText.addClassName("personaldatafield");
+        surnameText = new H4("");
+        surnameText.addClassName("personaldatafield");
+        usernameText = new H4("");
+        usernameText.addClassName("personaldatafield");
+        cityText = new H4("");
+        cityText.addClassName("personaldatafield");
+        countryText = new H4("");
+        countryText.addClassName("personaldatafield");
+        birthdateText = new H4("");
+        birthdateText.addClassName("personaldatafield");
+        phoneNumberText = new H4("");
+        phoneNumberText.addClassName("personaldatafield");
+        emailText = new H4("");
+        emailText.addClassName("personaldatafield");
 
         centerDiv.add(confirmSquare);
         add(centerDiv);

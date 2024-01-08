@@ -42,7 +42,7 @@ public class createMobileLineView extends VerticalLayout {
     TextField DNI;
     IntegerField phoneNumber;
     RadioButtonGroup<Boolean> roaming, shareData;
-    Select<String> contractsfees;
+    Select<String> contractsFees;
     Select<Status> status;
     Button confirmar;
     private final MobileLineService mobileLineService;
@@ -74,7 +74,7 @@ public class createMobileLineView extends VerticalLayout {
 
         registerForm = new VerticalLayout();
         registerForm.setWidth("1150px");
-        registerForm.setHeight("450px");
+        registerForm.setHeight("440px");
         registerForm.setPadding(false);
         registerForm.setSpacing(false);
         registerForm.setAlignItems(Alignment.CENTER);
@@ -87,10 +87,10 @@ public class createMobileLineView extends VerticalLayout {
         DNI.setHelperText("DNI CON letra del Usuario a modificar el Contrato.");
         DNI.setId("DNI");
 
-        contractsfees = new Select<String>();
-        contractsfees.setLabel("Contrato con tarifa:");
-        contractsfees.addClassName("registerformfield");
-        contractsfees.setId("contractsfees");
+        contractsFees = new Select<String>();
+        contractsFees.setLabel("Contrato con tarifa:");
+        contractsFees.addClassName("registerformfield");
+        contractsFees.setId("contractsFees");
 
         List<String> feeTitles = new ArrayList<>();
         DNI.addValueChangeListener(event -> {
@@ -104,11 +104,11 @@ public class createMobileLineView extends VerticalLayout {
                 }
 
                 if (feeTitles.size() > 0) {
-                    contractsfees.setItems(feeTitles);
-                    contractsfees.setValue(feeTitles.get(0));
+                    contractsFees.setItems(feeTitles);
+                    contractsFees.setValue(feeTitles.get(0));
                 } else {
-                    contractsfees.setItems("No hay contratos asociados a este DNI!");
-                    contractsfees.setValue("No hay contratos asociados a este DNI!");
+                    contractsFees.setItems("No hay contratos asociados a este DNI!");
+                    contractsFees.setValue("No hay contratos asociados a este DNI!");
                 }
             }
         });
@@ -119,7 +119,7 @@ public class createMobileLineView extends VerticalLayout {
         status.setId("actualstatus");
 
         List<Status> contractStatus = new ArrayList<>();
-        contractsfees.addValueChangeListener(event -> {
+        contractsFees.addValueChangeListener(event -> {
             List<Contract> contracts = new ArrayList<>();
             User user = userService.getUserByDNI(DNI.getValue());
             Fee fee = feeService.getFeeByTitle(event.getValue());
@@ -184,7 +184,7 @@ public class createMobileLineView extends VerticalLayout {
         bodyDiv.getStyle().set("border-radius", "0 0 12px 12px");
         bodyDiv.getStyle().set("background-color", "rgb(255, 255, 255)");
 
-        bodySubDiv1 = new HorizontalLayout(DNI, contractsfees, status);
+        bodySubDiv1 = new HorizontalLayout(DNI, contractsFees, status);
         bodySubDiv1.setSpacing(false);
         bodySubDiv1.setPadding(false);
         bodySubDiv1.addClassName("bodysregister");
@@ -215,7 +215,7 @@ public class createMobileLineView extends VerticalLayout {
 
     public void onCreateButtonClick() {
         User user = userService.getUserByDNI(DNI.getValue());
-        if (contractsfees.getValue().equals("No hay contratos asociados a este DNI!")) {
+        if (contractsFees.getValue().equals("No hay contratos asociados a este DNI!")) {
             Notification.show("No hay contratos asociados a este DNI!")
                     .addThemeVariants(NotificationVariant.LUMO_ERROR);
             UI.getCurrent().navigate("/menu");
@@ -223,8 +223,9 @@ public class createMobileLineView extends VerticalLayout {
             Notification.show("Error! Usuario inexistente. Revise los datos introducidos.")
                     .addThemeVariants(NotificationVariant.LUMO_ERROR);
             UI.getCurrent().navigate("/menu");
-        } else if (binder.validate().isOk()) {
-            Fee fee = feeService.getFeeByTitle(contractsfees.getValue());
+        } else if (binder.validate().isOk() && phoneNumber.getValue() >= 100000000
+                && phoneNumber.getValue() <= 999999999) {
+            Fee fee = feeService.getFeeByTitle(contractsFees.getValue());
             Contract cont = contractService.getContractByUserIdAndFeeIdAndStatus(user.getId(), fee.getId(),
                     status.getValue());
             List<MobileLine> mLinesOfContract = mobileLineService.getMobileLinesByContractId(cont.getId());

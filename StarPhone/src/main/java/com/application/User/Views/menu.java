@@ -1,5 +1,7 @@
 package com.application.User.Views;
 
+import com.application.Contract.Views.consultPersonalContractsView;
+import com.application.Contract.Views.consultUserContractsView;
 import com.application.Contract.Views.createContractView;
 import com.application.Contract.Views.deleteContractView;
 import com.application.Contract.Views.modifyContractView;
@@ -11,7 +13,7 @@ import com.application.MobileLine.Views.deleteFeeView;
 import com.application.MobileLine.Views.deleteMobileLineView;
 import com.application.MobileLine.Views.feesViewMenu;
 import com.application.MobileLine.Views.modifyFeeView;
-import com.application.MobileLine.Views.shareDataAndRoamingView;
+import com.application.MobileLine.Views.modifyMobileLineView;
 import com.application.User.Entities.User;
 import com.application.User.Security.AuthenticatedUser;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -138,7 +140,7 @@ public class menu extends AppLayout {
         }
 
         if (accessChecker.hasAccess(feesViewMenu.class)) {
-            navItem = new SideNavItem("Tarifas", feesViewMenu.class,
+            navItem = new SideNavItem("Consultar Tarifas", feesViewMenu.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);
@@ -165,6 +167,13 @@ public class menu extends AppLayout {
             nav.addItem(navItem);
         }
 
+        if (accessChecker.hasAccess(consultUserContractsView.class)) {
+            navItem = new SideNavItem("Consultar Contratos Usuario", consultUserContractsView.class,
+                    LineAwesomeIcon.GLOBE_SOLID.create());
+            navItem.addClassName("sideNavItem");
+            nav.addItem(navItem);
+        }
+
         if (accessChecker.hasAccess(createMobileLineView.class)) {
             navItem = new SideNavItem("Crear Línea Móvil", createMobileLineView.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());
@@ -172,22 +181,15 @@ public class menu extends AppLayout {
             nav.addItem(navItem);
         }
 
+        if (accessChecker.hasAccess(modifyMobileLineView.class)) {
+            navItem = new SideNavItem("Modificar Línea Móvil", modifyMobileLineView.class,
+                    LineAwesomeIcon.GLOBE_SOLID.create());
+            navItem.addClassName("sideNavItem");
+            nav.addItem(navItem);
+        }
+
         if (accessChecker.hasAccess(deleteMobileLineView.class)) {
             navItem = new SideNavItem("Eliminar Línea Móvil", deleteMobileLineView.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
-            navItem.addClassName("sideNavItem");
-            nav.addItem(navItem);
-        }
-
-        if (accessChecker.hasAccess(blockNumberUserView.class)) {
-            navItem = new SideNavItem("Números Desconocidos", blockNumberUserView.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
-            navItem.addClassName("sideNavItem");
-            nav.addItem(navItem);
-        }
-
-        if (accessChecker.hasAccess(shareDataAndRoamingView.class)) {
-            navItem = new SideNavItem("Roaming & Datos Compartidos", shareDataAndRoamingView.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);
@@ -201,14 +203,14 @@ public class menu extends AppLayout {
         }
 
         if (accessChecker.hasAccess(personalDataView.class)) {
-            navItem = new SideNavItem("Datos personales", personalDataView.class,
+            navItem = new SideNavItem("Datos Personales", personalDataView.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);
         }
 
         if (accessChecker.hasAccess(modifyPersonalDataView.class)) {
-            navItem = new SideNavItem("Modificar Datos personales", modifyPersonalDataView.class,
+            navItem = new SideNavItem("Modificar Datos Personales", modifyPersonalDataView.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);
@@ -216,6 +218,20 @@ public class menu extends AppLayout {
 
         if (accessChecker.hasAccess(changePasswordView.class)) {
             navItem = new SideNavItem("Cambiar Credenciales", changePasswordView.class,
+                    LineAwesomeIcon.GLOBE_SOLID.create());
+            navItem.addClassName("sideNavItem");
+            nav.addItem(navItem);
+        }
+
+        if (accessChecker.hasAccess(blockNumberUserView.class)) {
+            navItem = new SideNavItem("Números Desconocidos", blockNumberUserView.class,
+                    LineAwesomeIcon.GLOBE_SOLID.create());
+            navItem.addClassName("sideNavItem");
+            nav.addItem(navItem);
+        }
+
+        if (accessChecker.hasAccess(consultPersonalContractsView.class)) {
+            navItem = new SideNavItem("Consultar Contratos Personales", consultPersonalContractsView.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);

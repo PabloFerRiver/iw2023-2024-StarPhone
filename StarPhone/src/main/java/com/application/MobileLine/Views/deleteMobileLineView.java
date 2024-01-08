@@ -19,6 +19,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
+
 import jakarta.annotation.security.RolesAllowed;
 
 import java.util.ArrayList;
@@ -67,7 +69,7 @@ public class deleteMobileLineView extends VerticalLayout {
 
         registerForm = new VerticalLayout();
         registerForm.setWidth("400px");
-        registerForm.setHeight("580px");
+        registerForm.setHeight("560px");
         registerForm.setPadding(false);
         registerForm.setSpacing(false);
         registerForm.setAlignItems(Alignment.CENTER);
@@ -85,6 +87,7 @@ public class deleteMobileLineView extends VerticalLayout {
         mobileLinesSet.addClassName("registerformfield");
         mobileLinesSet.setId("mobileLinesSet");
 
+        DNI.setValueChangeMode(ValueChangeMode.EAGER);
         DNI.addValueChangeListener(event -> {
             List<MobileLine> mLines = new ArrayList<>();
             List<Integer> phoneNumbers = new ArrayList<>();
@@ -102,6 +105,8 @@ public class deleteMobileLineView extends VerticalLayout {
                     mobileLinesSet.setItems(0);
                     mobileLinesSet.setValue(0);
                 }
+            } else {
+                mobileLinesSet.clear();
             }
         });
 
@@ -112,14 +117,18 @@ public class deleteMobileLineView extends VerticalLayout {
 
         mobileLinesSet.addValueChangeListener(event -> {
             MobileLine mLine = mobileLineService.getMobileLineByPhoneNumber(event.getValue());
-            if (mLine.getId() != null) {
-                Contract c = contractService.getContractById(mLine.getContract().getId());
-                if (c.getId() != null) {
-                    Fee f = feeService.getFeeById(c.getFee().getId());
-                    if (f.getId() != null) {
-                        contract.setValue(f.getTitle());
+            if (!DNI.getValue().isEmpty()) {
+                if (mLine.getId() != null) {
+                    Contract c = contractService.getContractById(mLine.getContract().getId());
+                    if (c.getId() != null) {
+                        Fee f = feeService.getFeeById(c.getFee().getId());
+                        if (f.getId() != null) {
+                            contract.setValue(f.getTitle());
+                        }
                     }
                 }
+            } else {
+                contract.clear();
             }
         });
 

@@ -20,6 +20,8 @@ import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
+import com.vaadin.flow.data.value.ValueChangeMode;
+
 import jakarta.annotation.security.RolesAllowed;
 
 import java.time.LocalDate;
@@ -87,6 +89,7 @@ public class createContractView extends VerticalLayout {
         email.setReadOnly(true);
         email.setId("email");
 
+        DNI.setValueChangeMode(ValueChangeMode.EAGER);
         DNI.addValueChangeListener(event -> {
             User user = userService.getUserByDNI(event.getValue());
             if (user.getId() != null) {

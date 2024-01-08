@@ -228,7 +228,7 @@ vaadin-app-layout::part(navbar) {
 }
 
 vaadin-app-layout::part(drawer) {
-    width: 300px;
+    width: 320px;
 }
 
 .sideNavItem {
@@ -268,7 +268,8 @@ vaadin-email-field.modifyformfield::part(label),
 vaadin-password-field.modifyformfield::part(label),
 vaadin-select.modifyformfield::part(label),
 vaadin-combo-box.modifyformfield::part(label),
-vaadin-number-field.modifyformfield::part(label) {
+vaadin-number-field.modifyformfield::part(label),
+vaadin-radio-group.modifyformfield::part(label) {
     color: black;
     font-size: 18px;
 }
@@ -280,7 +281,8 @@ vaadin-email-field.modifyformfield::part(input-field),
 vaadin-password-field.modifyformfield::part(input-field),
 vaadin-select.modifyformfield::part(input-field),
 vaadin-combo-box.modifyformfield::part(input-field),
-vaadin-number-field.modifyformfield::part(input-field) {
+vaadin-number-field.modifyformfield::part(input-field),
+vaadin-radio-group.modifyformfield::part(input-field) {
     border: 2px solid black;
     font-size: 16px;
 }

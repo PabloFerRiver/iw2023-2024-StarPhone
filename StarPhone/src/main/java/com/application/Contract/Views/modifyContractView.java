@@ -19,6 +19,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
+
 import jakarta.annotation.security.RolesAllowed;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -38,7 +40,7 @@ public class modifyContractView extends VerticalLayout {
     VerticalLayout center, bodyDiv, registerForm;
     H3 titleCreate;
     TextField DNI;
-    Select<String> contractsfees;
+    Select<String> contractsFees;
     Select<Status> actualStatus, newStatus;
     Button confirmar;
     private final ContractService contractService;
@@ -82,12 +84,13 @@ public class modifyContractView extends VerticalLayout {
         DNI.setHelperText("DNI del Usuario a modificar el Contrato.");
         DNI.setId("DNI");
 
-        contractsfees = new Select<String>();
-        contractsfees.setLabel("Contrato con tarifa:");
-        contractsfees.addClassName("modifyformfield");
-        contractsfees.setId("contractsfees");
+        contractsFees = new Select<String>();
+        contractsFees.setLabel("Contrato con tarifa:");
+        contractsFees.addClassName("modifyformfield");
+        contractsFees.setId("contractsFees");
 
         List<String> feeTitles = new ArrayList<>();
+        DNI.setValueChangeMode(ValueChangeMode.EAGER);
         DNI.addValueChangeListener(event -> {
             List<Contract> contracts = new ArrayList<>();
             User user = userService.getUserByDNI(event.getValue());
@@ -99,12 +102,14 @@ public class modifyContractView extends VerticalLayout {
                 }
 
                 if (feeTitles.size() > 0) {
-                    contractsfees.setItems(feeTitles);
-                    contractsfees.setValue(feeTitles.get(0));
+                    contractsFees.setItems(feeTitles);
+                    contractsFees.setValue(feeTitles.get(0));
                 } else {
-                    contractsfees.setItems("No hay tarifa asociada a este contrato!");
-                    contractsfees.setValue("No hay tarifa asociada a este contrato!");
+                    contractsFees.setItems("No hay tarifa asociada a este contrato!");
+                    contractsFees.setValue("No hay tarifa asociada a este contrato!");
                 }
+            } else {
+                contractsFees.clear();
             }
         });
 
@@ -114,7 +119,7 @@ public class modifyContractView extends VerticalLayout {
         actualStatus.setId("actualstatus");
 
         List<Status> contractStatus = new ArrayList<>();
-        contractsfees.addValueChangeListener(event -> {
+        contractsFees.addValueChangeListener(event -> {
             List<Contract> contracts = new ArrayList<>();
             User user = userService.getUserByDNI(DNI.getValue());
             Fee fee = feeService.getFeeByTitle(event.getValue());
@@ -130,6 +135,8 @@ public class modifyContractView extends VerticalLayout {
                     actualStatus.setValue(contractStatus.get(0));
                 }
                 contractStatus.clear();
+            } else {
+                actualStatus.clear();
             }
         });
 
@@ -174,7 +181,7 @@ public class modifyContractView extends VerticalLayout {
         bodySubDiv1.setPadding(false);
         bodySubDiv1.addClassName("bodysmodify");
         bodySubDiv1.getStyle().set("margin-top", "30px");
-        bodySubDiv2 = new HorizontalLayout(contractsfees);
+        bodySubDiv2 = new HorizontalLayout(contractsFees);
         bodySubDiv2.setSpacing(false);
         bodySubDiv2.setPadding(false);
         bodySubDiv2.addClassName("bodysmodify");
@@ -203,12 +210,12 @@ public class modifyContractView extends VerticalLayout {
 
     public void onModifyButtonClick() {
         User user = userService.getUserByDNI(DNI.getValue());
-        if (contractsfees.getValue().equals("No hay tarifa asociada a este contrato!")) {
+        if (contractsFees.getValue().equals("No hay tarifa asociada a este contrato!")) {
             Notification.show("Error! No hay tarifa asociada a este contrato!.")
                     .addThemeVariants(NotificationVariant.LUMO_ERROR);
             UI.getCurrent().navigate("/menu");
         } else if (!actualStatus.isEmpty() && !newStatus.isEmpty()) {
-            Fee fee = feeService.getFeeByTitle(contractsfees.getValue());
+            Fee fee = feeService.getFeeByTitle(contractsFees.getValue());
             Contract c = contractService.getContractByUserIdAndFeeIdAndStatus(user.getId(), fee.getId(),
                     actualStatus.getValue());
             if (newStatus.getValue().equals(Status.ACTIVO) ||
