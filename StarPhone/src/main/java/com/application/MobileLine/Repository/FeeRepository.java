@@ -14,4 +14,6 @@ public interface FeeRepository extends JpaRepository<Fee, UUID> {
     List<Fee> findAll();
 
     Optional<Fee> findByTitle(String title);
+
+    Optional<Fee> findById(UUID id);
 }

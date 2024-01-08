@@ -66,7 +66,7 @@ public class blockNumberUserView extends VerticalLayout {
         List<Contract> contracts = contractService.getContractsByUserId(authenticatedUser.get().get().getId());
         List<MobileLine> mobileLines = new ArrayList<>();
         for (var c : contracts) {
-            mobileLines.addAll(mobileService.getMobileLineByContractId(c.getId()));
+            mobileLines.addAll(mobileService.getMobileLinesByContractId(c.getId()));
         }
 
         List<Integer> phoneNumberlines = new ArrayList<>();

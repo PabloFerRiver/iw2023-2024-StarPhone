@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class FeeService {
@@ -20,6 +21,15 @@ public class FeeService {
 
     public List<Fee> getAll() {
         return feeRepository.findAll();
+    }
+
+    public Fee getFeeById(UUID id) {
+        Optional<Fee> fee = feeRepository.findById(id);
+        if (fee.isPresent()) {
+            return fee.get();
+        } else {
+            return new Fee();
+        }
     }
 
     public Fee getFeeByTitle(String title) {

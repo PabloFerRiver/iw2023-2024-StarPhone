@@ -78,7 +78,8 @@ vaadin-email-field.registerformfield::part(label),
 vaadin-password-field.registerformfield::part(label),
 vaadin-select.registerformfield::part(label),
 vaadin-combo-box.registerformfield::part(label),
-vaadin-number-field.registerformfield::part(label) {
+vaadin-number-field.registerformfield::part(label),
+vaadin-radio-group.registerformfield::part(label) {
     color: black;
     font-size: 18px;
 }
@@ -90,7 +91,8 @@ vaadin-email-field.registerformfield::part(input-field),
 vaadin-password-field.registerformfield::part(input-field),
 vaadin-select.registerformfield::part(input-field),
 vaadin-combo-box.registerformfield::part(input-field),
-vaadin-number-field.registerformfield::part(input-field) {
+vaadin-number-field.registerformfield::part(input-field),
+vaadin-radio-group.registerformfield::part(input-field) {
     border: 2px solid black;
     font-size: 16px;
 }
@@ -102,7 +104,8 @@ vaadin-email-field.registerformfield::part(error-message),
 vaadin-password-field.registerformfield::part(error-message),
 vaadin-select.registerformfield::part(error-message),
 vaadin-combo-box.registerformfield::part(error-message),
-vaadin-number-field.registerformfield::part(error-message) {
+vaadin-number-field.registerformfield::part(error-message),
+vaadin-radio-group.registerformfield::part(error-message) {
     color: red;
     font-size: 15px;
 }

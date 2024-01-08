@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "contract", indexes = {
-        @Index(name = "id_userfee", columnList = "user_id, fee_id", unique = true),
+        @Index(name = "id_userfeestatus", columnList = "user_id, fee_id, status", unique = true),
 })
 public class Contract extends AbstractEntity {
     @Id
@@ -128,4 +128,16 @@ public class Contract extends AbstractEntity {
         this.queryComplaints = queryComplaints;
     }
 
+    public static Status stringToStatus(String status) {
+        switch (status) {
+            case "ACTIVO":
+                return Status.ACTIVO;
+            case "ENPROCESO":
+                return Status.ENPROCESO;
+            case "CANCELADO":
+                return Status.CANCELADO;
+            default:
+                return null;
+        }
+    }
 }

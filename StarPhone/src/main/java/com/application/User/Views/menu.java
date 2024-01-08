@@ -6,7 +6,9 @@ import com.application.Contract.Views.modifyContractView;
 import com.application.MobileLine.Views.blockNumberUserView;
 import com.application.MobileLine.Views.consultUserMobileLineView;
 import com.application.MobileLine.Views.createFeeView;
+import com.application.MobileLine.Views.createMobileLineView;
 import com.application.MobileLine.Views.deleteFeeView;
+import com.application.MobileLine.Views.deleteMobileLineView;
 import com.application.MobileLine.Views.feesViewMenu;
 import com.application.MobileLine.Views.modifyFeeView;
 import com.application.MobileLine.Views.shareDataAndRoamingView;
@@ -158,6 +160,20 @@ public class menu extends AppLayout {
 
         if (accessChecker.hasAccess(deleteContractView.class)) {
             navItem = new SideNavItem("Eliminar Contrato", deleteContractView.class,
+                    LineAwesomeIcon.GLOBE_SOLID.create());
+            navItem.addClassName("sideNavItem");
+            nav.addItem(navItem);
+        }
+
+        if (accessChecker.hasAccess(createMobileLineView.class)) {
+            navItem = new SideNavItem("Crear Línea Móvil", createMobileLineView.class,
+                    LineAwesomeIcon.GLOBE_SOLID.create());
+            navItem.addClassName("sideNavItem");
+            nav.addItem(navItem);
+        }
+
+        if (accessChecker.hasAccess(deleteMobileLineView.class)) {
+            navItem = new SideNavItem("Eliminar Línea Móvil", deleteMobileLineView.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);

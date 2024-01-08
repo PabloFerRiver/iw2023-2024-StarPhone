@@ -31,11 +31,11 @@ public class MobileLine extends AbstractEntity {
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "contract_id")
+    @JoinColumn(name = "contract_id", nullable = false)
     private Contract contract;
 
     @NotNull
-    @Column(name = "phoneNumber")
+    @Column(name = "phoneNumber", nullable = false, unique = true)
     private Integer phoneNumber;
 
     @Column(name = "roaming", nullable = false)

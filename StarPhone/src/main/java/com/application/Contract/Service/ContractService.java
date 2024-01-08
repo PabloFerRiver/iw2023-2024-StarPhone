@@ -1,14 +1,14 @@
 package com.application.Contract.Service;
 
-import java.util.List;
-import java.util.UUID;
-
 import org.springframework.stereotype.Service;
-
 import com.application.Contract.Entities.Contract;
+import com.application.Contract.Entities.Status;
 import com.application.Contract.Repository.ContractRepository;
-
 import jakarta.transaction.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ContractService {
@@ -20,15 +20,24 @@ public class ContractService {
         this.contractRepository = cRepository;
     }
 
+    public Contract getContractById(UUID id) {
+        Optional<Contract> c = contractRepository.findById(id);
+        if (c.isPresent()) {
+            return c.get();
+        } else {
+            return new Contract();
+        }
+    }
+
     public List<Contract> getContractsByUserId(UUID user_id) {
         return contractRepository.findByUserId(user_id);
     }
 
-    public List<Contract> getContractByUserIdAndStatus(UUID user_id, String status) {
-        return contractRepository.findByUserIdAndStatus(user_id, status);
+    public Contract getContractByUserIdAndFeeIdAndStatus(UUID user_id, UUID fee_id, Status status) {
+        return contractRepository.findByUserIdAndFeeIdAndStatus(user_id, fee_id, status);
     }
 
-    public Contract getContractByUserIdAndFeeId(UUID user_id, UUID fee_id) {
+    public List<Contract> getContractsByUserIdAndFeeId(UUID user_id, UUID fee_id) {
         return contractRepository.findByUserIdAndFeeId(user_id, fee_id);
     }
 
@@ -43,8 +52,8 @@ public class ContractService {
     }
 
     @Transactional
-    public boolean deleteContractByUserIdAndFeeId(UUID user_id, UUID fee_id) {
-        Contract c = contractRepository.findByUserIdAndFeeId(user_id, fee_id);
+    public boolean deleteContractByUserIdAndFeeIdAndStatus(UUID user_id, UUID fee_id, Status status) {
+        Contract c = contractRepository.findByUserIdAndFeeIdAndStatus(user_id, fee_id, status);
         try {
             contractRepository.delete(c);
             return true;
@@ -60,6 +69,10 @@ public class ContractService {
 
     public int count() {
         return (int) contractRepository.count();
+    }
+
+    public Contract getContractByUserIdAndStatus(UUID id, Status enproceso) {
+        return null;
     }
 
 }

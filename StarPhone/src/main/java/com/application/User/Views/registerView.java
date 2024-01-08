@@ -207,7 +207,8 @@ public class registerView extends VerticalLayout {
     public void onRegisterButtonClick() {
 
         if (binder.validate().isOk() && password.getValue().equals(repeatPassword.getValue()) &&
-                phoneNumber.getValue() >= 100000000 && phoneNumber.getValue() <= 999999999) {
+                phoneNumber.getValue() >= 100000000 && phoneNumber.getValue() <= 999999999 &&
+                !fees.getValue().isEmpty()) {
             if (userService.registerUser(binder.getBean())) {
                 Notification.show("Genial. Registrado correctamente, revise su email!!")
                         .addThemeVariants(NotificationVariant.LUMO_SUCCESS);

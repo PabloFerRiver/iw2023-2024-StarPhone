@@ -101,7 +101,7 @@ public class modifyPersonalDataView extends VerticalLayout {
         titleDiv.setAlignItems(Alignment.CENTER);
         titleDiv.getStyle().set("border-radius", "12px 12px 0 0");
         titleDiv.getStyle().set("background-color", "rgb(135, 206, 235)");
-        titleRegister = new H3("Modificar Datos Usuario");
+        titleRegister = new H3("Modificar Datos Personales");
         titleRegister.getStyle().set("font-size", "28px");
         titleRegister.getStyle().set("color", "white");
         titleDiv.add(titleRegister);
@@ -167,7 +167,8 @@ public class modifyPersonalDataView extends VerticalLayout {
                     UI.getCurrent().navigate("/menu");
                 }
             } else {
-                Notification.show("Algo falló! Revise los datos.").addThemeVariants(NotificationVariant.LUMO_ERROR);
+                Notification.show("Algo falló! Revise y/o cambie los datos.")
+                        .addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
 
         } else {

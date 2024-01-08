@@ -4,6 +4,8 @@ import com.application.MobileLine.Entities.BlockedNumbers;
 import com.application.MobileLine.Entities.MobileLine;
 import com.application.MobileLine.Repository.MobileLineRepository;
 
+import jakarta.transaction.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -58,8 +60,12 @@ public class MobileLineService {
         }
     }
 
-    public List<MobileLine> getMobileLineByContractId(UUID contract_id) {
+    public List<MobileLine> getMobileLinesByContractId(UUID contract_id) {
         return mobileLineRepository.findMobileLineByContract_Id(contract_id);
+    }
+
+    public List<MobileLine> getMobileLinesByUserId(UUID user_id) {
+        return mobileLineRepository.findMobileLineByUser_Id(user_id);
     }
 
     public void manageShareData(Integer phoneNumber, boolean shareData) {
@@ -81,5 +87,30 @@ public class MobileLineService {
 
     public MobileLine getMobileLineByPhoneNumber(int phoneNumber) {
         return mobileLineRepository.findByPhoneNumber(phoneNumber);
+    }
+
+    @Transactional
+    public boolean deleteMobileLinesByContractId(UUID contract_id) {
+        List<MobileLine> mobileLines = mobileLineRepository.findMobileLineByContract_Id(contract_id);
+        try {
+            for (MobileLine m : mobileLines) {
+                mobileLineRepository.delete(m);
+            }
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    @Transactional
+    public boolean deleteMobileLineById(UUID id) {
+        try {
+            mobileLineRepository.deleteById(id);
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 }

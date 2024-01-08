@@ -95,11 +95,10 @@ public class UserService implements UserDetailsService {
             user.get().addRole(Role.CUSTOMER);
             user.get().setActivateCode("");
 
-            // Actualizamos contrato
-            // getContractByUserIdAndStatus() en este caso solo devolverá un contrato, en
-            // otros quizás más de uno
-            List<Contract> c = contractService.getContractByUserIdAndStatus(user.get().getId(), "EN PROCESO");
-            Contract contract = c.get(0);
+            // Cuando un usuario se registra no puede tener otro contrato abierto con su
+            // misma id,
+            // en otros casos, si podría tenerlo, código válido solo para el registro
+            Contract contract = contractService.getContractByUserIdAndStatus(user.get().getId(), Status.ENPROCESO);
             contract.setStatus(Status.ACTIVO);
 
             // Creamos Línea de Móvil y la asociamos al contrato anterior
