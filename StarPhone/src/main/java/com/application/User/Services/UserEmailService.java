@@ -31,12 +31,11 @@ public class UserEmailService implements EmailService {
             helper.setSubject(asunto);
             helper.setText(body);
             this.mailSender.send(message);
+            return true;
         } catch (MailException | MessagingException ex) {
             System.err.println(ex.getMessage());
             return false;
         }
-
-        return true;
     }
 
     @Override
@@ -52,11 +51,11 @@ public class UserEmailService implements EmailService {
             helper.setSubject(asunto);
             helper.setText(body);
             this.mailSender.send(message);
+            return true;
         } catch (MailException | MessagingException ex) {
             System.err.println(ex.getMessage());
             return false;
         }
-        return true;
     }
 
 }

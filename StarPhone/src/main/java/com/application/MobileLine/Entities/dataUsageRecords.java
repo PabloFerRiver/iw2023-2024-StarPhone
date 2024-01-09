@@ -13,7 +13,7 @@ import java.util.UUID;
 @Table(name = "dataUsageRecords", indexes = {
         @Index(name = "id_dataUsageRecords", columnList = "id", unique = true)
 })
-public class dataUsageRecords extends AbstractEntity {
+public class DataUsageRecords extends AbstractEntity {
 
     @Id
     @GeneratedValue
@@ -22,7 +22,7 @@ public class dataUsageRecords extends AbstractEntity {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "mobileLine_id")
+    @JoinColumn(name = "mobileLine_id", nullable = false)
     private MobileLine mobileLine;
 
     @NotNull

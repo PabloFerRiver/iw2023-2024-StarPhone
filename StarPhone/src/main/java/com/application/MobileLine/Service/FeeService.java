@@ -46,9 +46,9 @@ public class FeeService {
             feeRepository.save(fee);
             return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
+            return false;
         }
-        return false;
     }
 
     @Transactional
@@ -57,9 +57,9 @@ public class FeeService {
             feeRepository.delete(fee);
             return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
+            return false;
         }
-        return false;
     }
 
     @Transactional
@@ -69,9 +69,9 @@ public class FeeService {
             feeRepository.delete(fee);
             return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
+            return false;
         }
-        return false;
     }
 
     public int count() {

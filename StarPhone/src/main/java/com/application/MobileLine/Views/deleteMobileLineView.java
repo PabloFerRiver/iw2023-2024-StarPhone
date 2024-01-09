@@ -31,8 +31,8 @@ import com.vaadin.flow.router.Route;
 
 @RolesAllowed({ "ROLE_ADMIN", "ROLE_CUSTOMERSUPPORT" })
 @CssImport("./styles/styles.css")
-@PageTitle("Eliminar Línea Móvil")
-@Route(value = "/eliminarlineamovil", layout = menu.class)
+@PageTitle("Eliminar Línea")
+@Route(value = "/eliminarlinea", layout = menu.class)
 public class deleteMobileLineView extends VerticalLayout {
 
     HorizontalLayout titleDiv, centerDiv, bodySubDiv1, bodySubDiv2, bodySubDiv3, bodySubDiv4;
@@ -40,7 +40,7 @@ public class deleteMobileLineView extends VerticalLayout {
     H3 titleCreate;
     TextField DNI, contract;
     Select<Integer> mobileLinesSet;
-    Button confirmar;
+    Button confirm;
     private final MobileLineService mobileLineService;
     private final ContractService contractService;
     private final UserService userService;
@@ -132,9 +132,9 @@ public class deleteMobileLineView extends VerticalLayout {
             }
         });
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("registerformbutton");
-        confirmar.addClickListener(e -> {
+        confirm = new Button("Confirmar");
+        confirm.addClassName("registerformbutton");
+        confirm.addClickListener(e -> {
             onDeleteButtonClick();
         });
 
@@ -173,7 +173,7 @@ public class deleteMobileLineView extends VerticalLayout {
         bodySubDiv3.setSpacing(false);
         bodySubDiv3.setPadding(false);
         bodySubDiv3.addClassName("bodysmodify");
-        bodySubDiv4 = new HorizontalLayout(confirmar);
+        bodySubDiv4 = new HorizontalLayout(confirm);
         bodySubDiv4.setSpacing(false);
         bodySubDiv4.setPadding(false);
         bodySubDiv4.addClassName("bodysmodify");

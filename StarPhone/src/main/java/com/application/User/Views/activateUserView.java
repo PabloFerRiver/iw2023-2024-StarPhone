@@ -26,7 +26,7 @@ public class activateUserView extends VerticalLayout {
     H3 confirmTitle;
     EmailField email;
     TextField confirmCode;
-    Button confirmar;
+    Button confirm;
     private final UserService userService;
 
     public activateUserView(UserService uService) {
@@ -48,9 +48,9 @@ public class activateUserView extends VerticalLayout {
         confirmCode.setId("confirmCode");
         confirmCode.setRequired(true);
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("activebutton");
-        confirmar.addClickListener(e -> onActivateuserClick());
+        confirm = new Button("Confirmar");
+        confirm.addClassName("activebutton");
+        confirm.addClickListener(e -> onActivateuserClick());
         // ---------------------------
 
         centerDiv = new VerticalLayout();
@@ -81,7 +81,7 @@ public class activateUserView extends VerticalLayout {
         titleDiv.add(confirmTitle);
         confirmSquare.add(titleDiv);
 
-        bodyDiv = new VerticalLayout(email, confirmCode, confirmar);
+        bodyDiv = new VerticalLayout(email, confirmCode, confirm);
         bodyDiv.setWidthFull();
         bodyDiv.setJustifyContentMode(JustifyContentMode.START);
         bodyDiv.setAlignItems(Alignment.CENTER);
@@ -101,7 +101,7 @@ public class activateUserView extends VerticalLayout {
 
     public void onActivateuserClick() {
         if (!email.getValue().isEmpty() && !confirmCode.getValue().isEmpty()) {
-            confirmar.setEnabled(false);
+            confirm.setEnabled(false);
             if (userService.isActivated(email.getValue())) {
                 UI.getCurrent().getPage().setLocation("/");
             } else if (userService.activateUserCode(email.getValue(), confirmCode.getValue())) {

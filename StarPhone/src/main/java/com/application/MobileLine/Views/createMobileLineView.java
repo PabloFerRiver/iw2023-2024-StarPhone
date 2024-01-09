@@ -32,8 +32,8 @@ import java.util.List;
 
 @RolesAllowed({ "ROLE_ADMIN", "ROLE_CUSTOMERSUPPORT" })
 @CssImport("./styles/styles.css")
-@PageTitle("Crear Línea Móvil")
-@Route(value = "/crearlineamovil", layout = menu.class)
+@PageTitle("Crear Línea")
+@Route(value = "/crearlinea", layout = menu.class)
 public class createMobileLineView extends VerticalLayout {
 
     HorizontalLayout titleDiv, centerDiv, bodySubDiv1, bodySubDiv2, bodySubDiv3;
@@ -44,7 +44,7 @@ public class createMobileLineView extends VerticalLayout {
     RadioButtonGroup<Boolean> roaming, shareData;
     Select<String> contractsFees;
     Select<Status> status;
-    Button confirmar;
+    Button confirm;
     private final MobileLineService mobileLineService;
     private final ContractService contractService;
     private final UserService userService;
@@ -156,9 +156,9 @@ public class createMobileLineView extends VerticalLayout {
         shareData.setValue(false);
         shareData.setId("shareData");
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("registerformbutton");
-        confirmar.addClickListener(e -> {
+        confirm = new Button("Confirmar");
+        confirm.addClassName("registerformbutton");
+        confirm.addClickListener(e -> {
             onCreateButtonClick();
         });
 
@@ -193,7 +193,7 @@ public class createMobileLineView extends VerticalLayout {
         bodySubDiv2.setSpacing(false);
         bodySubDiv2.setPadding(false);
         bodySubDiv2.addClassName("bodysregister");
-        bodySubDiv3 = new HorizontalLayout(confirmar);
+        bodySubDiv3 = new HorizontalLayout(confirm);
         bodySubDiv3.setSpacing(false);
         bodySubDiv3.setPadding(false);
         bodySubDiv3.addClassName("bodysregister");

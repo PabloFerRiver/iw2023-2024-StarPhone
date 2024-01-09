@@ -32,8 +32,8 @@ import java.util.List;
 
 @RolesAllowed({ "ROLE_ADMIN", "ROLE_CUSTOMERSUPPORT" })
 @CssImport("./styles/styles.css")
-@PageTitle("Modificar Línea Móvil")
-@Route(value = "/modificarlineamovil", layout = menu.class)
+@PageTitle("Modificar Línea")
+@Route(value = "/modificarlinea", layout = menu.class)
 public class modifyMobileLineView extends VerticalLayout {
 
     HorizontalLayout titleDiv, centerDiv, bodySubDiv1, bodySubDiv2, bodySubDiv3, bodySubDiv4;
@@ -44,7 +44,7 @@ public class modifyMobileLineView extends VerticalLayout {
     Select<Status> status;
     Select<Integer> lines;
     RadioButtonGroup<Boolean> roaming, shareData;
-    Button confirmar;
+    Button confirm;
     private final ContractService contractService;
     private final UserService userService;
     private final FeeService feeService;
@@ -178,9 +178,9 @@ public class modifyMobileLineView extends VerticalLayout {
         shareData.setValue(false);
         shareData.setId("shareData");
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("modifyformbutton");
-        confirmar.addClickListener(e -> {
+        confirm = new Button("Confirmar");
+        confirm.addClassName("modifyformbutton");
+        confirm.addClickListener(e -> {
             onModifyButtonClick();
         });
 
@@ -219,7 +219,7 @@ public class modifyMobileLineView extends VerticalLayout {
         bodySubDiv3.setSpacing(false);
         bodySubDiv3.setPadding(false);
         bodySubDiv3.addClassName("bodysmodify");
-        bodySubDiv4 = new HorizontalLayout(confirmar);
+        bodySubDiv4 = new HorizontalLayout(confirm);
         bodySubDiv4.setSpacing(false);
         bodySubDiv4.setPadding(false);
         bodySubDiv4.addClassName("bodysmodify");

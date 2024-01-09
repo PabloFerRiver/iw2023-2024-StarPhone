@@ -44,7 +44,7 @@ public class createContractView extends VerticalLayout {
     EmailField email;
     Select<String> fees;
     Select<Status> status;
-    Button confirmar;
+    Button confirm;
     private final ContractService contractService;
     private final UserService userService;
     private final FeeService feeService;
@@ -123,9 +123,9 @@ public class createContractView extends VerticalLayout {
         status.setValue(Status.ENPROCESO);
         status.setId("status");
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("registerformbutton");
-        confirmar.addClickListener(e -> {
+        confirm = new Button("Confirmar");
+        confirm.addClassName("registerformbutton");
+        confirm.addClickListener(e -> {
             onCreateButtonClick();
         });
 
@@ -168,7 +168,7 @@ public class createContractView extends VerticalLayout {
         bodySubDiv4.setSpacing(false);
         bodySubDiv4.setPadding(false);
         bodySubDiv4.addClassName("bodysregister");
-        bodySubDiv5 = new HorizontalLayout(confirmar);
+        bodySubDiv5 = new HorizontalLayout(confirm);
         bodySubDiv5.setSpacing(false);
         bodySubDiv5.setPadding(false);
         bodySubDiv5.addClassName("bodysregister");

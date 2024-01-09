@@ -46,7 +46,7 @@ public class registerView extends VerticalLayout {
     IntegerField phoneNumber;
     PasswordField password, repeatPassword;
     Select<String> fees;
-    Button confirmar;
+    Button confirm;
 
     private final BeanValidationBinder<User> binder;
     private final UserService userService;
@@ -139,9 +139,9 @@ public class registerView extends VerticalLayout {
         fees.setItems(titles);
         fees.setValue("Tarifa 1");
 
-        confirmar = new Button("Registrarse");
-        confirmar.addClassName("registerformbutton");
-        confirmar.addClickListener(e -> {
+        confirm = new Button("Registrarse");
+        confirm.addClassName("registerformbutton");
+        confirm.addClickListener(e -> {
             onRegisterButtonClick();
         });
 
@@ -184,7 +184,7 @@ public class registerView extends VerticalLayout {
         bodySubDiv4.setSpacing(false);
         bodySubDiv4.setPadding(false);
         bodySubDiv4.addClassName("bodysregister");
-        bodySubDiv5 = new HorizontalLayout(confirmar);
+        bodySubDiv5 = new HorizontalLayout(confirm);
         bodySubDiv5.setSpacing(false);
         bodySubDiv5.setPadding(false);
         bodySubDiv5.addClassName("bodysregister");

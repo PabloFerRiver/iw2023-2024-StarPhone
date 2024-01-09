@@ -29,7 +29,7 @@ public class modifyPersonalDataView extends VerticalLayout {
     H3 titleRegister;
     TextField DNI, username, city, country;
     EmailField email;
-    Button confirmar;
+    Button confirm;
 
     private final UserService userService;
     private final AuthenticatedUser authenticatedUser;
@@ -86,9 +86,9 @@ public class modifyPersonalDataView extends VerticalLayout {
         country.addClassName("modifyformfield");
         country.setId("country");
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("modifyformbutton");
-        confirmar.addClickListener(e -> {
+        confirm = new Button("Confirmar");
+        confirm.addClassName("modifyformbutton");
+        confirm.addClickListener(e -> {
             onModifyButtonClick();
         });
 
@@ -127,7 +127,7 @@ public class modifyPersonalDataView extends VerticalLayout {
         bodySubDiv3.setSpacing(false);
         bodySubDiv3.setPadding(false);
         bodySubDiv3.addClassName("bodysmodify");
-        bodySubDiv4 = new HorizontalLayout(confirmar);
+        bodySubDiv4 = new HorizontalLayout(confirm);
         bodySubDiv4.setSpacing(false);
         bodySubDiv4.setPadding(false);
         bodySubDiv4.addClassName("bodysmodify");
@@ -145,7 +145,7 @@ public class modifyPersonalDataView extends VerticalLayout {
     public void onModifyButtonClick() {
         if (!DNI.getValue().isEmpty()) {
             User user = authenticatedUser.get().get();
-            confirmar.setEnabled(false);
+            confirm.setEnabled(false);
             if (!username.getValue().isEmpty())
                 user.setUsername(username.getValue());
 

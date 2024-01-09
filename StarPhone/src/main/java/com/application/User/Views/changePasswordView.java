@@ -24,7 +24,7 @@ public class changePasswordView extends VerticalLayout {
     HorizontalLayout titleDiv;
     H3 confirmTitle;
     PasswordField password, repeatPassword;
-    Button confirmar;
+    Button confirm;
     private final UserService userService;
     private final AuthenticatedUser authenticatedUser;
 
@@ -50,9 +50,9 @@ public class changePasswordView extends VerticalLayout {
         repeatPassword.setRequired(true);
         repeatPassword.setId("repeatPassword");
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("activebutton");
-        confirmar.addClickListener(e -> onChangePasswordButton());
+        confirm = new Button("Confirmar");
+        confirm.addClassName("activebutton");
+        confirm.addClickListener(e -> onChangePasswordButton());
         // ---------------------------
 
         centerDiv = new VerticalLayout();
@@ -83,7 +83,7 @@ public class changePasswordView extends VerticalLayout {
         titleDiv.add(confirmTitle);
         confirmSquare.add(titleDiv);
 
-        bodyDiv = new VerticalLayout(password, repeatPassword, confirmar);
+        bodyDiv = new VerticalLayout(password, repeatPassword, confirm);
         bodyDiv.setWidthFull();
         bodyDiv.setJustifyContentMode(JustifyContentMode.START);
         bodyDiv.setAlignItems(Alignment.CENTER);
@@ -101,14 +101,18 @@ public class changePasswordView extends VerticalLayout {
 
     public void onChangePasswordButton() {
         if (!password.getValue().isEmpty() && !repeatPassword.getValue().isEmpty()) {
-            confirmar.setEnabled(false);
+            confirm.setEnabled(false);
             if (password.getValue().equals(repeatPassword.getValue())) {
-                userService.changePassword(authenticatedUser.get().get(), password.getValue());
-                Notification.show("Contraseña cambiada correctamente")
-                        .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                if (userService.changePassword(authenticatedUser.get().get(), password.getValue())) {
+                    Notification.show("Contraseña cambiada correctamente")
+                            .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                } else {
+                    Notification.show("Error al cambiar la contraseña")
+                            .addThemeVariants(NotificationVariant.LUMO_ERROR);
+                }
             } else {
                 Notification.show("No coinciden las contraseñas").addThemeVariants(NotificationVariant.LUMO_ERROR);
-                confirmar.setEnabled(true);
+                confirm.setEnabled(true);
             }
         } else {
             Notification.show("Rellene todos los campos!").addThemeVariants(NotificationVariant.LUMO_ERROR);

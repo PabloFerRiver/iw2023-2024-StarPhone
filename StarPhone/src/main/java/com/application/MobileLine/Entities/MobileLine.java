@@ -46,15 +46,15 @@ public class MobileLine extends AbstractEntity {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "mobileLine_id")
-    private List<callRecords> callRecords = new ArrayList<>();
+    private List<CallRecords> callRecords = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "mobileLine_id")
-    private List<dataUsageRecords> dataUsageRecords = new ArrayList<>();
+    private List<DataUsageRecords> dataUsageRecords = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "mobileLine_id")
-    private List<callRecords> smsRecords = new ArrayList<>();
+    private List<CallRecords> smsRecords = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "mobileLine_id")

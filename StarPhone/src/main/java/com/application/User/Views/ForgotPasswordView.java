@@ -32,7 +32,7 @@ public class forgotPasswordView extends VerticalLayout {
     HorizontalLayout titleDiv;
     H3 confirmTitle;
     EmailField email;
-    Button confirmar;
+    Button confirm;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final UserEmailService userEmailService;
@@ -54,9 +54,9 @@ public class forgotPasswordView extends VerticalLayout {
         email.setId("email");
         email.setRequired(true);
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("activebutton");
-        confirmar.addClickListener(e -> onGetNewCredentialsClick());
+        confirm = new Button("Confirmar");
+        confirm.addClassName("activebutton");
+        confirm.addClickListener(e -> onGetNewCredentialsClick());
         // ---------------------------
 
         centerDiv = new VerticalLayout();
@@ -87,7 +87,7 @@ public class forgotPasswordView extends VerticalLayout {
         titleDiv.add(confirmTitle);
         confirmSquare.add(titleDiv);
 
-        bodyDiv = new VerticalLayout(email, confirmar);
+        bodyDiv = new VerticalLayout(email, confirm);
         bodyDiv.setWidthFull();
         bodyDiv.setJustifyContentMode(JustifyContentMode.START);
         bodyDiv.setAlignItems(Alignment.CENTER);
@@ -102,7 +102,7 @@ public class forgotPasswordView extends VerticalLayout {
     }
 
     public void onGetNewCredentialsClick() {
-        confirmar.setEnabled(false);
+        confirm.setEnabled(false);
         User user = userService.getUserByEmail(email.getValue());
         String nText = "";
         if (user.getId() != null && user.getActivate() == true) {

@@ -33,7 +33,7 @@ public class createFeeView extends VerticalLayout {
     TextField title, descriptionMobile, descriptionFiber, descriptionTV;
     NumberField monthlyData, monthlyPrice;
     IntegerField monthlyCalls, monthlySMS, maxMobileLines;
-    Button confirmar;
+    Button confirm;
 
     private final FeeService feeService;
     private final BeanValidationBinder<Fee> binder;
@@ -109,9 +109,9 @@ public class createFeeView extends VerticalLayout {
         monthlySMS.setLabel("SMS Mensuales:");
         monthlySMS.setId("monthlySMS");
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("registerformbutton");
-        confirmar.addClickListener(e -> {
+        confirm = new Button("Confirmar");
+        confirm.addClassName("registerformbutton");
+        confirm.addClickListener(e -> {
             onCreateButtonClick();
         });
 
@@ -150,7 +150,7 @@ public class createFeeView extends VerticalLayout {
         bodySubDiv3.setSpacing(false);
         bodySubDiv3.setPadding(false);
         bodySubDiv3.addClassName("bodysregister");
-        bodySubDiv4 = new HorizontalLayout(confirmar);
+        bodySubDiv4 = new HorizontalLayout(confirm);
         bodySubDiv4.setSpacing(false);
         bodySubDiv4.setPadding(false);
         bodySubDiv4.addClassName("bodysregister");

@@ -39,7 +39,7 @@ public class consultPersonalContractsView extends VerticalLayout {
     Select<String> contractsFees;
     Select<Status> status;
     Select<Integer> lines;
-    Button confirmar;
+    Button confirm;
     private final MobileLineService mobileService;
     private final AuthenticatedUser authenticatedUser;
     private final ContractService contractService;
@@ -104,9 +104,9 @@ public class consultPersonalContractsView extends VerticalLayout {
             }
         });
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("activebutton");
-        confirmar.addClickListener(e -> onGetContract());
+        confirm = new Button("Confirmar");
+        confirm.addClassName("activebutton");
+        confirm.addClickListener(e -> onGetContract());
         // ---------------------------
 
         centerDiv = new VerticalLayout();
@@ -146,7 +146,7 @@ public class consultPersonalContractsView extends VerticalLayout {
         linesNumbersText = new H4("");
         linesNumbersText.getStyle().set("font-size", "22px");
 
-        bodyDiv = new VerticalLayout(contractsFees, status, confirmar);
+        bodyDiv = new VerticalLayout(contractsFees, status, confirm);
         bodyDiv.setWidthFull();
         bodyDiv.setJustifyContentMode(JustifyContentMode.START);
         bodyDiv.setAlignItems(Alignment.CENTER);

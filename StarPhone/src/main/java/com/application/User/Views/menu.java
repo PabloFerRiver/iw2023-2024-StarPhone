@@ -6,7 +6,8 @@ import com.application.Contract.Views.createContractView;
 import com.application.Contract.Views.deleteContractView;
 import com.application.Contract.Views.modifyContractView;
 import com.application.MobileLine.Views.blockNumberUserView;
-import com.application.MobileLine.Views.consultUserMobileLineView;
+import com.application.MobileLine.Views.consultMobileLinesUserView;
+import com.application.MobileLine.Views.consultPersonalMobileLinesView;
 import com.application.MobileLine.Views.createFeeView;
 import com.application.MobileLine.Views.createMobileLineView;
 import com.application.MobileLine.Views.deleteFeeView;
@@ -175,28 +176,28 @@ public class menu extends AppLayout {
         }
 
         if (accessChecker.hasAccess(createMobileLineView.class)) {
-            navItem = new SideNavItem("Crear Línea Móvil", createMobileLineView.class,
+            navItem = new SideNavItem("Crear Línea", createMobileLineView.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);
         }
 
         if (accessChecker.hasAccess(modifyMobileLineView.class)) {
-            navItem = new SideNavItem("Modificar Línea Móvil", modifyMobileLineView.class,
+            navItem = new SideNavItem("Modificar Línea", modifyMobileLineView.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);
         }
 
         if (accessChecker.hasAccess(deleteMobileLineView.class)) {
-            navItem = new SideNavItem("Eliminar Línea Móvil", deleteMobileLineView.class,
+            navItem = new SideNavItem("Eliminar Línea", deleteMobileLineView.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);
         }
 
-        if (accessChecker.hasAccess(feesViewMenu.class)) {
-            navItem = new SideNavItem("Consultar Consumos Línea", consultUserMobileLineView.class,
+        if (accessChecker.hasAccess(consultMobileLinesUserView.class)) {
+            navItem = new SideNavItem("Consultar Líneas Usuarios", consultMobileLinesUserView.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);
@@ -232,6 +233,13 @@ public class menu extends AppLayout {
 
         if (accessChecker.hasAccess(consultPersonalContractsView.class)) {
             navItem = new SideNavItem("Consultar Contratos Personales", consultPersonalContractsView.class,
+                    LineAwesomeIcon.GLOBE_SOLID.create());
+            navItem.addClassName("sideNavItem");
+            nav.addItem(navItem);
+        }
+
+        if (accessChecker.hasAccess(consultPersonalMobileLinesView.class)) {
+            navItem = new SideNavItem("Consultar Líneas Personales", consultPersonalMobileLinesView.class,
                     LineAwesomeIcon.GLOBE_SOLID.create());
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);

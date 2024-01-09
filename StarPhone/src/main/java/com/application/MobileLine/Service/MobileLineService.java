@@ -25,23 +25,26 @@ public class MobileLineService {
             mobileLineRepository.save(mobileLine);
             return true;
         } catch (Exception e) {
+            System.err.println(e.getMessage());
             return false;
         }
     }
 
-    public void blockNumber(int phoneNumberToBlock, int phoneNumber) {
+    public boolean blockNumber(int phoneNumberToBlock, int phoneNumber) {
         BlockedNumbers blockedNumber = new BlockedNumbers();
         MobileLine mLine = mobileLineRepository.findByPhoneNumber(phoneNumber);
         blockedNumber.setBlockedNumber(phoneNumberToBlock);
         mLine.addBlockedNumber(blockedNumber);
         try {
             mobileLineRepository.save(mLine);
+            return true;
         } catch (Exception e) {
-            System.out.println(e);
+            System.err.println(e.getMessage());
+            return false;
         }
     }
 
-    public void unblockNumber(int phoneNumberToUnblock, int phoneNumber) {
+    public boolean unblockNumber(int phoneNumberToUnblock, int phoneNumber) {
         BlockedNumbers unblockedNumber = new BlockedNumbers();
         MobileLine mLine = mobileLineRepository.findByPhoneNumber(phoneNumber);
         unblockedNumber.setBlockedNumber(phoneNumberToUnblock);
@@ -55,8 +58,10 @@ public class MobileLineService {
         mLine.setBlockedNumbers(bl);
         try {
             mobileLineRepository.save(mLine);
+            return true;
         } catch (Exception e) {
-            System.out.println(e);
+            System.err.println(e.getMessage());
+            return false;
         }
     }
 
@@ -98,7 +103,7 @@ public class MobileLineService {
             }
             return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
             return false;
         }
     }
@@ -109,7 +114,7 @@ public class MobileLineService {
             mobileLineRepository.deleteById(id);
             return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
             return false;
         }
     }

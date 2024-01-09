@@ -39,7 +39,7 @@ public class adminRegisterUserView extends VerticalLayout {
     private final IntegerField phoneNumber;
     private final PasswordField password, repeatPassword;
     private final Select<Role> role;
-    private final Button confirmar;
+    private final Button confirm;
     private final BeanValidationBinder<User> binder;
     private final UserService service;
 
@@ -121,9 +121,9 @@ public class adminRegisterUserView extends VerticalLayout {
         role.setItems(Role.CUSTOMER, Role.MARKETING, Role.FINANCE, Role.CUSTOMERSUPPORT, Role.ADMIN);
         role.setId("rol");
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("registerformbutton");
-        confirmar.addClickListener(e -> {
+        confirm = new Button("Confirmar");
+        confirm.addClassName("registerformbutton");
+        confirm.addClickListener(e -> {
             onRegisterButtonClick();
         });
 
@@ -166,7 +166,7 @@ public class adminRegisterUserView extends VerticalLayout {
         bodySubDiv4.setSpacing(false);
         bodySubDiv4.setPadding(false);
         bodySubDiv4.addClassName("bodysregister");
-        bodySubDiv5 = new HorizontalLayout(confirmar);
+        bodySubDiv5 = new HorizontalLayout(confirm);
         bodySubDiv5.setSpacing(false);
         bodySubDiv5.setPadding(false);
         bodySubDiv5.addClassName("bodysregister");

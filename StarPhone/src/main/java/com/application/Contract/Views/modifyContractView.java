@@ -42,7 +42,7 @@ public class modifyContractView extends VerticalLayout {
     TextField DNI;
     Select<String> contractsFees;
     Select<Status> actualStatus, newStatus;
-    Button confirmar;
+    Button confirm;
     private final ContractService contractService;
     private final UserService userService;
     private final FeeService feeService;
@@ -148,9 +148,9 @@ public class modifyContractView extends VerticalLayout {
         newStatus.setHelperText("CANCELADO, implica la desvinculación de las líneas móviles de dicho contrato.");
         newStatus.setId("newStatus");
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("registerformbutton");
-        confirmar.addClickListener(e -> {
+        confirm = new Button("Confirmar");
+        confirm.addClassName("registerformbutton");
+        confirm.addClickListener(e -> {
             onModifyButtonClick();
         });
 
@@ -193,7 +193,7 @@ public class modifyContractView extends VerticalLayout {
         bodySubDiv4.setSpacing(false);
         bodySubDiv4.setPadding(false);
         bodySubDiv4.addClassName("bodysmodify");
-        bodySubDiv5 = new HorizontalLayout(confirmar);
+        bodySubDiv5 = new HorizontalLayout(confirm);
         bodySubDiv5.setSpacing(false);
         bodySubDiv5.setPadding(false);
         bodySubDiv5.addClassName("bodysmodify");

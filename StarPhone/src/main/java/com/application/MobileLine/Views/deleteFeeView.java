@@ -29,7 +29,7 @@ public class deleteFeeView extends VerticalLayout {
     HorizontalLayout titleDiv;
     H3 titleDelete;
     Select<String> titles;
-    Button confirmar;
+    Button confirm;
     FeeService feeService;
 
     public deleteFeeView(FeeService fService) {
@@ -61,9 +61,9 @@ public class deleteFeeView extends VerticalLayout {
         }
         titles.setId("titles");
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("activebutton");
-        confirmar.addClickListener(e -> onDeleteButtonClick());
+        confirm = new Button("Confirmar");
+        confirm.addClassName("activebutton");
+        confirm.addClickListener(e -> onDeleteButtonClick());
         // ---------------------------
 
         centerDiv = new VerticalLayout();
@@ -94,7 +94,7 @@ public class deleteFeeView extends VerticalLayout {
         titleDiv.add(titleDelete);
         confirmSquare.add(titleDiv);
 
-        bodyDiv = new VerticalLayout(titles, confirmar);
+        bodyDiv = new VerticalLayout(titles, confirm);
         bodyDiv.setWidthFull();
         bodyDiv.setJustifyContentMode(JustifyContentMode.START);
         bodyDiv.setAlignItems(Alignment.CENTER);

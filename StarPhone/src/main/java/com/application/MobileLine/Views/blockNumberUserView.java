@@ -34,7 +34,7 @@ public class blockNumberUserView extends VerticalLayout {
     H3 titleDelete;
     Select<String> actions;
     IntegerField phoneNumberToBlockUnblock;
-    Button confirmar;
+    Button confirm;
 
     private final MobileLineService mobileService;
     private final AuthenticatedUser authenticatedUser;
@@ -83,9 +83,9 @@ public class blockNumberUserView extends VerticalLayout {
         phoneNumberToBlockUnblock.addClassName("activefield");
         phoneNumberToBlockUnblock.setId("phoneNumberToBlockUnblock");
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("activebutton");
-        confirmar.addClickListener(e -> onBlockNumberButton());
+        confirm = new Button("Confirmar");
+        confirm.addClassName("activebutton");
+        confirm.addClickListener(e -> onBlockNumberButton());
         // ---------------------------
 
         centerDiv = new VerticalLayout();
@@ -116,7 +116,7 @@ public class blockNumberUserView extends VerticalLayout {
         titleDiv.add(titleDelete);
         confirmSquare.add(titleDiv);
 
-        bodyDiv = new VerticalLayout(actions, lines, phoneNumberToBlockUnblock, confirmar);
+        bodyDiv = new VerticalLayout(actions, lines, phoneNumberToBlockUnblock, confirm);
         bodyDiv.setWidthFull();
         bodyDiv.setJustifyContentMode(JustifyContentMode.START);
         bodyDiv.setAlignItems(Alignment.CENTER);
@@ -139,26 +139,30 @@ public class blockNumberUserView extends VerticalLayout {
     public void onBlockNumberButton() {
         if (lines.getValue() != null && phoneNumberToBlockUnblock.getValue() != null) {
             if (actions.getValue().equals("Bloquear")) {
-                String nText = "";
                 if (blockedNumbersService.isBlockedNumberByPhoneNumber(phoneNumberToBlockUnblock.getValue(),
                         lines.getValue())) {
-                    nText = "El número ya está bloqueado!";
-                    Notification.show(nText).addThemeVariants(NotificationVariant.LUMO_ERROR);
+                    Notification.show("El número ya está bloqueado!").addThemeVariants(NotificationVariant.LUMO_ERROR);
                 } else {
-                    mobileService.blockNumber(phoneNumberToBlockUnblock.getValue(), lines.getValue());
-                    nText = "Número bloqueado con éxito!";
-                    Notification.show(nText).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                    if (mobileService.blockNumber(phoneNumberToBlockUnblock.getValue(), lines.getValue())) {
+                        Notification.show("Número bloqueado con éxito!")
+                                .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                    } else {
+                        Notification.show("Error! No se ha podido bloquear el número.")
+                                .addThemeVariants(NotificationVariant.LUMO_ERROR);
+                    }
                 }
             } else if (actions.getValue().equals("Desbloquear")) {
-                String nText = "";
                 if (!blockedNumbersService.isBlockedNumberByPhoneNumber(phoneNumberToBlockUnblock.getValue(),
                         lines.getValue())) {
-                    nText = "El número no está bloqueado!";
-                    Notification.show(nText).addThemeVariants(NotificationVariant.LUMO_ERROR);
+                    Notification.show("El número no está bloqueado!").addThemeVariants(NotificationVariant.LUMO_ERROR);
                 } else {
-                    mobileService.unblockNumber(phoneNumberToBlockUnblock.getValue(), lines.getValue());
-                    nText = "Número desbloqueado con éxito!";
-                    Notification.show(nText).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                    if (mobileService.unblockNumber(phoneNumberToBlockUnblock.getValue(), lines.getValue())) {
+                        Notification.show("Número desbloqueado con éxito!")
+                                .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                    } else {
+                        Notification.show("Error! No se ha podido desbloquear el número.")
+                                .addThemeVariants(NotificationVariant.LUMO_ERROR);
+                    }
                 }
             }
         } else {

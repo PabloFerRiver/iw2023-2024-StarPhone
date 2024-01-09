@@ -36,7 +36,7 @@ public class modifyFeeView extends VerticalLayout {
     TextField newTitle, descriptionMobile, descriptionFiber, descriptionTV;
     NumberField monthlyData, monthlyPrice;
     IntegerField monthlyCalls, monthlySMS, maxMobileLines;
-    Button confirmar;
+    Button confirm;
 
     private final FeeService feeService;
 
@@ -127,9 +127,9 @@ public class modifyFeeView extends VerticalLayout {
         monthlySMS.setLabel("SMS Mensuales:");
         monthlySMS.setId("monthlySMS");
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("modifyformbutton");
-        confirmar.addClickListener(e -> {
+        confirm = new Button("Confirmar");
+        confirm.addClassName("modifyformbutton");
+        confirm.addClickListener(e -> {
             onModifyButtonClick();
         });
 
@@ -172,7 +172,7 @@ public class modifyFeeView extends VerticalLayout {
         bodySubDiv4.setSpacing(false);
         bodySubDiv4.setPadding(false);
         bodySubDiv4.addClassName("bodysmodify");
-        bodySubDiv5 = new HorizontalLayout(confirmar);
+        bodySubDiv5 = new HorizontalLayout(confirm);
         bodySubDiv5.setSpacing(false);
         bodySubDiv5.setPadding(false);
         bodySubDiv5.addClassName("bodysmodify");

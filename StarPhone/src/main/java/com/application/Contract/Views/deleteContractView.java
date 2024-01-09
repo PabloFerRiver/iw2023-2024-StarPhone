@@ -40,7 +40,7 @@ public class deleteContractView extends VerticalLayout {
     TextField DNI;
     Select<Status> status;
     Select<String> contractsFees;
-    Button confirmar;
+    Button confirm;
     private final ContractService contractService;
     private final UserService userService;
     private final FeeService feeService;
@@ -136,9 +136,9 @@ public class deleteContractView extends VerticalLayout {
             }
         });
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("registerformbutton");
-        confirmar.addClickListener(e -> {
+        confirm = new Button("Confirmar");
+        confirm.addClassName("registerformbutton");
+        confirm.addClickListener(e -> {
             onDeleteButtonClick();
         });
 
@@ -177,7 +177,7 @@ public class deleteContractView extends VerticalLayout {
         bodySubDiv3.setSpacing(false);
         bodySubDiv3.setPadding(false);
         bodySubDiv3.addClassName("bodysregister");
-        bodySubDiv4 = new HorizontalLayout(confirmar);
+        bodySubDiv4 = new HorizontalLayout(confirm);
         bodySubDiv4.setSpacing(false);
         bodySubDiv4.setPadding(false);
         bodySubDiv4.addClassName("bodysregister");

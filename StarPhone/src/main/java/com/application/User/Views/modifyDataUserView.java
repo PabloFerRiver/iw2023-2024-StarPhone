@@ -39,7 +39,7 @@ public class modifyDataUserView extends VerticalLayout {
     IntegerField phoneNumber;
     PasswordField password, repeatPassword;
     Select<Role> role;
-    Button confirmar;
+    Button confirm;
     private final UserService userService;
     private final AuthenticatedUser authenticatedUser;
     private final PasswordEncoder passwordEncoder;
@@ -109,9 +109,9 @@ public class modifyDataUserView extends VerticalLayout {
         if (authenticatedUser.get().get().getRoles().contains(Role.ADMIN))
             role.setEnabled(true);
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("modifyformbutton");
-        confirmar.addClickListener(e -> {
+        confirm = new Button("Confirmar");
+        confirm.addClassName("modifyformbutton");
+        confirm.addClickListener(e -> {
             onModifyButtonClick();
         });
 
@@ -150,7 +150,7 @@ public class modifyDataUserView extends VerticalLayout {
         bodySubDiv3.setSpacing(false);
         bodySubDiv3.setPadding(false);
         bodySubDiv3.addClassName("bodysmodify");
-        bodySubDiv4 = new HorizontalLayout(confirmar);
+        bodySubDiv4 = new HorizontalLayout(confirm);
         bodySubDiv4.setSpacing(false);
         bodySubDiv4.setPadding(false);
         bodySubDiv4.addClassName("bodysmodify");

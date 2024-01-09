@@ -298,4 +298,10 @@ vaadin-button.modifyformbutton::part(label)
     font-size: 22px;
     margin-top: 5px;
 }
+
+.scroller {
+    width: 460px;
+    height: 420px;
+    overflow: auto;
+}
 /*-----------------------------------*/

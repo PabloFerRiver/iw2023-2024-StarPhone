@@ -46,7 +46,7 @@ public class ContractService {
             contractRepository.save(contract);
             return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
             return false;
         }
     }
@@ -58,7 +58,7 @@ public class ContractService {
             contractRepository.delete(c);
             return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
             return false;
         }
     }
