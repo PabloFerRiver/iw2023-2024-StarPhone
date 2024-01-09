@@ -147,13 +147,13 @@ public class consultUserMobileLineView extends VerticalLayout {
             double data = 0;
             int calls = 0, sms = 0;
             if (period.getValue().equals("Hoy")) {
-                data = mobileLine.getTotalDataToday();
-                calls = mobileLine.getTotalCallsToday();
-                sms = mobileLine.getTotalSMSToday();
+                data = 0;
+                calls = 0;
+                sms = 0;
             } else if (period.getValue().equals("Mes")) {
-                data = mobileLine.getTotalDataMonth();
-                calls = mobileLine.getTotalCallsMonth();
-                sms = mobileLine.getTotalSMSMonth();
+                data = 0;
+                calls = 0;
+                sms = 0;
             }
 
             dataText.setText("Total datos: " + data);

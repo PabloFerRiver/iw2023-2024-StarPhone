@@ -52,7 +52,7 @@ public class rolManagementView extends VerticalLayout {
 
         role = new Select<Role>();
         role.addClassName("activefield");
-        role.setLabel("Rol inicial:");
+        role.setLabel("Rol:");
         role.setItems(Role.CUSTOMER, Role.MARKETING, Role.FINANCE, Role.CUSTOMERSUPPORT, Role.ADMIN);
         role.setValue(Role.CUSTOMER);
         role.setId("rol");

@@ -58,8 +58,8 @@ public class feesView extends VerticalLayout {
 
         for (Fee fee : fees) {
             cont = new contract(fee.getTitle(),
-                    fee.getDescriptionFiber(),
                     fee.getDescriptionMobile(),
+                    fee.getDescriptionFiber(),
                     fee.getDescriptionTV(),
                     fee.getMaxMobileLines(),
                     fee.getMonthlyprice());

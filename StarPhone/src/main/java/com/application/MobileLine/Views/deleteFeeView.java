@@ -119,6 +119,7 @@ public class deleteFeeView extends VerticalLayout {
                         .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
                 UI.getCurrent().navigate("/menu");
             } else {
+                System.out.println("ERR");
                 Notification.show("Algo falló! Inténtelo de nuevo.").addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
         }

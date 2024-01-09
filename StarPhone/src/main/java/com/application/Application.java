@@ -6,7 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
-//TODO: Mirar Posicionamiento de Notifications + LineAwesomeIcon
+//TODO: Mirar Posicionamiento de Notifications
 /**
  * The entry point of the Spring Boot application.
  *
