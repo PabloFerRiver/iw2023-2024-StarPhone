@@ -1,7 +1,7 @@
 package com.application.Contract.Views;
 
 import com.application.Contract.Entities.Contract;
-import com.application.Contract.Entities.Status;
+import com.application.Contract.Entities.StatusContract;
 import com.application.Contract.Service.ContractService;
 import com.application.MobileLine.Entities.Fee;
 import com.application.MobileLine.Entities.MobileLine;
@@ -40,7 +40,7 @@ public class consultUserContractsView extends VerticalLayout {
     H4 feeText, statusText, startDateText, linesNumbersText;
     TextField DNI;
     Select<String> contractsFees;
-    Select<Status> status;
+    Select<StatusContract> status;
     Select<Integer> lines;
     Button confirm;
     private final MobileLineService mobileService;
@@ -81,7 +81,7 @@ public class consultUserContractsView extends VerticalLayout {
             if (user.getId() != null) {
                 contracts = contractService.getContractsByUserId(user.getId());
                 for (Contract c : contracts) {
-                    if (!c.getStatus().equals(Status.CANCELADO))
+                    if (!c.getStatus().equals(StatusContract.CANCELADO))
                         feeTitles.add(c.getFee().getTitle());
                 }
 
@@ -97,12 +97,12 @@ public class consultUserContractsView extends VerticalLayout {
             }
         });
 
-        status = new Select<Status>();
+        status = new Select<StatusContract>();
         status.addClassName("activefield");
         status.setLabel("Estado:");
         status.setId("status");
 
-        List<Status> contractStatus = new ArrayList<>();
+        List<StatusContract> contractStatus = new ArrayList<>();
         contractsFees.addValueChangeListener(event -> {
             List<Contract> contracts = new ArrayList<>();
             User user = userService.getUserByDNI(DNI.getValue());
@@ -110,7 +110,7 @@ public class consultUserContractsView extends VerticalLayout {
             if (user.getId() != null) {
                 contracts = contractService.getContractsByUserIdAndFeeId(user.getId(), fee.getId());
                 for (Contract c : contracts) {
-                    if (!c.getStatus().equals(Status.CANCELADO))
+                    if (!c.getStatus().equals(StatusContract.CANCELADO))
                         contractStatus.add(c.getStatus());
                 }
 

@@ -1,5 +1,6 @@
 package com.application.MobileLine.Views;
 
+import com.application.Contract.Service.ContractService;
 import com.application.MobileLine.Entities.Fee;
 import com.application.MobileLine.Service.FeeService;
 import com.application.User.Views.menu;
@@ -31,9 +32,11 @@ public class deleteFeeView extends VerticalLayout {
     Select<String> titles;
     Button confirm;
     FeeService feeService;
+    ContractService contractService;
 
-    public deleteFeeView(FeeService fService) {
+    public deleteFeeView(FeeService fService, ContractService cService) {
         feeService = fService;
+        contractService = cService;
 
         setWidthFull();
         setHeightFull();
@@ -114,13 +117,19 @@ public class deleteFeeView extends VerticalLayout {
 
     public void onDeleteButtonClick() {
         if (!titles.getValue().isEmpty()) {
-            if (feeService.deleteFeeByTitle(titles.getValue())) {
-                Notification.show("Genial. Eliminada correctamente!!")
-                        .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                UI.getCurrent().navigate("/menu");
+            Fee fee = feeService.getFeeByTitle(titles.getValue());
+            if (contractService.getContractsByFeeId(fee.getId()).size() < 1) {
+                if (feeService.deleteFeeByTitle(titles.getValue())) {
+                    Notification.show("Genial. Eliminada correctamente!!")
+                            .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                    UI.getCurrent().navigate("/menu");
+                } else {
+                    Notification.show("Algo falló! Inténtelo de nuevo.")
+                            .addThemeVariants(NotificationVariant.LUMO_ERROR);
+                }
             } else {
-                System.out.println("ERR");
-                Notification.show("Algo falló! Inténtelo de nuevo.").addThemeVariants(NotificationVariant.LUMO_ERROR);
+                Notification.show("Una tarifa con contratos asociados solo puede ponerse como INACTIVA!")
+                        .addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
         }
     }

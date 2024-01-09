@@ -2,7 +2,7 @@ package com.application.User.Views;
 
 import com.application.User.Services.UserService;
 import com.application.Contract.Entities.Contract;
-import com.application.Contract.Entities.Status;
+import com.application.Contract.Entities.StatusContract;
 import com.application.Contract.Service.ContractService;
 import com.application.MobileLine.Entities.Fee;
 import com.application.MobileLine.Service.FeeService;
@@ -215,7 +215,7 @@ public class registerView extends VerticalLayout {
                 Contract contract = new Contract();
                 contract.setUser(userService.getUserByEmail(email.getValue()));
                 contract.setFee(feeService.getFeeByTitle(fees.getValue()));
-                contract.setStatus(Status.ENPROCESO);
+                contract.setStatus(StatusContract.ENPROCESO);
                 contract.setStartDate(LocalDate.now());
                 if (contractService.saveContract(contract)) {
                     UI.getCurrent().navigate("/activaruser");

@@ -5,6 +5,8 @@ import com.application.MobileLine.Repository.FeeRepository;
 import jakarta.transaction.Transactional;
 
 import com.application.MobileLine.Entities.Fee;
+import com.application.MobileLine.Entities.StatusFee;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -65,13 +67,21 @@ public class FeeService {
     @Transactional
     public boolean deleteFeeByTitle(String title) {
         Fee fee = getFeeByTitle(title);
-        try {
-            feeRepository.delete(fee);
-            return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
+        if (fee.getId() != null) {
+            try {
+                feeRepository.delete(fee);
+                return true;
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+                return false;
+            }
+        } else {
             return false;
         }
+    }
+
+    public List<Fee> getFeeByStatus(StatusFee status) {
+        return feeRepository.findByStatus(status);
     }
 
     public int count() {

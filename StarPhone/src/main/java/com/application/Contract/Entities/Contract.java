@@ -37,7 +37,7 @@ public class Contract extends AbstractEntity {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private Status status;
+    private StatusContract status;
 
     @NotNull
     @Column(name = "startDate", nullable = false)
@@ -80,11 +80,11 @@ public class Contract extends AbstractEntity {
         this.fee = fee;
     }
 
-    public Status getStatus() {
+    public StatusContract getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(StatusContract status) {
         this.status = status;
     }
 
@@ -126,18 +126,5 @@ public class Contract extends AbstractEntity {
 
     public void setQueryComplaints(List<QueryComplaint> queryComplaints) {
         this.queryComplaints = queryComplaints;
-    }
-
-    public static Status stringToStatus(String status) {
-        switch (status) {
-            case "ACTIVO":
-                return Status.ACTIVO;
-            case "ENPROCESO":
-                return Status.ENPROCESO;
-            case "CANCELADO":
-                return Status.CANCELADO;
-            default:
-                return null;
-        }
     }
 }

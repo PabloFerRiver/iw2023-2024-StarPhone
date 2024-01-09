@@ -4,7 +4,7 @@ import com.application.User.Entities.User;
 import com.application.User.Services.UserService;
 import com.application.User.Views.menu;
 import com.application.Contract.Entities.Contract;
-import com.application.Contract.Entities.Status;
+import com.application.Contract.Entities.StatusContract;
 import com.application.Contract.Service.ContractService;
 import com.application.MobileLine.Entities.Fee;
 import com.application.MobileLine.Service.FeeService;
@@ -41,7 +41,7 @@ public class modifyContractView extends VerticalLayout {
     H3 titleCreate;
     TextField DNI;
     Select<String> contractsFees;
-    Select<Status> actualStatus, newStatus;
+    Select<StatusContract> actualStatus, newStatus;
     Button confirm;
     private final ContractService contractService;
     private final UserService userService;
@@ -97,7 +97,7 @@ public class modifyContractView extends VerticalLayout {
             if (user.getId() != null) {
                 contracts = contractService.getContractsByUserId(user.getId());
                 for (Contract c : contracts) {
-                    if (!c.getStatus().equals(Status.CANCELADO))
+                    if (!c.getStatus().equals(StatusContract.CANCELADO))
                         feeTitles.add(c.getFee().getTitle());
                 }
 
@@ -113,12 +113,12 @@ public class modifyContractView extends VerticalLayout {
             }
         });
 
-        actualStatus = new Select<Status>();
+        actualStatus = new Select<StatusContract>();
         actualStatus.addClassName("modifyformfield");
         actualStatus.setLabel("Estado del contrato:");
         actualStatus.setId("actualstatus");
 
-        List<Status> contractStatus = new ArrayList<>();
+        List<StatusContract> contractStatus = new ArrayList<>();
         contractsFees.addValueChangeListener(event -> {
             List<Contract> contracts = new ArrayList<>();
             User user = userService.getUserByDNI(DNI.getValue());
@@ -126,7 +126,7 @@ public class modifyContractView extends VerticalLayout {
             if (user.getId() != null) {
                 contracts = contractService.getContractsByUserIdAndFeeId(user.getId(), fee.getId());
                 for (Contract c : contracts) {
-                    if (!c.getStatus().equals(Status.CANCELADO))
+                    if (!c.getStatus().equals(StatusContract.CANCELADO))
                         contractStatus.add(c.getStatus());
                 }
 
@@ -140,11 +140,11 @@ public class modifyContractView extends VerticalLayout {
             }
         });
 
-        newStatus = new Select<Status>();
+        newStatus = new Select<StatusContract>();
         newStatus.addClassName("modifyformfield");
         newStatus.setLabel("Nuevo estado:");
-        newStatus.setItems(Status.ACTIVO, Status.ENPROCESO, Status.CANCELADO);
-        newStatus.setValue(Status.ENPROCESO);
+        newStatus.setItems(StatusContract.ACTIVO, StatusContract.ENPROCESO, StatusContract.CANCELADO);
+        newStatus.setValue(StatusContract.ENPROCESO);
         newStatus.setHelperText("CANCELADO, implica la desvinculación de las líneas móviles de dicho contrato.");
         newStatus.setId("newStatus");
 
@@ -218,11 +218,11 @@ public class modifyContractView extends VerticalLayout {
             Fee fee = feeService.getFeeByTitle(contractsFees.getValue());
             Contract c = contractService.getContractByUserIdAndFeeIdAndStatus(user.getId(), fee.getId(),
                     actualStatus.getValue());
-            if (newStatus.getValue().equals(Status.ACTIVO) ||
-                    newStatus.getValue().equals(Status.ENPROCESO)) {
+            if (newStatus.getValue().equals(StatusContract.ACTIVO) ||
+                    newStatus.getValue().equals(StatusContract.ENPROCESO)) {
                 c.setStatus(newStatus.getValue());
                 c.setEndDate(null);
-            } else if (newStatus.getValue().equals(Status.CANCELADO)) {
+            } else if (newStatus.getValue().equals(StatusContract.CANCELADO)) {
                 mobileLineService.deleteMobileLinesByContractId(c.getId());
                 c.setStatus(newStatus.getValue());
                 c.setEndDate(LocalDate.now());

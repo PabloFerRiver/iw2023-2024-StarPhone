@@ -1,6 +1,7 @@
 package com.application.MobileLine.Repository;
 
 import com.application.MobileLine.Entities.Fee;
+import com.application.MobileLine.Entities.StatusFee;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,4 +17,6 @@ public interface FeeRepository extends JpaRepository<Fee, UUID> {
     Optional<Fee> findByTitle(String title);
 
     Optional<Fee> findById(UUID id);
+
+    List<Fee> findByStatus(StatusFee status);
 }

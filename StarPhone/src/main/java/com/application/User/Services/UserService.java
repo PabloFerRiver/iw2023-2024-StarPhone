@@ -1,7 +1,7 @@
 package com.application.User.Services;
 
 import com.application.Contract.Entities.Contract;
-import com.application.Contract.Entities.Status;
+import com.application.Contract.Entities.StatusContract;
 import com.application.Contract.Service.ContractService;
 import com.application.MobileLine.Entities.MobileLine;
 import com.application.MobileLine.Service.MobileLineService;
@@ -100,8 +100,9 @@ public class UserService implements UserDetailsService {
             // Cuando un usuario se registra no puede tener otro contrato abierto con su
             // misma id,
             // en otros casos, si podría tenerlo, código válido solo para el registro
-            Contract contract = contractService.getContractByUserIdAndStatus(user.get().getId(), Status.ENPROCESO);
-            contract.setStatus(Status.ACTIVO);
+            Contract contract = contractService.getContractByUserIdAndStatus(user.get().getId(),
+                    StatusContract.ENPROCESO);
+            contract.setStatus(StatusContract.ACTIVO);
 
             // Creamos Línea de Móvil y la asociamos al contrato anterior
             MobileLine mobileLine = new MobileLine();

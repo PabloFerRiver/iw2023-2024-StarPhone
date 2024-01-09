@@ -4,7 +4,7 @@ import com.application.User.Entities.User;
 import com.application.User.Services.UserService;
 import com.application.User.Views.menu;
 import com.application.Contract.Entities.Contract;
-import com.application.Contract.Entities.Status;
+import com.application.Contract.Entities.StatusContract;
 import com.application.Contract.Service.ContractService;
 import com.application.MobileLine.Entities.Fee;
 import com.application.MobileLine.Service.FeeService;
@@ -43,7 +43,7 @@ public class createContractView extends VerticalLayout {
     TextField DNI;
     EmailField email;
     Select<String> fees;
-    Select<Status> status;
+    Select<StatusContract> status;
     Button confirm;
     private final ContractService contractService;
     private final UserService userService;
@@ -116,11 +116,11 @@ public class createContractView extends VerticalLayout {
         }
         fees.setId("fees");
 
-        status = new Select<Status>();
+        status = new Select<StatusContract>();
         status.addClassName("registerformfield");
         status.setLabel("Estado:");
-        status.setItems(Status.ACTIVO, Status.ENPROCESO, Status.CANCELADO);
-        status.setValue(Status.ENPROCESO);
+        status.setItems(StatusContract.ACTIVO, StatusContract.ENPROCESO, StatusContract.CANCELADO);
+        status.setValue(StatusContract.ENPROCESO);
         status.setId("status");
 
         confirm = new Button("Confirmar");

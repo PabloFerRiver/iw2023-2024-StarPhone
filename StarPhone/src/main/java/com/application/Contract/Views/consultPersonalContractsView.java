@@ -1,7 +1,7 @@
 package com.application.Contract.Views;
 
 import com.application.Contract.Entities.Contract;
-import com.application.Contract.Entities.Status;
+import com.application.Contract.Entities.StatusContract;
 import com.application.Contract.Service.ContractService;
 import com.application.MobileLine.Entities.Fee;
 import com.application.MobileLine.Entities.MobileLine;
@@ -37,7 +37,7 @@ public class consultPersonalContractsView extends VerticalLayout {
     H3 titleDelete;
     H4 feeText, statusText, startDateText, linesNumbersText;
     Select<String> contractsFees;
-    Select<Status> status;
+    Select<StatusContract> status;
     Select<Integer> lines;
     Button confirm;
     private final MobileLineService mobileService;
@@ -68,7 +68,7 @@ public class consultPersonalContractsView extends VerticalLayout {
         List<String> feesTitles = new ArrayList<>();
         List<Contract> contractsUser = contractService.getContractsByUserId(authenticatedUser.get().get().getId());
         for (Contract c : contractsUser) {
-            if (!c.getStatus().equals(Status.CANCELADO))
+            if (!c.getStatus().equals(StatusContract.CANCELADO))
                 feesTitles.add(c.getFee().getTitle());
 
             if (feesTitles.size() > 0) {
@@ -79,12 +79,12 @@ public class consultPersonalContractsView extends VerticalLayout {
             }
         }
 
-        status = new Select<Status>();
+        status = new Select<StatusContract>();
         status.addClassName("activefield");
         status.setLabel("Estado:");
         status.setId("status");
 
-        List<Status> contractStatus = new ArrayList<>();
+        List<StatusContract> contractStatus = new ArrayList<>();
         contractsFees.addValueChangeListener(event -> {
             List<Contract> contracts = new ArrayList<>();
             User user = authenticatedUser.get().get();
@@ -92,7 +92,7 @@ public class consultPersonalContractsView extends VerticalLayout {
             if (user.getId() != null) {
                 contracts = contractService.getContractsByUserIdAndFeeId(user.getId(), fee.getId());
                 for (Contract c : contracts) {
-                    if (!c.getStatus().equals(Status.CANCELADO))
+                    if (!c.getStatus().equals(StatusContract.CANCELADO))
                         contractStatus.add(c.getStatus());
                 }
 

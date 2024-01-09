@@ -4,7 +4,7 @@ import com.application.User.Entities.User;
 import com.application.User.Services.UserService;
 import com.application.User.Views.menu;
 import com.application.Contract.Entities.Contract;
-import com.application.Contract.Entities.Status;
+import com.application.Contract.Entities.StatusContract;
 import com.application.Contract.Service.ContractService;
 import com.application.MobileLine.Entities.Fee;
 import com.application.MobileLine.Entities.MobileLine;
@@ -43,7 +43,7 @@ public class createMobileLineView extends VerticalLayout {
     IntegerField phoneNumber;
     RadioButtonGroup<Boolean> roaming, shareData;
     Select<String> contractsFees;
-    Select<Status> status;
+    Select<StatusContract> status;
     Button confirm;
     private final MobileLineService mobileLineService;
     private final ContractService contractService;
@@ -99,7 +99,7 @@ public class createMobileLineView extends VerticalLayout {
             if (user.getId() != null) {
                 contracts = contractService.getContractsByUserId(user.getId());
                 for (Contract c : contracts) {
-                    if (!c.getStatus().equals(Status.CANCELADO))
+                    if (!c.getStatus().equals(StatusContract.CANCELADO))
                         feeTitles.add(c.getFee().getTitle());
                 }
 
@@ -113,12 +113,12 @@ public class createMobileLineView extends VerticalLayout {
             }
         });
 
-        status = new Select<Status>();
+        status = new Select<StatusContract>();
         status.addClassName("modifyformfield");
         status.setLabel("Estado del contrato anterior:");
         status.setId("actualstatus");
 
-        List<Status> contractStatus = new ArrayList<>();
+        List<StatusContract> contractStatus = new ArrayList<>();
         contractsFees.addValueChangeListener(event -> {
             List<Contract> contracts = new ArrayList<>();
             User user = userService.getUserByDNI(DNI.getValue());
@@ -126,7 +126,7 @@ public class createMobileLineView extends VerticalLayout {
             if (user.getId() != null) {
                 contracts = contractService.getContractsByUserIdAndFeeId(user.getId(), fee.getId());
                 for (Contract c : contracts) {
-                    if (!c.getStatus().equals(Status.CANCELADO))
+                    if (!c.getStatus().equals(StatusContract.CANCELADO))
                         contractStatus.add(c.getStatus());
                 }
 

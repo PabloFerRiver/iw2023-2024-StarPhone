@@ -2,7 +2,7 @@ package com.application.Contract.Service;
 
 import org.springframework.stereotype.Service;
 import com.application.Contract.Entities.Contract;
-import com.application.Contract.Entities.Status;
+import com.application.Contract.Entities.StatusContract;
 import com.application.Contract.Repository.ContractRepository;
 import jakarta.transaction.Transactional;
 
@@ -33,7 +33,11 @@ public class ContractService {
         return contractRepository.findByUserId(user_id);
     }
 
-    public Contract getContractByUserIdAndFeeIdAndStatus(UUID user_id, UUID fee_id, Status status) {
+    public List<Contract> getContractsByFeeId(UUID fee_id) {
+        return contractRepository.findByFeeId(fee_id);
+    }
+
+    public Contract getContractByUserIdAndFeeIdAndStatus(UUID user_id, UUID fee_id, StatusContract status) {
         return contractRepository.findByUserIdAndFeeIdAndStatus(user_id, fee_id, status);
     }
 
@@ -52,7 +56,7 @@ public class ContractService {
     }
 
     @Transactional
-    public boolean deleteContractByUserIdAndFeeIdAndStatus(UUID user_id, UUID fee_id, Status status) {
+    public boolean deleteContractByUserIdAndFeeIdAndStatus(UUID user_id, UUID fee_id, StatusContract status) {
         Contract c = contractRepository.findByUserIdAndFeeIdAndStatus(user_id, fee_id, status);
         try {
             contractRepository.delete(c);
@@ -71,7 +75,7 @@ public class ContractService {
         return (int) contractRepository.count();
     }
 
-    public Contract getContractByUserIdAndStatus(UUID id, Status enproceso) {
+    public Contract getContractByUserIdAndStatus(UUID id, StatusContract enproceso) {
         return null;
     }
 
