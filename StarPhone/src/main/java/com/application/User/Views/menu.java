@@ -148,7 +148,8 @@ public class menu extends AppLayout {
             nav.addItem(navItem);
         }
 
-        if (accessChecker.hasAccess(feesViewMenu.class) && hasRole(authenticatedUser.get().get(), Role.CUSTOMER)) {
+        if (accessChecker.hasAccess(feesViewMenu.class) && hasRole(authenticatedUser.get().get(), Role.CUSTOMER) &&
+                authenticatedUser.get().get().getRoles().size() == 1) {
             SvgIcon icon = LineAwesomeIcon.SEARCH_SOLID.create();
             icon.addClassName("icons");
             navItem = new SideNavItem("Consultar Tarifas", feesViewMenu.class,
