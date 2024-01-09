@@ -47,6 +47,26 @@
     
 }
 
+.buttonsX {
+    width: auto;
+    height: 120px;
+    padding: 40px;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    font-size: 24px;
+    font-weight: 700;
+    background-color: rgb(135, 206, 235);
+    border: 6px solid black;
+    border-radius: 24px;
+}
+
+.icons {
+    width: 30px;
+    height: 30px;
+    color: black;
+}
+
 /*REGISTER*/
 .bodysregister {
     width: 100%;
@@ -228,7 +248,7 @@ vaadin-app-layout::part(navbar) {
 }
 
 vaadin-app-layout::part(drawer) {
-    width: 320px;
+    width: 280px;
 }
 
 .sideNavItem {
