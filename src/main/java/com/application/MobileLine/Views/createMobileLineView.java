@@ -228,6 +228,7 @@ public class createMobileLineView extends VerticalLayout {
             Fee fee = feeService.getFeeByTitle(contractsFees.getValue());
             Contract cont = contractService.getContractByUserIdAndFeeIdAndStatus(user.getId(), fee.getId(),
                     status.getValue());
+            System.out.println("OK");
             List<MobileLine> mLinesOfContract = mobileLineService.getMobileLinesByContractId(cont.getId());
             if (mLinesOfContract.size() < fee.getMaxMobileLines()) {
                 MobileLine mL = new MobileLine();
@@ -241,7 +242,7 @@ public class createMobileLineView extends VerticalLayout {
                             .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
                     UI.getCurrent().navigate("/menu");
                 } else {
-                    Notification.show("Algo falló! Revise los datos.").addThemeVariants(
+                    Notification.show("Algo falló! No se ha podido crear la línea móvil.").addThemeVariants(
                             NotificationVariant.LUMO_ERROR);
                 }
             } else {

@@ -77,7 +77,7 @@ public class createFeeView extends VerticalLayout {
 
         maxMobileLines = new IntegerField();
         maxMobileLines.addClassName("registerformfield");
-        maxMobileLines.setLabel("Líneas Móviles:");
+        maxMobileLines.setLabel("Máx Líneas Móviles:");
         maxMobileLines.setId("maxMobileLines");
 
         descriptionMobile = new TextField();

@@ -137,7 +137,6 @@ public class registerView extends VerticalLayout {
             titles.add(fee.getTitle());
         }
         fees.setItems(titles);
-        fees.setValue("Tarifa 1");
 
         confirm = new Button("Registrarse");
         confirm.addClassName("registerformbutton");
@@ -212,16 +211,22 @@ public class registerView extends VerticalLayout {
             if (userService.registerUser(binder.getBean())) {
                 Notification.show("Genial. Registrado correctamente, revise su email!!")
                         .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                Contract contract = new Contract();
-                contract.setUser(userService.getUserByEmail(email.getValue()));
-                contract.setFee(feeService.getFeeByTitle(fees.getValue()));
-                contract.setStatus(StatusContract.ENPROCESO);
-                contract.setStartDate(LocalDate.now());
-                if (contractService.saveContract(contract)) {
-                    UI.getCurrent().navigate("/activaruser");
+                if (fees.getValue() != null) {
+                    Contract contract = new Contract();
+                    contract.setUser(userService.getUserByEmail(email.getValue()));
+                    contract.setFee(feeService.getFeeByTitle(fees.getValue()));
+                    contract.setStatus(StatusContract.ENPROCESO);
+                    contract.setStartDate(LocalDate.now());
+                    if (contractService.saveContract(contract)) {
+                        UI.getCurrent().navigate("/activaruser");
+                    } else {
+                        Notification.show("Error! Inténtelo de nuevo.")
+                                .addThemeVariants(NotificationVariant.LUMO_ERROR);
+                    }
                 } else {
-                    Notification.show("Error! Inténtelo de nuevo.")
+                    Notification.show("Actualmente no ofrecemos servicios, disculpe las molestias.")
                             .addThemeVariants(NotificationVariant.LUMO_ERROR);
+                    UI.getCurrent().navigate("/");
                 }
             } else {
                 Notification.show("Revise los datos, si el fallo persiste, contacte con nosotros.")

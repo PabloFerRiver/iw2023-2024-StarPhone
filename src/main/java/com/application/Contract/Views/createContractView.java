@@ -118,7 +118,7 @@ public class createContractView extends VerticalLayout {
 
         status = new Select<StatusContract>();
         status.addClassName("registerformfield");
-        status.setLabel("Estado:");
+        status.setLabel("Estado del contrato:");
         status.setItems(StatusContract.ACTIVO, StatusContract.ENPROCESO, StatusContract.CANCELADO);
         status.setValue(StatusContract.ENPROCESO);
         status.setId("status");
