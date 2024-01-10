@@ -78,7 +78,8 @@
     "date-fns": "2.29.3",
     "lit": "2.8.0",
     "mobile-drag-drop": "2.3.0-rc.2",
-    "proj4": "2.9.2"
+    "proj4": "2.9.2",
+    "wc-chatbot": "0.1.1"
   },
   "devDependencies": {
     "@rollup/plugin-replace": "5.0.2",
@@ -174,7 +175,8 @@
       "date-fns": "2.29.3",
       "lit": "2.8.0",
       "mobile-drag-drop": "2.3.0-rc.2",
-      "proj4": "2.9.2"
+      "proj4": "2.9.2",
+      "wc-chatbot": "0.1.1"
     },
     "devDependencies": {
       "@rollup/plugin-replace": "5.0.2",
@@ -193,7 +195,7 @@
       "workbox-core": "7.0.0",
       "workbox-precaching": "7.0.0"
     },
-    "hash": "24c5f324a8f0c89b5a3dfc4787237e0df6132f871afd17a0a0b85c2ec8e8d40d"
+    "hash": "9c19b3191376e158f9a5f7687bc2da89a2ef7b52508c07f5bd204dd74eb157cb"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -271,6 +273,7 @@
     "proj4": "$proj4",
     "@vaadin/vaadin-themable-mixin": "$@vaadin/vaadin-themable-mixin",
     "date-fns": "$date-fns",
-    "mobile-drag-drop": "$mobile-drag-drop"
+    "mobile-drag-drop": "$mobile-drag-drop",
+    "wc-chatbot": "$wc-chatbot"
   }
 }
