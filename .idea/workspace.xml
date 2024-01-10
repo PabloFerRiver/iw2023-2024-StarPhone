@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="00b794c0-c7be-4a23-a46d-c0856087c693" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/StarPhone/src/main/java/com/application/Clases/AbstractEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StarPhone/src/main/java/com/application/Clases/ConsultasReclamaciones.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StarPhone/src/main/java/com/application/Clases/Contrato.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StarPhone/src/main/java/com/application/Clases/Factura.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StarPhone/src/main/java/com/application/Clases/LineaMovil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StarPhone/src/main/java/com/application/Clases/NumerosBloqueados.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StarPhone/src/main/java/com/application/Clases/RespuestaReclamacion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StarPhone/src/main/java/com/application/Clases/TipoServicio.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StarPhone/src/main/java/com/application/Clases/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StarPhone/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/StarPhone/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StarPhone/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/StarPhone/src/main/resources/application.properties" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenRunner">
+    <option name="delegateBuildToMaven" value="true" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2ZrHGQ4lT16oagvmhWHnMw02fJG" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "developing",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/carlo/OneDrive/Escritorio/Universidad/5º Año/IW/iw2023-2024-StarPhone/StarPhone",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.runner",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\carlo\OneDrive\Escritorio\Universidad\5º Año\IW\iw2023-2024-StarPhone\StarPhone\src\main\java\com\application\Clases" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.Unnamed">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="iw2023-2024-StarPhone" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="iw2023-2024-StarPhone" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Unnamed" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="cmdOptions" />
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list />
+            </option>
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="projectsCmdOptionValues">
+              <list />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <configuration name="Unnamed" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="iw2023-2024-StarPhone" />
+      <option name="SPRING_BOOT_MAIN_CLASS" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Maven.Unnamed" />
+      <item itemvalue="Spring Boot.Unnamed" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="00b794c0-c7be-4a23-a46d-c0856087c693" name="Changes" comment="" />
+      <created>1703173181786</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1703173181786</updated>
+      <workItem from="1703173182859" duration="775000" />
+      <workItem from="1703174036872" duration="45000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
