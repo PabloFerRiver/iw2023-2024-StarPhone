@@ -100,25 +100,32 @@ public class UserService implements UserDetailsService {
             // Cuando un usuario se registra no puede tener otro contrato abierto con su
             // misma id,
             // en otros casos, si podría tenerlo, código válido solo para el registro
-            Contract contract = contractService.getContractByUserIdAndStatus(user.get().getId(),
+            List<Contract> contracts = contractService.getContractsByUserIdAndStatus(user.get().getId(),
                     StatusContract.ENPROCESO);
-            contract.setStatus(StatusContract.ACTIVO);
+            if (contracts.size() > 0 && contracts.get(0).getId() != null) {
+                Contract c = contracts.get(0);
 
-            // Creamos Línea de Móvil y la asociamos al contrato anterior
-            MobileLine mobileLine = new MobileLine();
-            mobileLine.setUser(user.get());
-            mobileLine.setContract(contract);
-            mobileLine.setPhoneNumber(user.get().getPhoneNumber());
+                c.setStatus(StatusContract.ACTIVO);
 
-            try {
-                userRepository.save(user.get());
-                contractService.saveContract(contract);
-                mobileLineService.saveMobileLine(mobileLine);
-                return true;
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
+                // Creamos Línea de Móvil y la asociamos al contrato anterior
+                MobileLine mobileLine = new MobileLine();
+                mobileLine.setUser(user.get());
+                mobileLine.setContract(c);
+                mobileLine.setPhoneNumber(user.get().getPhoneNumber());
+
+                try {
+                    userRepository.save(user.get());
+                    contractService.saveContract(c);
+                    mobileLineService.saveMobileLine(mobileLine);
+                    return true;
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+            } else {
                 return false;
             }
+
         }
         return false;
     }

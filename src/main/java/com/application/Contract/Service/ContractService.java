@@ -71,12 +71,11 @@ public class ContractService {
         return contractRepository.findAll();
     }
 
+    public List<Contract> getContractsByUserIdAndStatus(UUID user_id, StatusContract status) {
+        return contractRepository.findByUserIdAndStatus(user_id, status);
+    }
+
     public int count() {
         return (int) contractRepository.count();
     }
-
-    public Contract getContractByUserIdAndStatus(UUID id, StatusContract enproceso) {
-        return null;
-    }
-
 }

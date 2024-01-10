@@ -211,7 +211,7 @@ public class registerView extends VerticalLayout {
             if (userService.registerUser(binder.getBean())) {
                 Notification.show("Genial. Registrado correctamente, revise su email!!")
                         .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                if (fees.getValue() != null) {
+                if (!fees.getValue().isEmpty()) {
                     Contract contract = new Contract();
                     contract.setUser(userService.getUserByEmail(email.getValue()));
                     contract.setFee(feeService.getFeeByTitle(fees.getValue()));

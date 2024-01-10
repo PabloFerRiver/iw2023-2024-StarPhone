@@ -24,5 +24,7 @@ public interface ContractRepository extends JpaRepository<Contract, UUID> {
 
         Contract findByUserIdAndFeeIdAndStatus(UUID userId, UUID fee_id, StatusContract status);
 
+        List<Contract> findByUserIdAndStatus(UUID user_id, StatusContract status);
+
         List<Contract> findAll();
 }
