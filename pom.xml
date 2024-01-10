@@ -9,9 +9,9 @@
     </parent>
     <!-- Project from https://start.vaadin.com/project/e0c3a0bb-af87-4075-a9cd-939635fb257c -->
     <groupId>com.example.application</groupId>
-    <artifactId>starphonepackage</artifactId>
+    <artifactId>starphonedesplieguepackage</artifactId>
     <name>StarPhonePackage</name>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1.8-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -44,10 +44,11 @@
     </dependencyManagement>
 
     <dependencies>
+
         <dependency>
-            <groupId>org.mariadb.jdbc</groupId>
-            <artifactId>mariadb-java-client</artifactId>
-            <version>2.7.4</version>
+           <groupId>mysql</groupId>
+           <artifactId>mysql-connector-java</artifactId>
+           <version>8.0.23</version>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
@@ -83,6 +84,13 @@
             <artifactId>vaadin-testbench-junit5</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-testbench-core</artifactId>
+            <version>6.3.0</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -107,11 +115,32 @@
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
-         <dependency>
+        <dependency>
             <groupId>org.vaadin.addons.flowingcode</groupId>
             <artifactId>chat-assistant-addon</artifactId>
-         <version>1.0.0</version>
-    </dependency>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.7.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.7.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite-api</artifactId>
+            <version>1.7.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
      <distributionManagement>
