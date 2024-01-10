@@ -3,13 +3,15 @@ package com.application.MobileLine.Entities;
 import com.application.General.AbstractEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+
 import java.util.UUID;
 
 @Entity
 @Table(name = "fee", indexes = {
-        @Index(name = "idx_fee", columnList = "id", unique = false)
+        @Index(name = "id_fee", columnList = "id", unique = false)
 })
 public class Fee extends AbstractEntity {
 
@@ -20,7 +22,7 @@ public class Fee extends AbstractEntity {
     private UUID id;
 
     @NotEmpty
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", unique = true, nullable = false)
     private String title;
 
     @NotEmpty
@@ -35,9 +37,30 @@ public class Fee extends AbstractEntity {
     @Column(name = "descriptionTV", nullable = false)
     private String descriptionTV;
 
-    @NotEmpty
+    @NotNull
+    @Column(name = "monthlyData", nullable = false)
+    private Double monthlyData;
+
+    @NotNull
+    @Column(name = "monthlyCalls", nullable = false)
+    private int monthlyCalls;
+
+    @NotNull
+    @Column(name = "monthlySMS", nullable = false)
+    private int monthlySMS;
+
+    @NotNull
     @Column(name = "monthlyprice", nullable = false)
     private double monthlyprice;
+
+    @NotNull
+    @Column(name = "maxMobileLines", nullable = false)
+    private int maxMobileLines;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private StatusFee status;
 
     @Override
     public UUID getId() {
@@ -76,8 +99,32 @@ public class Fee extends AbstractEntity {
         return descriptionTV;
     }
 
-    public void setDescription(String descriptionTV) {
+    public void setDescriptionTV(String descriptionTV) {
         this.descriptionTV = descriptionTV;
+    }
+
+    public Double getMonthlyData() {
+        return this.monthlyData;
+    }
+
+    public void setMonthlyData(Double monthlyData) {
+        this.monthlyData = monthlyData;
+    }
+
+    public int getMonthlyCalls() {
+        return this.monthlyCalls;
+    }
+
+    public void setMonthlyCalls(int monthlyCalls) {
+        this.monthlyCalls = monthlyCalls;
+    }
+
+    public int getMonthlySMS() {
+        return this.monthlySMS;
+    }
+
+    public void setMonthlySMS(int monthlySMS) {
+        this.monthlySMS = monthlySMS;
     }
 
     public double getMonthlyprice() {
@@ -86,5 +133,21 @@ public class Fee extends AbstractEntity {
 
     public void setMonthlyprice(double monthlyprice) {
         this.monthlyprice = monthlyprice;
+    }
+
+    public int getMaxMobileLines() {
+        return this.maxMobileLines;
+    }
+
+    public void setMaxMobileLines(int maxMobileLines) {
+        this.maxMobileLines = maxMobileLines;
+    }
+
+    public StatusFee getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(StatusFee status) {
+        this.status = status;
     }
 }

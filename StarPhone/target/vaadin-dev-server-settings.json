@@ -1,0 +1,17 @@
+{
+  "frontendFolder": "C:/iw2023-2024-StarPhone/StarPhone/frontend",
+  "themeFolder": "themes",
+  "themeResourceFolder": "C:/iw2023-2024-StarPhone/StarPhone/frontend/generated/jar-resources",
+  "staticOutput": "C:/iw2023-2024-StarPhone/StarPhone/target/classes/META-INF/VAADIN/webapp/VAADIN/static",
+  "generatedFolder": "generated",
+  "statsOutput": "C:\\iw2023-2024-StarPhone\\StarPhone\\target\\classes\\META-INF\\VAADIN\\config",
+  "frontendBundleOutput": "C:\\iw2023-2024-StarPhone\\StarPhone\\target\\classes\\META-INF\\VAADIN\\webapp",
+  "devBundleOutput": "C:/iw2023-2024-StarPhone/StarPhone/src/main/dev-bundle/webapp",
+  "devBundleStatsOutput": "C:/iw2023-2024-StarPhone/StarPhone/src/main/dev-bundle/config",
+  "jarResourcesFolder": "C:/iw2023-2024-StarPhone/StarPhone/frontend/generated/jar-resources",
+  "themeName": "mytodo",
+  "clientServiceWorkerSource": "C:\\iw2023-2024-StarPhone\\StarPhone\\target\\sw.ts",
+  "pwaEnabled": false,
+  "offlineEnabled": false,
+  "offlinePath": "'offline.html'"
+}

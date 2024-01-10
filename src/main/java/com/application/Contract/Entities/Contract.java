@@ -5,7 +5,6 @@ import com.application.MobileLine.Entities.MobileLine;
 import com.application.User.Entities.User;
 import com.application.MobileLine.Entities.Fee;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -16,7 +15,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "contract", indexes = {
-        @Index(name = "idx_user", columnList = "user_id", unique = false)
+        @Index(name = "id_userfeestatus", columnList = "user_id, fee_id, status", unique = true),
 })
 public class Contract extends AbstractEntity {
     @Id
@@ -35,25 +34,25 @@ public class Contract extends AbstractEntity {
     @NotNull
     private Fee fee;
 
-    @NotEmpty
-    @Column(name = "status")
-    private String status;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private StatusContract status;
 
-    @NotEmpty
-    @Column(name = "startDate")
+    @NotNull
+    @Column(name = "startDate", nullable = false)
     private LocalDate startDate;
 
-    @NotEmpty
     @Column(name = "endDate")
     private LocalDate endDate;
 
-    @OneToMany(mappedBy = "contract")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contract")
     private List<MobileLine> mobileLines;
 
-    @OneToMany(mappedBy = "contract")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contract")
     private List<Bill> bills;
 
-    @OneToMany(mappedBy = "contract")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contract")
     private List<QueryComplaint> queryComplaints;
 
     @Override
@@ -73,11 +72,19 @@ public class Contract extends AbstractEntity {
         this.user = user;
     }
 
-    public String getStatus() {
+    public Fee getFee() {
+        return fee;
+    }
+
+    public void setFee(Fee fee) {
+        this.fee = fee;
+    }
+
+    public StatusContract getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusContract status) {
         this.status = status;
     }
 
@@ -120,5 +127,4 @@ public class Contract extends AbstractEntity {
     public void setQueryComplaints(List<QueryComplaint> queryComplaints) {
         this.queryComplaints = queryComplaints;
     }
-
 }

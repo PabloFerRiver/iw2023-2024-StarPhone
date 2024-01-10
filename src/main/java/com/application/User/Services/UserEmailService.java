@@ -31,33 +31,31 @@ public class UserEmailService implements EmailService {
             helper.setSubject(asunto);
             helper.setText(body);
             this.mailSender.send(message);
+            return true;
         } catch (MailException | MessagingException ex) {
-            ex.printStackTrace();
+            System.err.println(ex.getMessage());
             return false;
         }
-
-        return true;
     }
 
     @Override
-    public boolean sendForgotPasswordEmail(User usu, String password, String imagen) {
+    public boolean sendForgotPasswordEmail(User usu, String password) {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
+        String asunto = "Solicitud de Recuperación de Credenciales";
         String body = "Su nueva contraseña es: " + password;
-        String asunto = "Solicitud de reestablecimiento de contraseña";
+
         try {
             helper.setFrom(defaultMail);
             helper.setTo(usu.getEmail());
             helper.setSubject(asunto);
             helper.setText(body);
             this.mailSender.send(message);
+            return true;
         } catch (MailException | MessagingException ex) {
-            ex.printStackTrace();
+            System.err.println(ex.getMessage());
             return false;
         }
-        return true;
     }
-
-
 
 }

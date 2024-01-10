@@ -2,17 +2,20 @@ package com.application.MobileLine.Entities;
 
 import com.application.General.AbstractEntity;
 import com.application.Contract.Entities.Contract;
+import com.application.User.Entities.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "mobileline", indexes = {
-        @Index(name = "idx_contract", columnList = "contract_id", unique = false)
+        @Index(name = "id_contract", columnList = "contract_id", unique = false),
+        @Index(name = "mobLinePhoneNum", columnList = "phoneNumber", unique = true)
 })
 public class MobileLine extends AbstractEntity {
 
@@ -23,55 +26,39 @@ public class MobileLine extends AbstractEntity {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "contract_id")
+    @JoinColumn(name = "user_id")
+    @NotNull
+    private User user;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "contract_id", nullable = false)
     private Contract contract;
 
-    @NotEmpty
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @NotEmpty
-    @Column(name = "surname", nullable = false)
-    private String surname;
-
-    @NotEmpty
-    @Enumerated(EnumType.STRING)
-    @Column(name = "serviceType", nullable = false)
-    private ServiceType serviceType;
-
-    @NotEmpty
-    @Column(name = "monthlyPrice", nullable = false)
-    private double monthlyPrice;
-
-    @NotEmpty
-    @Column(name = "phoneNumber", nullable = false)
-    private int phoneNumber;
-
-    @NotEmpty
-    @Column(name = "phoneModel", nullable = false)
-    private String phoneModel;
+    @NotNull
+    @Column(name = "phoneNumber", nullable = false, unique = true)
+    private Integer phoneNumber;
 
     @Column(name = "roaming", nullable = false)
-    private boolean roaming;
+    private boolean roaming = false;
 
     @Column(name = "shareData", nullable = false)
-    private boolean shareData;
+    private boolean shareData = false;
 
-    @Column(name = "monthlyDataVolume", nullable = false)
-    private double monthlyDataVolume;
-
-    @Column(name = "totalCalls", nullable = false)
-    private int totalCalls;
-
-    @Column(name = "totalSMS", nullable = false)
-    private int totalSMS;
-
-    @Column(name = "totalDataContract", nullable = false)
-    private double totalDataContract;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "mobileLine_id")
-    private List<BlockedNumbers> numerosBloqueados;
+    private List<CallRecords> callRecords = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "mobileLine_id")
+    private List<DataUsageRecords> dataUsageRecords = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "mobileLine_id")
+    private List<CallRecords> smsRecords = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "mobileLine_id")
+    private List<BlockedNumbers> blockedNumbers = new ArrayList<>();
 
     @Override
     public UUID getId() {
@@ -82,6 +69,14 @@ public class MobileLine extends AbstractEntity {
         this.id = id;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Contract getContract() {
         return contract;
     }
@@ -90,51 +85,11 @@ public class MobileLine extends AbstractEntity {
         this.contract = contract;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public ServiceType getServiceType() {
-        return serviceType;
-    }
-
-    public void setServiceType(ServiceType serviceType) {
-        this.serviceType = serviceType;
-    }
-
-    public double getMonthlyPrice() {
-        return monthlyPrice;
-    }
-
-    public void setMonthlyPrice(double monthlyPrice) {
-        this.monthlyPrice = monthlyPrice;
-    }
-
-    public String getPhoneModel() {
-        return phoneModel;
-    }
-
-    public void setPhoneModel(String phoneModel) {
-        this.phoneModel = phoneModel;
-    }
-
-    public int getPhoneNumber() {
+    public Integer getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(Integer phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -146,7 +101,11 @@ public class MobileLine extends AbstractEntity {
         this.roaming = roaming;
     }
 
-    public boolean isShareData() {
+    public boolean getRoaming() {
+        return roaming;
+    }
+
+    public boolean getShareData() {
         return shareData;
     }
 
@@ -154,44 +113,16 @@ public class MobileLine extends AbstractEntity {
         this.shareData = shareData;
     }
 
-    public Double getMonthlyDataVolume() {
-        return monthlyDataVolume;
+    public List<BlockedNumbers> getBlockedNumbers() {
+        return this.blockedNumbers;
     }
 
-    public void setMonthlyDataVolume(Double monthlyDataVolume) {
-        this.monthlyDataVolume = monthlyDataVolume;
+    public void setBlockedNumbers(List<BlockedNumbers> blockedNumbers) {
+        this.blockedNumbers = blockedNumbers;
     }
 
-    public int getTotalCalls() {
-        return totalCalls;
-    }
-
-    public void setTotalCalls(int totalcalls) {
-        this.totalCalls = totalcalls;
-    }
-
-    public int getTotalSMS() {
-        return totalSMS;
-    }
-
-    public void setTotalSMS(int totalSMS) {
-        this.totalSMS = totalSMS;
-    }
-
-    public Double getTotalDataContract() {
-        return totalDataContract;
-    }
-
-    public void setTotalDataContract(Double totalDataContract) {
-        this.totalDataContract = totalDataContract;
-    }
-
-    public List<BlockedNumbers> getNumerosBloqueados() {
-        return this.numerosBloqueados;
-    }
-
-    public void setNumerosBloqueados(List<BlockedNumbers> numerosBloqueados) {
-        this.numerosBloqueados = numerosBloqueados;
+    public void addBlockedNumber(BlockedNumbers blockedNumbers) {
+        this.blockedNumbers.add(blockedNumbers);
     }
 
 }

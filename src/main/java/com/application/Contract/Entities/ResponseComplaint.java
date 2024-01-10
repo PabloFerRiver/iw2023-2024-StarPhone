@@ -30,8 +30,8 @@ public class ResponseComplaint extends AbstractEntity {
 
     // Trabajador que responde, es decir, el que tiene el rol de Atencion_Cliente
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
     @NotNull
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Override

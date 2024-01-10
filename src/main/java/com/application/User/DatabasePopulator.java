@@ -30,14 +30,9 @@ public class DatabasePopulator implements CommandLineRunner {
             user.setCity("Madrid");
             user.setCountry("España");
             user.setBirthdate(LocalDate.of(1999, 1, 1));
-
             user.setPhoneNumber(123456789);
-
             user.addRole(Role.ADMIN);
-            userservice.registerUser(user);
-            System.out.println("Admin created");
-
+            userservice.registerUserByAdmin(user);
         }
-
     }
 }

@@ -22,12 +22,12 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 public class activateUserView extends VerticalLayout {
 
     VerticalLayout bodyDiv, centerDiv, confirmSquare;
-    HorizontalLayout titleDiv, footerDiv;
+    HorizontalLayout titleDiv;
     H3 confirmTitle;
     EmailField email;
     TextField confirmCode;
-    Button confirmar;
-    UserService userService;
+    Button confirm;
+    private final UserService userService;
 
     public activateUserView(UserService uService) {
         setWidthFull();
@@ -48,9 +48,9 @@ public class activateUserView extends VerticalLayout {
         confirmCode.setId("confirmCode");
         confirmCode.setRequired(true);
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("activebutton");
-        confirmar.addClickListener(e -> onActivateuserClick());
+        confirm = new Button("Confirmar");
+        confirm.addClassName("activebutton");
+        confirm.addClickListener(e -> onActivateuserClick());
         // ---------------------------
 
         centerDiv = new VerticalLayout();
@@ -76,24 +76,20 @@ public class activateUserView extends VerticalLayout {
         titleDiv.getStyle().set("border-radius", "12px 12px 0 0");
         titleDiv.getStyle().set("background-color", "rgb(135, 206, 235)");
         confirmTitle = new H3("Activar Usuario");
-        confirmTitle.getStyle().set("font-size", "26px");
+        confirmTitle.getStyle().set("font-size", "28px");
         confirmTitle.getStyle().set("color", "white");
         titleDiv.add(confirmTitle);
         confirmSquare.add(titleDiv);
 
-        bodyDiv = new VerticalLayout(email, confirmCode, confirmar);
+        bodyDiv = new VerticalLayout(email, confirmCode, confirm);
         bodyDiv.setWidthFull();
         bodyDiv.setJustifyContentMode(JustifyContentMode.START);
         bodyDiv.setAlignItems(Alignment.CENTER);
+        bodyDiv.setPadding(false);
+        bodyDiv.setSpacing(false);
         bodyDiv.getStyle().set("background-color", "rgb(255, 255, 255)");
+        bodyDiv.getStyle().set("border-radius", "0 0 12px 12px");
         confirmSquare.add(bodyDiv);
-
-        footerDiv = new HorizontalLayout();
-        footerDiv.setWidthFull();
-        footerDiv.setHeight("60px");
-        footerDiv.getStyle().set("border-radius", "0 0 12px 12px");
-        footerDiv.getStyle().set("background-color", "rgb(135, 206, 235)");
-        confirmSquare.add(footerDiv);
         expand(bodyDiv);
 
         centerDiv.add(confirmSquare);
@@ -104,13 +100,18 @@ public class activateUserView extends VerticalLayout {
     }
 
     public void onActivateuserClick() {
-        if (userService.isActivated(email.getValue()))
-            UI.getCurrent().getPage().setLocation("/");
-        if (userService.activateUserCode(email.getValue(), confirmCode.getValue())) {
-            UI.getCurrent().getPage().setLocation("/menucliente");
+        if (!email.getValue().isEmpty() && !confirmCode.getValue().isEmpty()) {
+            confirm.setEnabled(false);
+            if (userService.isActivated(email.getValue())) {
+                UI.getCurrent().getPage().setLocation("/");
+            } else if (userService.activateUserCode(email.getValue(), confirmCode.getValue())) {
+                UI.getCurrent().getPage().setLocation("/menu");
+            } else {
+                Notification.show("Código de activación incorrecto").addThemeVariants(NotificationVariant.LUMO_ERROR);
+                UI.getCurrent().getPage().setLocation("/activaruser");
+            }
         } else {
-            Notification.show("Código de activación incorrecto").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-            UI.getCurrent().getPage().setLocation("/activateuser");
+            Notification.show("Rellene todos los campos!").addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
     }
 }

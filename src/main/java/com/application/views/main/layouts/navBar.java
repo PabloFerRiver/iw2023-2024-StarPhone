@@ -9,11 +9,11 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 @CssImport("./styles/styles.css")
 public class navBar extends HorizontalLayout {
 
-    VerticalLayout firstDiv, secondDiv, thirdDiv, fourthDiv;
-    Anchor a1, a2, a3, a4;
+    VerticalLayout firstDiv, secondDiv;
+    Anchor a1, a2;
 
     public navBar() {
-        setWidth(70, Unit.PERCENTAGE);
+        setWidth(50, Unit.PERCENTAGE);
         setHeight("50px");
         getStyle().set("background-color", "rgb(135, 206, 235)");
         getStyle().set("border", "2px solid black");
@@ -23,31 +23,16 @@ public class navBar extends HorizontalLayout {
 
         firstDiv = new VerticalLayout();
         firstDiv.addClassName("vlNavBar");
-        a1 = new Anchor("#", "MÓVIL+FIBRA");
+        a1 = new Anchor("/starphonetarifas", "TARIFAS");
         a1.addClassName("anchor1");
         firstDiv.add(a1);
         add(firstDiv);
 
         secondDiv = new VerticalLayout();
         secondDiv.addClassName("vlNavBar");
-        a2 = new Anchor("#", "OFERTAS");
+        a2 = new Anchor("/atencionalcliente", "ATENCIÓN AL CLIENTE");
         a2.addClassName("anchor1");
         secondDiv.add(a2);
         add(secondDiv);
-
-        thirdDiv = new VerticalLayout();
-        thirdDiv.addClassName("vlNavBar");
-        add(thirdDiv);
-        a3 = new Anchor("#", "ATENCIÓN AL CLIENTE");
-        a3.addClassName("anchor1");
-        thirdDiv.add(a3);
-
-        fourthDiv = new VerticalLayout();
-        fourthDiv.addClassName("vlNavBar");
-        a4 = new Anchor("#", "NUESTROS VALORES");
-        a4.addClassName("anchor1");
-        fourthDiv.add(a4);
-        add(fourthDiv);
     }
-
 }

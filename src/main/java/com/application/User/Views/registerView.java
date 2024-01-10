@@ -1,17 +1,17 @@
 package com.application.User.Views;
 
 import com.application.User.Services.UserService;
+import com.application.Contract.Entities.Contract;
+import com.application.Contract.Entities.StatusContract;
+import com.application.Contract.Service.ContractService;
 import com.application.MobileLine.Entities.Fee;
 import com.application.MobileLine.Service.FeeService;
 import com.application.User.Entities.User;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.Pre;
-import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -26,6 +26,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,20 +37,27 @@ import java.util.List;
 public class registerView extends VerticalLayout {
 
     HorizontalLayout titleDiv, centerDiv, bodySubDiv1, bodySubDiv2, bodySubDiv3,
-            bodySubDiv4, bodySubDiv5, footerDiv;
+            bodySubDiv4, bodySubDiv5;
     VerticalLayout center, bodyDiv, registerForm;
     H3 titleRegister;
-    private final TextField name, surname, username, country, DNI, city;
-    private final DatePicker birthdate;
-    private final EmailField email;
-    private final IntegerField phoneNumber;
-    private final PasswordField password, repeatPassword;
-    private final Select<String> fees;
-    private final Button confirmar;
-    private final BeanValidationBinder<User> binder;
-    private final UserService service;
+    TextField name, surname, username, country, DNI, city;
+    DatePicker birthdate;
+    EmailField email;
+    IntegerField phoneNumber;
+    PasswordField password, repeatPassword;
+    Select<String> fees;
+    Button confirm;
 
-    public registerView(UserService service, FeeService feeService) {
+    private final BeanValidationBinder<User> binder;
+    private final UserService userService;
+    private final ContractService contractService;
+    private final FeeService feeService;
+
+    public registerView(UserService uService, ContractService cService, FeeService fService) {
+        userService = uService;
+        contractService = cService;
+        feeService = fService;
+
         setWidthFull();
         setHeightFull();
         addClassName("mainView");
@@ -66,7 +74,7 @@ public class registerView extends VerticalLayout {
 
         registerForm = new VerticalLayout();
         registerForm.setWidth("1200px");
-        registerForm.setHeight("600px");
+        registerForm.setHeight("700px");
         registerForm.setPadding(false);
         registerForm.setSpacing(false);
         registerForm.setAlignItems(Alignment.CENTER);
@@ -75,7 +83,7 @@ public class registerView extends VerticalLayout {
         // Campos formulario ------------------------------
         DNI = new TextField("DNI:");
         DNI.addClassName("registerformfield");
-        DNI.setMinLength(8);
+        DNI.setMinLength(9);
         DNI.setMaxLength(9);
         DNI.setId("DNI");
 
@@ -105,6 +113,7 @@ public class registerView extends VerticalLayout {
 
         phoneNumber = new IntegerField("Teléfono:");
         phoneNumber.addClassName("registerformfield");
+        phoneNumber.setHelperText("9 dígitos. Omita el prefijo internacional.");
         phoneNumber.setId("phoneNumber");
 
         email = new EmailField("Correo Electrónico:");
@@ -117,9 +126,9 @@ public class registerView extends VerticalLayout {
 
         repeatPassword = new PasswordField("Repetir Contraseña:");
         repeatPassword.addClassName("registerformfield");
-        repeatPassword.setId("repeatpassword");
+        repeatPassword.setId("repeatPassword");
 
-        List<Fee> feesList = feeService.findAll();
+        List<Fee> feesList = feeService.getAll();
         List<String> titles = new ArrayList<>();
         fees = new Select<>();
         fees.addClassName("registerformfield");
@@ -130,9 +139,9 @@ public class registerView extends VerticalLayout {
         fees.setItems(titles);
         fees.setValue("Tarifa 1");
 
-        confirmar = new Button("Registrarse");
-        confirmar.addClassName("registerformbutton");
-        confirmar.addClickListener(e -> {
+        confirm = new Button("Registrarse");
+        confirm.addClassName("registerformbutton");
+        confirm.addClickListener(e -> {
             onRegisterButtonClick();
         });
 
@@ -160,18 +169,24 @@ public class registerView extends VerticalLayout {
 
         bodySubDiv1 = new HorizontalLayout(name, surname, DNI);
         bodySubDiv1.setSpacing(false);
+        bodySubDiv1.setPadding(false);
         bodySubDiv1.addClassName("bodysregister");
+        bodySubDiv1.getStyle().set("margin-top", "30px");
         bodySubDiv2 = new HorizontalLayout(username, birthdate, fees);
         bodySubDiv2.setSpacing(false);
+        bodySubDiv2.setPadding(false);
         bodySubDiv2.addClassName("bodysregister");
         bodySubDiv3 = new HorizontalLayout(email, password, repeatPassword);
         bodySubDiv3.setSpacing(false);
+        bodySubDiv3.setPadding(false);
         bodySubDiv3.addClassName("bodysregister");
         bodySubDiv4 = new HorizontalLayout(phoneNumber, city, country);
         bodySubDiv4.setSpacing(false);
+        bodySubDiv4.setPadding(false);
         bodySubDiv4.addClassName("bodysregister");
-        bodySubDiv5 = new HorizontalLayout(confirmar);
+        bodySubDiv5 = new HorizontalLayout(confirm);
         bodySubDiv5.setSpacing(false);
+        bodySubDiv5.setPadding(false);
         bodySubDiv5.addClassName("bodysregister");
 
         bodyDiv.add(bodySubDiv1, bodySubDiv2, bodySubDiv3, bodySubDiv4, bodySubDiv5);
@@ -184,7 +199,6 @@ public class registerView extends VerticalLayout {
         expand(center);
 
         // Registro USUARIO
-        this.service = service;
         binder = new BeanValidationBinder<>(User.class);
         binder.bindInstanceFields(this);
         binder.setBean(new User());
@@ -192,34 +206,27 @@ public class registerView extends VerticalLayout {
 
     public void onRegisterButtonClick() {
 
-        if (binder.validate().isOk() & password.getValue().equals(repeatPassword.getValue())) {
-            Button closeButton = new Button(new Icon("lumo", "cross"));
-            closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
-            closeButton.getElement().setAttribute("aria-label", "Close");
-            Notification not = new Notification();
-            if (service.registerUser(binder.getBean())) {
-                closeButton.addClickListener(event -> {
-                    not.close();
-                    UI.getCurrent().getPage().setLocation("/activaruser");
-                });
-                Pre text = new Pre("Genial. Por favor, revisa tu email!\nClick en la cruz para continuar.");
-                HorizontalLayout layout = new HorizontalLayout(text, closeButton);
-                layout.setAlignItems(Alignment.CENTER);
-                not.add(layout);
-                not.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                not.open();
+        if (binder.validate().isOk() && password.getValue().equals(repeatPassword.getValue()) &&
+                phoneNumber.getValue() >= 100000000 && phoneNumber.getValue() <= 999999999 &&
+                !fees.getValue().isEmpty()) {
+            if (userService.registerUser(binder.getBean())) {
+                Notification.show("Genial. Registrado correctamente, revise su email!!")
+                        .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                Contract contract = new Contract();
+                contract.setUser(userService.getUserByEmail(email.getValue()));
+                contract.setFee(feeService.getFeeByTitle(fees.getValue()));
+                contract.setStatus(StatusContract.ENPROCESO);
+                contract.setStartDate(LocalDate.now());
+                if (contractService.saveContract(contract)) {
+                    UI.getCurrent().navigate("/activaruser");
+                } else {
+                    Notification.show("Error! Inténtelo de nuevo.")
+                            .addThemeVariants(NotificationVariant.LUMO_ERROR);
+                }
             } else {
-                closeButton.addClickListener(event -> {
-                    not.close();
-                });
-                Pre text = new Pre("Nombre de usuario ya en uso.\nClick en la cruz para continuar.");
-                HorizontalLayout layout = new HorizontalLayout(text, closeButton);
-                layout.setAlignItems(Alignment.CENTER);
-                not.add(layout);
-                not.addThemeVariants(NotificationVariant.LUMO_ERROR);
-                not.open();
+                Notification.show("Revise los datos, si el fallo persiste, contacte con nosotros.")
+                        .addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
-
         } else {
             Notification.show("Por favor, revise los datos introducidos.");
         }

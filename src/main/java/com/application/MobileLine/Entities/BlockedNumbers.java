@@ -9,7 +9,10 @@ import org.hibernate.type.SqlTypes;
 import java.util.UUID;
 
 @Entity
-@Table(name = "blockedNumbers")
+@Table(name = "blockedNumbers", indexes = {
+        @Index(name = "blockedNumberMobileLine", columnList = "blocked_number, mobile_line_id", unique = true)
+})
+
 public class BlockedNumbers extends AbstractEntity {
     @Id
     @GeneratedValue
@@ -18,7 +21,7 @@ public class BlockedNumbers extends AbstractEntity {
     private UUID id;
 
     @Column(name = "blockedNumber")
-    private int blockedNumber;
+    private Integer blockedNumber;
 
     @Override
     public UUID getId() {
@@ -29,11 +32,11 @@ public class BlockedNumbers extends AbstractEntity {
         this.id = id;
     }
 
-    public int getBlockedNumber() {
+    public Integer getBlockedNumber() {
         return blockedNumber;
     }
 
-    public void setBlockedNumber(int blockedNumber) {
+    public void setBlockedNumber(Integer blockedNumber) {
         this.blockedNumber = blockedNumber;
     }
 }

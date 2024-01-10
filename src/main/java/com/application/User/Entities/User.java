@@ -21,7 +21,8 @@ import java.util.stream.Collectors;
 @Entity
 
 @Table(name = "user", indexes = {
-        @Index(name = "idx_email", columnList = "email", unique = true)
+        @Index(name = "id_email", columnList = "email", unique = true),
+        @Index(name = "id_phoneNumber", columnList = "phoneNumber", unique = true)
 })
 
 public class User extends AbstractEntity implements UserDetails {
@@ -61,7 +62,7 @@ public class User extends AbstractEntity implements UserDetails {
 
     @NotNull(message = "Por favor, introduzca su teléfono")
     @Column(name = "phoneNumber")
-    private int phoneNumber;
+    private Integer phoneNumber;
 
     @Email(message = "Por favor, introduzca un email válido")
     @NotEmpty(message = "Por favor, introduzca su email")
@@ -89,7 +90,7 @@ public class User extends AbstractEntity implements UserDetails {
     private Set<Role> roles = new HashSet<>();
 
     // Contratos
-    @OneToMany(mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Contract> contracts;
 
     public UUID getId() {
@@ -156,11 +157,11 @@ public class User extends AbstractEntity implements UserDetails {
         this.birthdate = birthdate;
     }
 
-    public int getPhoneNumber() {
+    public Integer getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(Integer phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
