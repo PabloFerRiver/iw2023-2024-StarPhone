@@ -5,10 +5,13 @@ import com.application.MobileLine.Repository.FeeRepository;
 import jakarta.transaction.Transactional;
 
 import com.application.MobileLine.Entities.Fee;
+import com.application.MobileLine.Entities.StatusFee;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class FeeService {
@@ -20,6 +23,15 @@ public class FeeService {
 
     public List<Fee> getAll() {
         return feeRepository.findAll();
+    }
+
+    public Fee getFeeById(UUID id) {
+        Optional<Fee> fee = feeRepository.findById(id);
+        if (fee.isPresent()) {
+            return fee.get();
+        } else {
+            return new Fee();
+        }
     }
 
     public Fee getFeeByTitle(String title) {
@@ -36,9 +48,9 @@ public class FeeService {
             feeRepository.save(fee);
             return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
+            return false;
         }
-        return false;
     }
 
     @Transactional
@@ -47,21 +59,29 @@ public class FeeService {
             feeRepository.delete(fee);
             return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
+            return false;
         }
-        return false;
     }
 
     @Transactional
     public boolean deleteFeeByTitle(String title) {
         Fee fee = getFeeByTitle(title);
-        try {
-            feeRepository.delete(fee);
-            return true;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        if (fee.getId() != null) {
+            try {
+                feeRepository.delete(fee);
+                return true;
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+                return false;
+            }
+        } else {
+            return false;
         }
-        return false;
+    }
+
+    public List<Fee> getFeeByStatus(StatusFee status) {
+        return feeRepository.findByStatus(status);
     }
 
     public int count() {

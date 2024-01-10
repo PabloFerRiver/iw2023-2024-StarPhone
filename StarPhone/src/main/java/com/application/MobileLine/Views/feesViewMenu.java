@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.application.Contract.Views.contract;
 import com.application.MobileLine.Entities.Fee;
+import com.application.MobileLine.Entities.StatusFee;
 import com.application.MobileLine.Service.FeeService;
 import com.application.User.Views.menu;
 import com.vaadin.flow.component.Unit;
@@ -16,8 +17,8 @@ import jakarta.annotation.security.PermitAll;
 
 @PermitAll
 @CssImport("./styles/styles.css")
-@PageTitle("Tarifas")
-@Route(value = "/tarifas", layout = menu.class)
+@PageTitle("Consultar Tarifas")
+@Route(value = "/consultartarifas", layout = menu.class)
 public class feesViewMenu extends VerticalLayout {
 
     VerticalLayout centerDiv;
@@ -49,13 +50,15 @@ public class feesViewMenu extends VerticalLayout {
         List<Fee> fees = feeService.getAll();
 
         for (Fee fee : fees) {
-            cont = new contract(fee.getTitle(),
-                    fee.getDescriptionFiber(),
-                    fee.getDescriptionMobile(),
-                    fee.getDescriptionTV(),
-                    fee.getMaxMobileLines(),
-                    fee.getMonthlyprice());
-            contratos.add(cont);
+            if (fee.getStatus() != StatusFee.INACTIVA) {
+                cont = new contract(fee.getTitle(),
+                        fee.getDescriptionMobile(),
+                        fee.getDescriptionFiber(),
+                        fee.getDescriptionTV(),
+                        fee.getMaxMobileLines(),
+                        fee.getMonthlyprice());
+                contratos.add(cont);
+            }
         }
 
         centerDiv.add(contratos);

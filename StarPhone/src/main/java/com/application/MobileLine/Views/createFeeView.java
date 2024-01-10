@@ -2,6 +2,7 @@ package com.application.MobileLine.Views;
 
 import com.application.User.Views.menu;
 import com.application.MobileLine.Entities.Fee;
+import com.application.MobileLine.Entities.StatusFee;
 import com.application.MobileLine.Service.FeeService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -33,7 +34,7 @@ public class createFeeView extends VerticalLayout {
     TextField title, descriptionMobile, descriptionFiber, descriptionTV;
     NumberField monthlyData, monthlyPrice;
     IntegerField monthlyCalls, monthlySMS, maxMobileLines;
-    Button confirmar;
+    Button confirm;
 
     private final FeeService feeService;
     private final BeanValidationBinder<Fee> binder;
@@ -109,9 +110,9 @@ public class createFeeView extends VerticalLayout {
         monthlySMS.setLabel("SMS Mensuales:");
         monthlySMS.setId("monthlySMS");
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("registerformbutton");
-        confirmar.addClickListener(e -> {
+        confirm = new Button("Confirmar");
+        confirm.addClassName("registerformbutton");
+        confirm.addClickListener(e -> {
             onCreateButtonClick();
         });
 
@@ -150,7 +151,7 @@ public class createFeeView extends VerticalLayout {
         bodySubDiv3.setSpacing(false);
         bodySubDiv3.setPadding(false);
         bodySubDiv3.addClassName("bodysregister");
-        bodySubDiv4 = new HorizontalLayout(confirmar);
+        bodySubDiv4 = new HorizontalLayout(confirm);
         bodySubDiv4.setSpacing(false);
         bodySubDiv4.setPadding(false);
         bodySubDiv4.addClassName("bodysregister");
@@ -171,11 +172,12 @@ public class createFeeView extends VerticalLayout {
     }
 
     public void onCreateButtonClick() {
-        if (feeService.count() >= 4) {
+        if (feeService.getFeeByStatus(StatusFee.ACTIVA).size() >= 4) {
             Notification.show("Error! No se pueden crear más tarifas.")
                     .addThemeVariants(NotificationVariant.LUMO_ERROR);
             UI.getCurrent().navigate("/menu");
         } else if (binder.validate().isOk()) {
+            binder.getBean().setStatus(StatusFee.ACTIVA);
             if (feeService.saveFee(binder.getBean())) {
                 Notification.show("Genial. Tarifa creada correctamente!!")
                         .addThemeVariants(NotificationVariant.LUMO_SUCCESS);

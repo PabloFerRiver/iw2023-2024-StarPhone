@@ -57,6 +57,11 @@ public class Fee extends AbstractEntity {
     @Column(name = "maxMobileLines", nullable = false)
     private int maxMobileLines;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private StatusFee status;
+
     @Override
     public UUID getId() {
         return id;
@@ -136,5 +141,13 @@ public class Fee extends AbstractEntity {
 
     public void setMaxMobileLines(int maxMobileLines) {
         this.maxMobileLines = maxMobileLines;
+    }
+
+    public StatusFee getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(StatusFee status) {
+        this.status = status;
     }
 }

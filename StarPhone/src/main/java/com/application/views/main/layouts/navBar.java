@@ -30,7 +30,7 @@ public class navBar extends HorizontalLayout {
 
         secondDiv = new VerticalLayout();
         secondDiv.addClassName("vlNavBar");
-        a2 = new Anchor("#", "ATENCIÓN AL CLIENTE");
+        a2 = new Anchor("/atencionalcliente", "ATENCIÓN AL CLIENTE");
         a2.addClassName("anchor1");
         secondDiv.add(a2);
         add(secondDiv);

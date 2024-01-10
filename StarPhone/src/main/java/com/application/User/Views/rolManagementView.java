@@ -28,7 +28,7 @@ public class rolManagementView extends VerticalLayout {
     Select<String> roleActions;
     Select<Role> role;
     ComboBox<String> username;
-    Button confirmar;
+    Button confirm;
 
     private final UserService userService;
 
@@ -52,7 +52,7 @@ public class rolManagementView extends VerticalLayout {
 
         role = new Select<Role>();
         role.addClassName("activefield");
-        role.setLabel("Rol inicial:");
+        role.setLabel("Rol:");
         role.setItems(Role.CUSTOMER, Role.MARKETING, Role.FINANCE, Role.CUSTOMERSUPPORT, Role.ADMIN);
         role.setValue(Role.CUSTOMER);
         role.setId("rol");
@@ -76,9 +76,9 @@ public class rolManagementView extends VerticalLayout {
             }
         });
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("activebutton");
-        confirmar.addClickListener(e -> onManageRolButton());
+        confirm = new Button("Confirmar");
+        confirm.addClassName("activebutton");
+        confirm.addClickListener(e -> onManageRolButton());
         // ---------------------------
 
         centerDiv = new VerticalLayout();
@@ -109,7 +109,7 @@ public class rolManagementView extends VerticalLayout {
         titleDiv.add(titleRolManagement);
         confirmSquare.add(titleDiv);
 
-        bodyDiv = new VerticalLayout(roleActions, role, username, confirmar);
+        bodyDiv = new VerticalLayout(roleActions, role, username, confirm);
         bodyDiv.setWidthFull();
         bodyDiv.setJustifyContentMode(JustifyContentMode.START);
         bodyDiv.setAlignItems(Alignment.CENTER);
@@ -132,14 +132,20 @@ public class rolManagementView extends VerticalLayout {
     public void onManageRolButton() {
         if (roleActions.getValue() != null && role.getValue() != null && username.getValue() != null) {
             if (roleActions.getValue().equals("Asignar")) {
-                userService.giveRole(username.getValue(), role.getValue());
-                Notification.show("Rol añadido con éxito.").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                if (userService.giveRole(username.getValue(), role.getValue())) {
+                    Notification.show("Rol añadido con éxito.").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                } else {
+                    Notification.show("Error al añadir dicho Rol.").addThemeVariants(NotificationVariant.LUMO_ERROR);
+                }
             } else if (roleActions.getValue().equals("Eliminar")) {
-                userService.removeRole(username.getValue(), role.getValue());
-                Notification.show("Rol eliminado con éxito.").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                if (userService.removeRole(username.getValue(), role.getValue())) {
+                    Notification.show("Rol eliminado con éxito.").addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                } else {
+                    Notification.show("Error al eliminar dicho Rol.").addThemeVariants(NotificationVariant.LUMO_ERROR);
+                }
+            } else {
+                Notification.show("Debe completar todos los campos.").addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
-        } else {
-            Notification.show("Debe completar todos los campos.").addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
     }
 }

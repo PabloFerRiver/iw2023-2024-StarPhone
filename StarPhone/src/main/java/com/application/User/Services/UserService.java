@@ -1,7 +1,7 @@
 package com.application.User.Services;
 
 import com.application.Contract.Entities.Contract;
-import com.application.Contract.Entities.Status;
+import com.application.Contract.Entities.StatusContract;
 import com.application.Contract.Service.ContractService;
 import com.application.MobileLine.Entities.MobileLine;
 import com.application.MobileLine.Service.MobileLineService;
@@ -48,6 +48,7 @@ public class UserService implements UserDetailsService {
             emailService.sendActivateEmail(user);
             return true;
         } catch (DataIntegrityViolationException e) {
+            System.err.println(e.getMessage());
             return false;
         }
     }
@@ -61,6 +62,7 @@ public class UserService implements UserDetailsService {
             userRepository.save(user);
             return true;
         } catch (DataIntegrityViolationException e) {
+            System.err.println(e.getMessage());
             return false;
         }
     }
@@ -70,20 +72,20 @@ public class UserService implements UserDetailsService {
             userRepository.save(user);
             return true;
         } catch (DataIntegrityViolationException e) {
+            System.err.println(e.getMessage());
             return false;
         }
     }
 
     @Transactional
     @Override
-    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
-        if (!user.isPresent()) {
-            throw new UsernameNotFoundException("Usuario no presente con nombre: " + username);
-        } else {
+        if (user.isPresent()) {
             return user.get();
+        } else {
+            return new User();
         }
-
     }
 
     public boolean activateUserCode(String email, String registerCode) {
@@ -95,12 +97,12 @@ public class UserService implements UserDetailsService {
             user.get().addRole(Role.CUSTOMER);
             user.get().setActivateCode("");
 
-            // Actualizamos contrato
-            // getContractByUserIdAndStatus() en este caso solo devolverá un contrato, en
-            // otros quizás más de uno
-            List<Contract> c = contractService.getContractByUserIdAndStatus(user.get().getId(), "EN PROCESO");
-            Contract contract = c.get(0);
-            contract.setStatus(Status.ACTIVO);
+            // Cuando un usuario se registra no puede tener otro contrato abierto con su
+            // misma id,
+            // en otros casos, si podría tenerlo, código válido solo para el registro
+            Contract contract = contractService.getContractByUserIdAndStatus(user.get().getId(),
+                    StatusContract.ENPROCESO);
+            contract.setStatus(StatusContract.ACTIVO);
 
             // Creamos Línea de Móvil y la asociamos al contrato anterior
             MobileLine mobileLine = new MobileLine();
@@ -114,7 +116,8 @@ public class UserService implements UserDetailsService {
                 mobileLineService.saveMobileLine(mobileLine);
                 return true;
             } catch (Exception e) {
-                System.out.println(e);
+                System.err.println(e.getMessage());
+                return false;
             }
         }
         return false;
@@ -178,42 +181,51 @@ public class UserService implements UserDetailsService {
                 userRepository.delete(u);
                 return true;
             } catch (Exception e) {
-                System.out.println(e);
+                System.err.println(e.getMessage());
+                return false;
             }
         }
         return false;
     }
 
-    public void giveRole(String username, Role role) {
+    public boolean giveRole(String username, Role role) {
         Optional<User> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
             user.get().addRole(role);
             try {
                 userRepository.save(user.get());
+                return true;
             } catch (Exception e) {
-                System.out.println(e);
+                System.err.println(e.getMessage());
+                return false;
             }
         }
+        return false;
     }
 
-    public void removeRole(String username, Role role) {
+    public boolean removeRole(String username, Role role) {
         Optional<User> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
             user.get().getRoles().remove(role);
             try {
                 userRepository.save(user.get());
+                return true;
             } catch (Exception e) {
-                System.out.println(e);
+                System.err.println(e.getMessage());
+                return false;
             }
         }
+        return false;
     }
 
-    public void changePassword(User user, String password) {
+    public boolean changePassword(User user, String password) {
         user.setPassword(passwordEncoder.encode(password));
         try {
             userRepository.save(user);
+            return true;
         } catch (Exception e) {
-            System.out.println(e);
+            System.err.println(e.getMessage());
+            return false;
         }
     }
 

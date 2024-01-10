@@ -31,11 +31,11 @@ public class MobileLine extends AbstractEntity {
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "contract_id")
+    @JoinColumn(name = "contract_id", nullable = false)
     private Contract contract;
 
     @NotNull
-    @Column(name = "phoneNumber")
+    @Column(name = "phoneNumber", nullable = false, unique = true)
     private Integer phoneNumber;
 
     @Column(name = "roaming", nullable = false)
@@ -44,23 +44,17 @@ public class MobileLine extends AbstractEntity {
     @Column(name = "shareData", nullable = false)
     private boolean shareData = false;
 
-    @Column(name = "totalDataToday", nullable = false)
-    private double totalDataToday = 0;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "mobileLine_id")
+    private List<CallRecords> callRecords = new ArrayList<>();
 
-    @Column(name = "totalCallsToday", nullable = false)
-    private int totalCallsToday = 0;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "mobileLine_id")
+    private List<DataUsageRecords> dataUsageRecords = new ArrayList<>();
 
-    @Column(name = "totalSMSToday", nullable = false)
-    private int totalSMSToday = 0;
-
-    @Column(name = "totalDataMonth", nullable = false)
-    private double totalDataMonth = 0;
-
-    @Column(name = "totalCallsMonth", nullable = false)
-    private int totalCallsMonth = 0;
-
-    @Column(name = "totalSMSMonth", nullable = false)
-    private int totalSMSMonth = 0;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "mobileLine_id")
+    private List<CallRecords> smsRecords = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "mobileLine_id")
@@ -117,78 +111,6 @@ public class MobileLine extends AbstractEntity {
 
     public void setShareData(boolean shareData) {
         this.shareData = shareData;
-    }
-
-    public Double getTotalDataToday() {
-        return totalDataToday;
-    }
-
-    public void setTotalDataToday(Double totalDataToday) {
-        this.totalDataToday = totalDataToday;
-    }
-
-    public void addTotalDataToday(Double totalDataToday) {
-        this.totalDataToday += totalDataToday;
-    }
-
-    public int getTotalCallsToday() {
-        return totalCallsToday;
-    }
-
-    public void setTotalCallsToday(int totalcallsToday) {
-        this.totalCallsToday = totalcallsToday;
-    }
-
-    public void addTotalCallsToday(int totalCallsToday) {
-        this.totalCallsToday += totalCallsToday;
-    }
-
-    public int getTotalSMSToday() {
-        return totalSMSToday;
-    }
-
-    public void setTotalSMSToday(int totalSMSToday) {
-        this.totalSMSToday = totalSMSToday;
-    }
-
-    public void addTotalSMSToday(int totalSMSToday) {
-        this.totalSMSToday += totalSMSToday;
-    }
-
-    public Double getTotalDataMonth() {
-        return totalDataMonth;
-    }
-
-    public void setTotalDataMonth(Double totalDataMonth) {
-        this.totalDataMonth = totalDataMonth;
-    }
-
-    public void addTotalDataMonth(Double totalDataMonth) {
-        this.totalDataMonth += totalDataMonth;
-    }
-
-    public int getTotalCallsMonth() {
-        return totalCallsMonth;
-    }
-
-    public void setTotalCallsMonth(int totalcallsMonth) {
-        this.totalCallsMonth = totalcallsMonth;
-    }
-
-    public void addTotalCallsMonth(int totalCallsMonth) {
-        this.totalCallsMonth += totalCallsMonth;
-    }
-
-    public int getTotalSMSMonth() {
-        return totalSMSMonth;
-    }
-
-    public void setTotalSMSMonth(int totalSMSMonth) {
-        this.totalSMSMonth = totalSMSMonth;
-    }
-
-    public void addTotalSMSMonth(int totalSMSMonth) {
-        this.totalSMSMonth += totalSMSMonth;
     }
 
     public List<BlockedNumbers> getBlockedNumbers() {

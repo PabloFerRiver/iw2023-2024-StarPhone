@@ -1,15 +1,10 @@
 package com.application.User.Views;
 
-import com.application.Contract.Views.createContractView;
-import com.application.Contract.Views.deleteContractView;
-import com.application.Contract.Views.modifyContractView;
+import com.application.Contract.Views.consultPersonalContractsView;
 import com.application.MobileLine.Views.blockNumberUserView;
-import com.application.MobileLine.Views.consultUserMobileLineView;
-import com.application.MobileLine.Views.createFeeView;
-import com.application.MobileLine.Views.deleteFeeView;
+import com.application.MobileLine.Views.consultPersonalMobileLinesView;
 import com.application.MobileLine.Views.feesViewMenu;
-import com.application.MobileLine.Views.modifyFeeView;
-import com.application.MobileLine.Views.shareDataAndRoamingView;
+import com.application.User.Entities.Role;
 import com.application.User.Entities.User;
 import com.application.User.Security.AuthenticatedUser;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -19,13 +14,13 @@ import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.SvgIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
-import java.util.Optional;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 import com.application.views.main.layouts.header;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -33,10 +28,12 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 
+import java.util.Optional;
+import java.util.Set;
+
 @CssImport("./styles/styles.css")
 @PageTitle("Menu")
 public class menu extends AppLayout {
-    // TODO: Cambiar diferentes LineAwesomeIcon por cada navegación
 
     private AuthenticatedUser authenticatedUser;
     private AccessAnnotationChecker accessChecker;
@@ -79,128 +76,102 @@ public class menu extends AppLayout {
         SideNav nav = new SideNav();
         SideNavItem navItem;
 
-        if (accessChecker.hasAccess(adminRegisterUserView.class)) {
-            navItem = new SideNavItem("Registrar Usuario", adminRegisterUserView.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
+        if (accessChecker.hasAccess(menuUserEntityView.class)) {
+            SvgIcon icon = LineAwesomeIcon.USER_COG_SOLID.create();
+            icon.addClassName("icons");
+            navItem = new SideNavItem("Usuario", menuUserEntityView.class,
+                    icon);
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);
         }
 
-        if (accessChecker.hasAccess(modifyDataUserView.class)) {
-            navItem = new SideNavItem("Modificar Usuario", modifyDataUserView.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
+        if (accessChecker.hasAccess(menuFeeEntityView.class)) {
+            SvgIcon icon = LineAwesomeIcon.FILE_INVOICE_DOLLAR_SOLID.create();
+            icon.addClassName("icons");
+            navItem = new SideNavItem("Tarifa", menuFeeEntityView.class,
+                    icon);
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);
         }
 
-        if (accessChecker.hasAccess(adminDeleteUserView.class)) {
-            navItem = new SideNavItem("Borrar Usuario", adminDeleteUserView.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
+        if (accessChecker.hasAccess(menuContractEntityView.class)) {
+            SvgIcon icon = LineAwesomeIcon.FILE_ALT_SOLID.create();
+            icon.addClassName("icons");
+            navItem = new SideNavItem("Contrato", menuContractEntityView.class,
+                    icon);
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);
         }
 
-        if (accessChecker.hasAccess(consultDataUserView.class)) {
-            navItem = new SideNavItem("Consultar Datos Usuario", consultDataUserView.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
-            navItem.addClassName("sideNavItem");
-            nav.addItem(navItem);
-        }
-
-        if (accessChecker.hasAccess(rolManagementView.class)) {
-            navItem = new SideNavItem("Gestionar Roles", rolManagementView.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
-            navItem.addClassName("sideNavItem");
-            nav.addItem(navItem);
-        }
-
-        if (accessChecker.hasAccess(createFeeView.class)) {
-            navItem = new SideNavItem("Crear Tarifa", createFeeView.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
-            navItem.addClassName("sideNavItem");
-            nav.addItem(navItem);
-        }
-
-        if (accessChecker.hasAccess(modifyFeeView.class)) {
-            navItem = new SideNavItem("Modificar Tarifa", modifyFeeView.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
-            navItem.addClassName("sideNavItem");
-            nav.addItem(navItem);
-        }
-
-        if (accessChecker.hasAccess(deleteFeeView.class)) {
-            navItem = new SideNavItem("Eliminar Tarifa", deleteFeeView.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
-            navItem.addClassName("sideNavItem");
-            nav.addItem(navItem);
-        }
-
-        if (accessChecker.hasAccess(feesViewMenu.class)) {
-            navItem = new SideNavItem("Tarifas", feesViewMenu.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
-            navItem.addClassName("sideNavItem");
-            nav.addItem(navItem);
-        }
-
-        if (accessChecker.hasAccess(createContractView.class)) {
-            navItem = new SideNavItem("Crear Contrato", createContractView.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
-            navItem.addClassName("sideNavItem");
-            nav.addItem(navItem);
-        }
-
-        if (accessChecker.hasAccess(modifyContractView.class)) {
-            navItem = new SideNavItem("Modificar Contrato", modifyContractView.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
-            navItem.addClassName("sideNavItem");
-            nav.addItem(navItem);
-        }
-
-        if (accessChecker.hasAccess(deleteContractView.class)) {
-            navItem = new SideNavItem("Eliminar Contrato", deleteContractView.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
-            navItem.addClassName("sideNavItem");
-            nav.addItem(navItem);
-        }
-
-        if (accessChecker.hasAccess(blockNumberUserView.class)) {
-            navItem = new SideNavItem("Números Desconocidos", blockNumberUserView.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
-            navItem.addClassName("sideNavItem");
-            nav.addItem(navItem);
-        }
-
-        if (accessChecker.hasAccess(shareDataAndRoamingView.class)) {
-            navItem = new SideNavItem("Roaming & Datos Compartidos", shareDataAndRoamingView.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
-            navItem.addClassName("sideNavItem");
-            nav.addItem(navItem);
-        }
-
-        if (accessChecker.hasAccess(feesViewMenu.class)) {
-            navItem = new SideNavItem("Consultar Consumos Línea", consultUserMobileLineView.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
+        if (accessChecker.hasAccess(menuMobileLineEntityView.class)) {
+            SvgIcon icon = LineAwesomeIcon.PHONE_VOLUME_SOLID.create();
+            icon.addClassName("icons");
+            navItem = new SideNavItem("Línea", menuMobileLineEntityView.class,
+                    icon);
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);
         }
 
         if (accessChecker.hasAccess(personalDataView.class)) {
-            navItem = new SideNavItem("Datos personales", personalDataView.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
+            SvgIcon icon = LineAwesomeIcon.USER_CIRCLE_SOLID.create();
+            icon.addClassName("icons");
+            navItem = new SideNavItem("Datos Personales", personalDataView.class,
+                    icon);
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);
         }
 
         if (accessChecker.hasAccess(modifyPersonalDataView.class)) {
-            navItem = new SideNavItem("Modificar Datos personales", modifyPersonalDataView.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
+            SvgIcon icon = LineAwesomeIcon.USER_EDIT_SOLID.create();
+            icon.addClassName("icons");
+            navItem = new SideNavItem("Modificar Datos Personales", modifyPersonalDataView.class,
+                    icon);
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);
         }
 
         if (accessChecker.hasAccess(changePasswordView.class)) {
+            SvgIcon icon = LineAwesomeIcon.KEY_SOLID.create();
+            icon.addClassName("icons");
             navItem = new SideNavItem("Cambiar Credenciales", changePasswordView.class,
-                    LineAwesomeIcon.GLOBE_SOLID.create());
+                    icon);
+            navItem.addClassName("sideNavItem");
+            nav.addItem(navItem);
+        }
+
+        if (accessChecker.hasAccess(blockNumberUserView.class)) {
+            SvgIcon icon = LineAwesomeIcon.PHONE_SLASH_SOLID.create();
+            icon.addClassName("icons");
+            navItem = new SideNavItem("Números Desconocidos", blockNumberUserView.class,
+                    icon);
+            navItem.addClassName("sideNavItem");
+            nav.addItem(navItem);
+        }
+
+        if (accessChecker.hasAccess(feesViewMenu.class) && hasRole(authenticatedUser.get().get(), Role.CUSTOMER) &&
+                authenticatedUser.get().get().getRoles().size() == 1) {
+            SvgIcon icon = LineAwesomeIcon.SEARCH_SOLID.create();
+            icon.addClassName("icons");
+            navItem = new SideNavItem("Consultar Tarifas", feesViewMenu.class,
+                    icon);
+            navItem.addClassName("sideNavItem");
+            nav.addItem(navItem);
+        }
+
+        if (accessChecker.hasAccess(consultPersonalContractsView.class)) {
+            SvgIcon icon = LineAwesomeIcon.SEARCH_SOLID.create();
+            icon.addClassName("icons");
+            navItem = new SideNavItem("Consultar Contratos Personales", consultPersonalContractsView.class,
+                    icon);
+            navItem.addClassName("sideNavItem");
+            nav.addItem(navItem);
+        }
+
+        if (accessChecker.hasAccess(consultPersonalMobileLinesView.class)) {
+            SvgIcon icon = LineAwesomeIcon.SEARCH_SOLID.create();
+            icon.addClassName("icons");
+            navItem = new SideNavItem("Consultar Líneas Personales", consultPersonalMobileLinesView.class,
+                    icon);
             navItem.addClassName("sideNavItem");
             nav.addItem(navItem);
         }
@@ -244,5 +215,15 @@ public class menu extends AppLayout {
             layout.add(userMenu);
         }
         return layout;
+    }
+
+    public boolean hasRole(User user, Role role) {
+        Set<Role> roles = user.getRoles();
+        for (Role r : roles) {
+            if (r.equals(role)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

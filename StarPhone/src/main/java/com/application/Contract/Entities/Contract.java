@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "contract", indexes = {
-        @Index(name = "id_userfee", columnList = "user_id, fee_id", unique = true),
+        @Index(name = "id_userfeestatus", columnList = "user_id, fee_id, status", unique = true),
 })
 public class Contract extends AbstractEntity {
     @Id
@@ -37,7 +37,7 @@ public class Contract extends AbstractEntity {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private Status status;
+    private StatusContract status;
 
     @NotNull
     @Column(name = "startDate", nullable = false)
@@ -80,11 +80,11 @@ public class Contract extends AbstractEntity {
         this.fee = fee;
     }
 
-    public Status getStatus() {
+    public StatusContract getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(StatusContract status) {
         this.status = status;
     }
 
@@ -127,5 +127,4 @@ public class Contract extends AbstractEntity {
     public void setQueryComplaints(List<QueryComplaint> queryComplaints) {
         this.queryComplaints = queryComplaints;
     }
-
 }

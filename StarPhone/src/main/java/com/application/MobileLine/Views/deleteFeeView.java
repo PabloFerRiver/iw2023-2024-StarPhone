@@ -1,5 +1,6 @@
 package com.application.MobileLine.Views;
 
+import com.application.Contract.Service.ContractService;
 import com.application.MobileLine.Entities.Fee;
 import com.application.MobileLine.Service.FeeService;
 import com.application.User.Views.menu;
@@ -22,18 +23,20 @@ import java.util.List;
 @RolesAllowed({ "ROLE_ADMIN", "ROLE_MARKETING" })
 @CssImport("./styles/styles.css")
 @PageTitle("Eliminar Tarifa")
-@Route(value = "/eliminarrtarifa", layout = menu.class)
+@Route(value = "/eliminartarifa", layout = menu.class)
 public class deleteFeeView extends VerticalLayout {
 
     VerticalLayout bodyDiv, centerDiv, confirmSquare;
     HorizontalLayout titleDiv;
     H3 titleDelete;
     Select<String> titles;
-    Button confirmar;
+    Button confirm;
     FeeService feeService;
+    ContractService contractService;
 
-    public deleteFeeView(FeeService fService) {
+    public deleteFeeView(FeeService fService, ContractService cService) {
         feeService = fService;
+        contractService = cService;
 
         setWidthFull();
         setHeightFull();
@@ -51,7 +54,7 @@ public class deleteFeeView extends VerticalLayout {
 
         titles = new Select<String>();
         titles.addClassName("activefield");
-        titles.setLabel("Tarifas:");
+        titles.setLabel("Tarifa:");
         if (titlesFee.size() > 0) {
             titles.setItems(titlesFee);
             titles.setValue(titlesFee.get(0));
@@ -61,9 +64,9 @@ public class deleteFeeView extends VerticalLayout {
         }
         titles.setId("titles");
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("activebutton");
-        confirmar.addClickListener(e -> onDeleteButtonClick());
+        confirm = new Button("Confirmar");
+        confirm.addClassName("activebutton");
+        confirm.addClickListener(e -> onDeleteButtonClick());
         // ---------------------------
 
         centerDiv = new VerticalLayout();
@@ -75,7 +78,7 @@ public class deleteFeeView extends VerticalLayout {
 
         confirmSquare = new VerticalLayout();
         confirmSquare.setWidth("380px");
-        confirmSquare.setHeight("320px");
+        confirmSquare.setHeight("280px");
         confirmSquare.setPadding(false);
         confirmSquare.setSpacing(false);
         confirmSquare.setAlignItems(Alignment.CENTER);
@@ -94,7 +97,7 @@ public class deleteFeeView extends VerticalLayout {
         titleDiv.add(titleDelete);
         confirmSquare.add(titleDiv);
 
-        bodyDiv = new VerticalLayout(titles, confirmar);
+        bodyDiv = new VerticalLayout(titles, confirm);
         bodyDiv.setWidthFull();
         bodyDiv.setJustifyContentMode(JustifyContentMode.START);
         bodyDiv.setAlignItems(Alignment.CENTER);
@@ -114,12 +117,19 @@ public class deleteFeeView extends VerticalLayout {
 
     public void onDeleteButtonClick() {
         if (!titles.getValue().isEmpty()) {
-            if (feeService.deleteFeeByTitle(titles.getValue())) {
-                Notification.show("Genial. Eliminada correctamente!!")
-                        .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                UI.getCurrent().navigate("/menu");
+            Fee fee = feeService.getFeeByTitle(titles.getValue());
+            if (contractService.getContractsByFeeId(fee.getId()).size() < 1) {
+                if (feeService.deleteFeeByTitle(titles.getValue())) {
+                    Notification.show("Genial. Eliminada correctamente!!")
+                            .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                    UI.getCurrent().navigate("/menu");
+                } else {
+                    Notification.show("Algo falló! Inténtelo de nuevo.")
+                            .addThemeVariants(NotificationVariant.LUMO_ERROR);
+                }
             } else {
-                Notification.show("Algo falló! Inténtelo de nuevo.").addThemeVariants(NotificationVariant.LUMO_ERROR);
+                Notification.show("Una tarifa con contratos asociados solo puede ponerse como INACTIVA!")
+                        .addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
         }
     }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.application.Contract.Views.contract;
 import com.application.MobileLine.Entities.Fee;
+import com.application.MobileLine.Entities.StatusFee;
 import com.application.MobileLine.Service.FeeService;
 import com.application.views.main.layouts.footer;
 import com.application.views.main.layouts.header;
@@ -57,13 +58,15 @@ public class feesView extends VerticalLayout {
         List<Fee> fees = feeService.getAll();
 
         for (Fee fee : fees) {
-            cont = new contract(fee.getTitle(),
-                    fee.getDescriptionFiber(),
-                    fee.getDescriptionMobile(),
-                    fee.getDescriptionTV(),
-                    fee.getMaxMobileLines(),
-                    fee.getMonthlyprice());
-            contratos.add(cont);
+            if (fee.getStatus() != StatusFee.INACTIVA) {
+                cont = new contract(fee.getTitle(),
+                        fee.getDescriptionMobile(),
+                        fee.getDescriptionFiber(),
+                        fee.getDescriptionTV(),
+                        fee.getMaxMobileLines(),
+                        fee.getMonthlyprice());
+                contratos.add(cont);
+            }
         }
 
         centerDiv.add(contratos);

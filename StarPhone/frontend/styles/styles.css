@@ -47,6 +47,26 @@
     
 }
 
+.buttonsX {
+    width: auto;
+    height: 120px;
+    padding: 40px;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    font-size: 24px;
+    font-weight: 700;
+    background-color: rgb(135, 206, 235);
+    border: 6px solid black;
+    border-radius: 24px;
+}
+
+.icons {
+    width: 30px;
+    height: 30px;
+    color: black;
+}
+
 /*REGISTER*/
 .bodysregister {
     width: 100%;
@@ -78,7 +98,8 @@ vaadin-email-field.registerformfield::part(label),
 vaadin-password-field.registerformfield::part(label),
 vaadin-select.registerformfield::part(label),
 vaadin-combo-box.registerformfield::part(label),
-vaadin-number-field.registerformfield::part(label) {
+vaadin-number-field.registerformfield::part(label),
+vaadin-radio-group.registerformfield::part(label) {
     color: black;
     font-size: 18px;
 }
@@ -90,7 +111,8 @@ vaadin-email-field.registerformfield::part(input-field),
 vaadin-password-field.registerformfield::part(input-field),
 vaadin-select.registerformfield::part(input-field),
 vaadin-combo-box.registerformfield::part(input-field),
-vaadin-number-field.registerformfield::part(input-field) {
+vaadin-number-field.registerformfield::part(input-field),
+vaadin-radio-group.registerformfield::part(input-field) {
     border: 2px solid black;
     font-size: 16px;
 }
@@ -102,7 +124,8 @@ vaadin-email-field.registerformfield::part(error-message),
 vaadin-password-field.registerformfield::part(error-message),
 vaadin-select.registerformfield::part(error-message),
 vaadin-combo-box.registerformfield::part(error-message),
-vaadin-number-field.registerformfield::part(error-message) {
+vaadin-number-field.registerformfield::part(error-message),
+vaadin-radio-group.registerformfield::part(error-message) {
     color: red;
     font-size: 15px;
 }
@@ -225,7 +248,7 @@ vaadin-app-layout::part(navbar) {
 }
 
 vaadin-app-layout::part(drawer) {
-    width: 300px;
+    width: 280px;
 }
 
 .sideNavItem {
@@ -265,7 +288,8 @@ vaadin-email-field.modifyformfield::part(label),
 vaadin-password-field.modifyformfield::part(label),
 vaadin-select.modifyformfield::part(label),
 vaadin-combo-box.modifyformfield::part(label),
-vaadin-number-field.modifyformfield::part(label) {
+vaadin-number-field.modifyformfield::part(label),
+vaadin-radio-group.modifyformfield::part(label) {
     color: black;
     font-size: 18px;
 }
@@ -277,7 +301,8 @@ vaadin-email-field.modifyformfield::part(input-field),
 vaadin-password-field.modifyformfield::part(input-field),
 vaadin-select.modifyformfield::part(input-field),
 vaadin-combo-box.modifyformfield::part(input-field),
-vaadin-number-field.modifyformfield::part(input-field) {
+vaadin-number-field.modifyformfield::part(input-field),
+vaadin-radio-group.modifyformfield::part(input-field) {
     border: 2px solid black;
     font-size: 16px;
 }
@@ -292,5 +317,11 @@ vaadin-button.modifyformbutton::part(label)
 .personaldatafield {
     font-size: 22px;
     margin-top: 5px;
+}
+
+.scroller {
+    width: 460px;
+    height: 420px;
+    overflow: auto;
 }
 /*-----------------------------------*/

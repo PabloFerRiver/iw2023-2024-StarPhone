@@ -4,7 +4,7 @@ import com.application.User.Entities.User;
 import com.application.User.Services.UserService;
 import com.application.User.Views.menu;
 import com.application.Contract.Entities.Contract;
-import com.application.Contract.Entities.Status;
+import com.application.Contract.Entities.StatusContract;
 import com.application.Contract.Service.ContractService;
 import com.application.MobileLine.Entities.Fee;
 import com.application.MobileLine.Service.FeeService;
@@ -20,6 +20,8 @@ import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
+import com.vaadin.flow.data.value.ValueChangeMode;
+
 import jakarta.annotation.security.RolesAllowed;
 
 import java.time.LocalDate;
@@ -35,14 +37,14 @@ import com.vaadin.flow.router.Route;
 @Route(value = "/crearcontrato", layout = menu.class)
 public class createContractView extends VerticalLayout {
 
-    HorizontalLayout titleDiv, centerDiv, bodySubDiv1, bodySubDiv2, bodySubDiv3;
+    HorizontalLayout titleDiv, centerDiv, bodySubDiv1, bodySubDiv2, bodySubDiv3, bodySubDiv4, bodySubDiv5;
     VerticalLayout center, bodyDiv, registerForm;
     H3 titleCreate;
     TextField DNI;
     EmailField email;
     Select<String> fees;
-    Select<Status> status;
-    Button confirmar;
+    Select<StatusContract> status;
+    Button confirm;
     private final ContractService contractService;
     private final UserService userService;
     private final FeeService feeService;
@@ -68,8 +70,8 @@ public class createContractView extends VerticalLayout {
         center.setJustifyContentMode(JustifyContentMode.CENTER);
 
         registerForm = new VerticalLayout();
-        registerForm.setWidth("1100px");
-        registerForm.setHeight("450px");
+        registerForm.setWidth("400px");
+        registerForm.setHeight("680px");
         registerForm.setPadding(false);
         registerForm.setSpacing(false);
         registerForm.setAlignItems(Alignment.CENTER);
@@ -87,6 +89,7 @@ public class createContractView extends VerticalLayout {
         email.setReadOnly(true);
         email.setId("email");
 
+        DNI.setValueChangeMode(ValueChangeMode.EAGER);
         DNI.addValueChangeListener(event -> {
             User user = userService.getUserByDNI(event.getValue());
             if (user.getId() != null) {
@@ -113,16 +116,16 @@ public class createContractView extends VerticalLayout {
         }
         fees.setId("fees");
 
-        status = new Select<Status>();
+        status = new Select<StatusContract>();
         status.addClassName("registerformfield");
         status.setLabel("Estado:");
-        status.setItems(Status.ACTIVO, Status.ENPROCESO, Status.CANCELADO);
-        status.setValue(Status.ENPROCESO);
+        status.setItems(StatusContract.ACTIVO, StatusContract.ENPROCESO, StatusContract.CANCELADO);
+        status.setValue(StatusContract.ENPROCESO);
         status.setId("status");
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("registerformbutton");
-        confirmar.addClickListener(e -> {
+        confirm = new Button("Confirmar");
+        confirm.addClassName("registerformbutton");
+        confirm.addClickListener(e -> {
             onCreateButtonClick();
         });
 
@@ -153,16 +156,24 @@ public class createContractView extends VerticalLayout {
         bodySubDiv1.setPadding(false);
         bodySubDiv1.addClassName("bodysregister");
         bodySubDiv1.getStyle().set("margin-top", "30px");
-        bodySubDiv2 = new HorizontalLayout(email, fees, status);
+        bodySubDiv2 = new HorizontalLayout(email);
         bodySubDiv2.setSpacing(false);
         bodySubDiv2.setPadding(false);
         bodySubDiv2.addClassName("bodysregister");
-        bodySubDiv3 = new HorizontalLayout(confirmar);
+        bodySubDiv3 = new HorizontalLayout(fees);
         bodySubDiv3.setSpacing(false);
         bodySubDiv3.setPadding(false);
         bodySubDiv3.addClassName("bodysregister");
+        bodySubDiv4 = new HorizontalLayout(status);
+        bodySubDiv4.setSpacing(false);
+        bodySubDiv4.setPadding(false);
+        bodySubDiv4.addClassName("bodysregister");
+        bodySubDiv5 = new HorizontalLayout(confirm);
+        bodySubDiv5.setSpacing(false);
+        bodySubDiv5.setPadding(false);
+        bodySubDiv5.addClassName("bodysregister");
 
-        bodyDiv.add(bodySubDiv1, bodySubDiv2, bodySubDiv3);
+        bodyDiv.add(bodySubDiv1, bodySubDiv2, bodySubDiv3, bodySubDiv4, bodySubDiv5);
         registerForm.add(bodyDiv);
 
         expand(bodyDiv);
@@ -187,7 +198,7 @@ public class createContractView extends VerticalLayout {
             Notification.show("Error! Usuario no existente.")
                     .addThemeVariants(NotificationVariant.LUMO_ERROR);
             UI.getCurrent().navigate("/menu");
-        } else if (!status.isEmpty()) {
+        } else if (binder.validate().isOk() && !status.isEmpty()) {
             Fee fee = feeService.getFeeByTitle(fees.getValue());
             binder.getBean().setUser(user);
             binder.getBean().setFee(fee);

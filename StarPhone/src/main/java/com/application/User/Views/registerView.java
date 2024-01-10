@@ -2,7 +2,7 @@ package com.application.User.Views;
 
 import com.application.User.Services.UserService;
 import com.application.Contract.Entities.Contract;
-import com.application.Contract.Entities.Status;
+import com.application.Contract.Entities.StatusContract;
 import com.application.Contract.Service.ContractService;
 import com.application.MobileLine.Entities.Fee;
 import com.application.MobileLine.Service.FeeService;
@@ -46,7 +46,7 @@ public class registerView extends VerticalLayout {
     IntegerField phoneNumber;
     PasswordField password, repeatPassword;
     Select<String> fees;
-    Button confirmar;
+    Button confirm;
 
     private final BeanValidationBinder<User> binder;
     private final UserService userService;
@@ -139,9 +139,9 @@ public class registerView extends VerticalLayout {
         fees.setItems(titles);
         fees.setValue("Tarifa 1");
 
-        confirmar = new Button("Registrarse");
-        confirmar.addClassName("registerformbutton");
-        confirmar.addClickListener(e -> {
+        confirm = new Button("Registrarse");
+        confirm.addClassName("registerformbutton");
+        confirm.addClickListener(e -> {
             onRegisterButtonClick();
         });
 
@@ -184,7 +184,7 @@ public class registerView extends VerticalLayout {
         bodySubDiv4.setSpacing(false);
         bodySubDiv4.setPadding(false);
         bodySubDiv4.addClassName("bodysregister");
-        bodySubDiv5 = new HorizontalLayout(confirmar);
+        bodySubDiv5 = new HorizontalLayout(confirm);
         bodySubDiv5.setSpacing(false);
         bodySubDiv5.setPadding(false);
         bodySubDiv5.addClassName("bodysregister");
@@ -207,14 +207,15 @@ public class registerView extends VerticalLayout {
     public void onRegisterButtonClick() {
 
         if (binder.validate().isOk() && password.getValue().equals(repeatPassword.getValue()) &&
-                phoneNumber.getValue() >= 100000000 && phoneNumber.getValue() <= 999999999) {
+                phoneNumber.getValue() >= 100000000 && phoneNumber.getValue() <= 999999999 &&
+                !fees.getValue().isEmpty()) {
             if (userService.registerUser(binder.getBean())) {
                 Notification.show("Genial. Registrado correctamente, revise su email!!")
                         .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
                 Contract contract = new Contract();
                 contract.setUser(userService.getUserByEmail(email.getValue()));
                 contract.setFee(feeService.getFeeByTitle(fees.getValue()));
-                contract.setStatus(Status.ENPROCESO);
+                contract.setStatus(StatusContract.ENPROCESO);
                 contract.setStartDate(LocalDate.now());
                 if (contractService.saveContract(contract)) {
                     UI.getCurrent().navigate("/activaruser");

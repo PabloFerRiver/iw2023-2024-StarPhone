@@ -4,9 +4,11 @@ import com.application.User.Entities.User;
 import com.application.User.Services.UserService;
 import com.application.User.Views.menu;
 import com.application.Contract.Entities.Contract;
-import com.application.Contract.Entities.Status;
+import com.application.Contract.Entities.StatusContract;
 import com.application.Contract.Service.ContractService;
+import com.application.MobileLine.Entities.Fee;
 import com.application.MobileLine.Service.FeeService;
+import com.application.MobileLine.Service.MobileLineService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -17,15 +19,15 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
+
 import jakarta.annotation.security.RolesAllowed;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
 
 @RolesAllowed({ "ROLE_ADMIN", "ROLE_CUSTOMERSUPPORT" })
 @CssImport("./styles/styles.css")
@@ -34,21 +36,24 @@ import com.vaadin.flow.router.Route;
 public class modifyContractView extends VerticalLayout {
 
     HorizontalLayout titleDiv, centerDiv, bodySubDiv1, bodySubDiv2, bodySubDiv3,
-            bodySubDiv4;
+            bodySubDiv4, bodySubDiv5;
     VerticalLayout center, bodyDiv, registerForm;
     H3 titleCreate;
     TextField DNI;
-    Select<String> contractsfees;
-    Select<Status> status;
-    Button confirmar;
+    Select<String> contractsFees;
+    Select<StatusContract> actualStatus, newStatus;
+    Button confirm;
     private final ContractService contractService;
     private final UserService userService;
     private final FeeService feeService;
+    private final MobileLineService mobileLineService;
 
-    public modifyContractView(ContractService cService, UserService uService, FeeService fService) {
+    public modifyContractView(ContractService cService, UserService uService, FeeService fService,
+            MobileLineService mLService) {
         contractService = cService;
         userService = uService;
         feeService = fService;
+        mobileLineService = mLService;
 
         setWidthFull();
         setHeightFull();
@@ -66,7 +71,7 @@ public class modifyContractView extends VerticalLayout {
 
         registerForm = new VerticalLayout();
         registerForm.setWidth("400px");
-        registerForm.setHeight("540px");
+        registerForm.setHeight("680px");
         registerForm.setPadding(false);
         registerForm.setSpacing(false);
         registerForm.setAlignItems(Alignment.CENTER);
@@ -79,41 +84,73 @@ public class modifyContractView extends VerticalLayout {
         DNI.setHelperText("DNI del Usuario a modificar el Contrato.");
         DNI.setId("DNI");
 
-        contractsfees = new Select<String>();
-        contractsfees.setLabel("Contrato con tarifa:");
-        contractsfees.addClassName("modifyformfield");
-        contractsfees.setId("contractsfees");
+        contractsFees = new Select<String>();
+        contractsFees.setLabel("Contrato con tarifa:");
+        contractsFees.addClassName("modifyformfield");
+        contractsFees.setId("contractsFees");
 
         List<String> feeTitles = new ArrayList<>();
+        DNI.setValueChangeMode(ValueChangeMode.EAGER);
         DNI.addValueChangeListener(event -> {
             List<Contract> contracts = new ArrayList<>();
             User user = userService.getUserByDNI(event.getValue());
             if (user.getId() != null) {
                 contracts = contractService.getContractsByUserId(user.getId());
                 for (Contract c : contracts) {
-                    feeTitles.add(c.getFee().getTitle());
+                    if (!c.getStatus().equals(StatusContract.CANCELADO))
+                        feeTitles.add(c.getFee().getTitle());
                 }
 
                 if (feeTitles.size() > 0) {
-                    contractsfees.setItems(feeTitles);
-                    contractsfees.setValue(feeTitles.get(0));
+                    contractsFees.setItems(feeTitles);
+                    contractsFees.setValue(feeTitles.get(0));
                 } else {
-                    contractsfees.setItems("No hay tarifa asociada a este contrato!");
-                    contractsfees.setValue("No hay tarifa asociada a este contrato!");
+                    contractsFees.setItems("No hay tarifa asociada a este contrato!");
+                    contractsFees.setValue("No hay tarifa asociada a este contrato!");
                 }
+            } else {
+                contractsFees.clear();
             }
         });
 
-        status = new Select<Status>();
-        status.addClassName("modifyformfield");
-        status.setLabel("Estado:");
-        status.setItems(Status.ACTIVO, Status.ENPROCESO, Status.CANCELADO);
-        status.setValue(Status.ENPROCESO);
-        status.setId("status");
+        actualStatus = new Select<StatusContract>();
+        actualStatus.addClassName("modifyformfield");
+        actualStatus.setLabel("Estado del contrato:");
+        actualStatus.setId("actualstatus");
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("registerformbutton");
-        confirmar.addClickListener(e -> {
+        List<StatusContract> contractStatus = new ArrayList<>();
+        contractsFees.addValueChangeListener(event -> {
+            List<Contract> contracts = new ArrayList<>();
+            User user = userService.getUserByDNI(DNI.getValue());
+            Fee fee = feeService.getFeeByTitle(event.getValue());
+            if (user.getId() != null) {
+                contracts = contractService.getContractsByUserIdAndFeeId(user.getId(), fee.getId());
+                for (Contract c : contracts) {
+                    if (!c.getStatus().equals(StatusContract.CANCELADO))
+                        contractStatus.add(c.getStatus());
+                }
+
+                if (contractStatus.size() > 0) {
+                    actualStatus.setItems(contractStatus);
+                    actualStatus.setValue(contractStatus.get(0));
+                }
+                contractStatus.clear();
+            } else {
+                actualStatus.clear();
+            }
+        });
+
+        newStatus = new Select<StatusContract>();
+        newStatus.addClassName("modifyformfield");
+        newStatus.setLabel("Nuevo estado:");
+        newStatus.setItems(StatusContract.ACTIVO, StatusContract.ENPROCESO, StatusContract.CANCELADO);
+        newStatus.setValue(StatusContract.ENPROCESO);
+        newStatus.setHelperText("CANCELADO, implica la desvinculación de las líneas móviles de dicho contrato.");
+        newStatus.setId("newStatus");
+
+        confirm = new Button("Confirmar");
+        confirm.addClassName("registerformbutton");
+        confirm.addClickListener(e -> {
             onModifyButtonClick();
         });
 
@@ -144,20 +181,24 @@ public class modifyContractView extends VerticalLayout {
         bodySubDiv1.setPadding(false);
         bodySubDiv1.addClassName("bodysmodify");
         bodySubDiv1.getStyle().set("margin-top", "30px");
-        bodySubDiv2 = new HorizontalLayout(contractsfees);
+        bodySubDiv2 = new HorizontalLayout(contractsFees);
         bodySubDiv2.setSpacing(false);
         bodySubDiv2.setPadding(false);
         bodySubDiv2.addClassName("bodysmodify");
-        bodySubDiv3 = new HorizontalLayout(status);
+        bodySubDiv3 = new HorizontalLayout(actualStatus);
         bodySubDiv3.setSpacing(false);
         bodySubDiv3.setPadding(false);
         bodySubDiv3.addClassName("bodysmodify");
-        bodySubDiv4 = new HorizontalLayout(confirmar);
+        bodySubDiv4 = new HorizontalLayout(newStatus);
         bodySubDiv4.setSpacing(false);
         bodySubDiv4.setPadding(false);
         bodySubDiv4.addClassName("bodysmodify");
+        bodySubDiv5 = new HorizontalLayout(confirm);
+        bodySubDiv5.setSpacing(false);
+        bodySubDiv5.setPadding(false);
+        bodySubDiv5.addClassName("bodysmodify");
 
-        bodyDiv.add(bodySubDiv1, bodySubDiv2, bodySubDiv3, bodySubDiv4);
+        bodyDiv.add(bodySubDiv1, bodySubDiv2, bodySubDiv3, bodySubDiv4, bodySubDiv5);
         registerForm.add(bodyDiv);
 
         expand(bodyDiv);
@@ -169,19 +210,21 @@ public class modifyContractView extends VerticalLayout {
 
     public void onModifyButtonClick() {
         User user = userService.getUserByDNI(DNI.getValue());
-        if (contractsfees.getValue().equals("No hay tarifa asociada a este contrato!")) {
+        if (contractsFees.getValue().equals("No hay tarifa asociada a este contrato!")) {
             Notification.show("Error! No hay tarifa asociada a este contrato!.")
                     .addThemeVariants(NotificationVariant.LUMO_ERROR);
             UI.getCurrent().navigate("/menu");
-        } else if (!status.isEmpty()) {
-            UUID feeid = feeService.getFeeByTitle(contractsfees.getValue()).getId();
-            Contract c = contractService.getContractByUserIdAndFeeId(user.getId(), feeid);
-            if (status.getValue().equals(Status.ACTIVO) ||
-                    status.getValue().equals(Status.ENPROCESO)) {
-                c.setStatus(status.getValue());
+        } else if (!actualStatus.isEmpty() && !newStatus.isEmpty()) {
+            Fee fee = feeService.getFeeByTitle(contractsFees.getValue());
+            Contract c = contractService.getContractByUserIdAndFeeIdAndStatus(user.getId(), fee.getId(),
+                    actualStatus.getValue());
+            if (newStatus.getValue().equals(StatusContract.ACTIVO) ||
+                    newStatus.getValue().equals(StatusContract.ENPROCESO)) {
+                c.setStatus(newStatus.getValue());
                 c.setEndDate(null);
-            } else if (status.getValue().equals(Status.CANCELADO)) {
-                c.setStatus(status.getValue());
+            } else if (newStatus.getValue().equals(StatusContract.CANCELADO)) {
+                mobileLineService.deleteMobileLinesByContractId(c.getId());
+                c.setStatus(newStatus.getValue());
                 c.setEndDate(LocalDate.now());
             }
             if (contractService.saveContract(c)) {

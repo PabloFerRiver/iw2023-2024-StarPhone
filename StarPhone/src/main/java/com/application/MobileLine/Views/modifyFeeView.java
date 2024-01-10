@@ -1,6 +1,7 @@
 package com.application.MobileLine.Views;
 
 import com.application.MobileLine.Entities.Fee;
+import com.application.MobileLine.Entities.StatusFee;
 import com.application.MobileLine.Service.FeeService;
 import com.application.User.Views.menu;
 import com.vaadin.flow.component.UI;
@@ -15,6 +16,7 @@ import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
+
 import jakarta.annotation.security.RolesAllowed;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -33,10 +35,11 @@ public class modifyFeeView extends VerticalLayout {
     VerticalLayout center, bodyDiv, registerForm;
     H3 titleModify;
     Select<String> title;
+    Select<StatusFee> status;
     TextField newTitle, descriptionMobile, descriptionFiber, descriptionTV;
     NumberField monthlyData, monthlyPrice;
     IntegerField monthlyCalls, monthlySMS, maxMobileLines;
-    Button confirmar;
+    Button confirm;
 
     private final FeeService feeService;
 
@@ -81,6 +84,12 @@ public class modifyFeeView extends VerticalLayout {
             title.setValue("No hay tarifas disponibles!");
         }
         title.setId("title");
+
+        status = new Select<StatusFee>();
+        status.addClassName("modifyformfield");
+        status.setLabel("Estado:");
+        status.setItems(StatusFee.ACTIVA, StatusFee.INACTIVA);
+        status.setId("status");
 
         newTitle = new TextField();
         newTitle.addClassName("modifyformfield");
@@ -127,9 +136,9 @@ public class modifyFeeView extends VerticalLayout {
         monthlySMS.setLabel("SMS Mensuales:");
         monthlySMS.setId("monthlySMS");
 
-        confirmar = new Button("Confirmar");
-        confirmar.addClassName("modifyformbutton");
-        confirmar.addClickListener(e -> {
+        confirm = new Button("Confirmar");
+        confirm.addClassName("modifyformbutton");
+        confirm.addClickListener(e -> {
             onModifyButtonClick();
         });
 
@@ -155,7 +164,7 @@ public class modifyFeeView extends VerticalLayout {
         bodyDiv.getStyle().set("border-radius", "0 0 12px 12px");
         bodyDiv.getStyle().set("background-color", "rgb(255, 255, 255)");
 
-        bodySubDiv1 = new HorizontalLayout(title);
+        bodySubDiv1 = new HorizontalLayout(title, status);
         bodySubDiv1.setSpacing(false);
         bodySubDiv1.setPadding(false);
         bodySubDiv1.addClassName("bodysmodify");
@@ -172,7 +181,7 @@ public class modifyFeeView extends VerticalLayout {
         bodySubDiv4.setSpacing(false);
         bodySubDiv4.setPadding(false);
         bodySubDiv4.addClassName("bodysmodify");
-        bodySubDiv5 = new HorizontalLayout(confirmar);
+        bodySubDiv5 = new HorizontalLayout(confirm);
         bodySubDiv5.setSpacing(false);
         bodySubDiv5.setPadding(false);
         bodySubDiv5.addClassName("bodysmodify");
@@ -192,58 +201,61 @@ public class modifyFeeView extends VerticalLayout {
             Notification.show("No hay tarifas disponibles!").addThemeVariants(NotificationVariant.LUMO_ERROR);
             UI.getCurrent().navigate("/menu");
         } else if (fee.getId() != null) {
-            if (!newTitle.getValue().isEmpty()) {
-                fee.setTitle(newTitle.getValue());
-            }
+            if (status.getValue() != null) {
+                if ((feeService.getFeeByStatus(status.getValue()).size() < 4 && status.getValue() == StatusFee.ACTIVA)
+                        || status.getValue() == StatusFee.INACTIVA) {
+                    fee.setStatus(status.getValue());
 
-            if (monthlyPrice.getValue() != null) {
-                fee.setMonthlyprice(monthlyPrice.getValue());
-            }
+                    if (!newTitle.getValue().isEmpty()) {
+                        fee.setTitle(newTitle.getValue());
+                    }
 
-            if (maxMobileLines.getValue() != null) {
-                fee.setMaxMobileLines(maxMobileLines.getValue());
-            }
+                    if (monthlyPrice.getValue() != null) {
+                        fee.setMonthlyprice(monthlyPrice.getValue());
+                    }
 
-            if (!descriptionMobile.isEmpty()) {
-                fee.setDescriptionMobile(descriptionMobile.getValue());
-            }
+                    if (maxMobileLines.getValue() != null) {
+                        fee.setMaxMobileLines(maxMobileLines.getValue());
+                    }
 
-            if (!descriptionFiber.isEmpty()) {
-                fee.setDescriptionFiber(descriptionFiber.getValue());
-            }
+                    if (!descriptionMobile.isEmpty()) {
+                        fee.setDescriptionMobile(descriptionMobile.getValue());
+                    }
 
-            if (!descriptionTV.isEmpty()) {
-                fee.setDescriptionTV(descriptionTV.getValue());
-            }
+                    if (!descriptionFiber.isEmpty()) {
+                        fee.setDescriptionFiber(descriptionFiber.getValue());
+                    }
 
-            if (monthlyData.getValue() != null) {
-                fee.setMonthlyData(monthlyData.getValue());
-            }
+                    if (!descriptionTV.isEmpty()) {
+                        fee.setDescriptionTV(descriptionTV.getValue());
+                    }
 
-            if (monthlyCalls.getValue() != null) {
-                fee.setMonthlyCalls(monthlyCalls.getValue());
-            }
+                    if (monthlyData.getValue() != null) {
+                        fee.setMonthlyData(monthlyData.getValue());
+                    }
 
-            if (monthlySMS.getValue() != null) {
-                fee.setMonthlySMS(monthlySMS.getValue());
-            }
-            System.out.println(fee.getId());
-            System.out.println(fee.getTitle());
-            System.out.println(fee.getMonthlyprice());
-            System.out.println(fee.getMaxMobileLines());
-            System.out.println(fee.getDescriptionMobile());
-            System.out.println(fee.getDescriptionFiber());
-            System.out.println(fee.getDescriptionTV());
-            System.out.println(fee.getMonthlyData());
-            System.out.println(fee.getMonthlyCalls());
-            System.out.println(fee.getMonthlySMS());
+                    if (monthlyCalls.getValue() != null) {
+                        fee.setMonthlyCalls(monthlyCalls.getValue());
+                    }
 
-            if (feeService.saveFee(fee)) {
-                Notification.show("Tarifa modificada correctamente!")
-                        .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                UI.getCurrent().navigate("/menu");
-            } else {
-                Notification.show("Algo falló! Revise los datos.").addThemeVariants(NotificationVariant.LUMO_ERROR);
+                    if (monthlySMS.getValue() != null) {
+                        fee.setMonthlySMS(monthlySMS.getValue());
+                    }
+
+                    if (feeService.saveFee(fee)) {
+                        Notification.show("Tarifa modificada correctamente!")
+                                .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                        UI.getCurrent().navigate("/menu");
+                    } else {
+                        Notification.show("Algo falló! Revise los datos.")
+                                .addThemeVariants(NotificationVariant.LUMO_ERROR);
+                    }
+                } else {
+                    Notification.show("No se pueden tener más de 4 tarifas activas!")
+                            .addThemeVariants(NotificationVariant.LUMO_ERROR);
+                    UI.getCurrent().navigate("/menu");
+                }
+
             }
         }
     }
