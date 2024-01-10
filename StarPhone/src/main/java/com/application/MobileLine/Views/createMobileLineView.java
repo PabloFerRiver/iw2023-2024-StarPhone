@@ -115,7 +115,7 @@ public class createMobileLineView extends VerticalLayout {
 
         status = new Select<StatusContract>();
         status.addClassName("modifyformfield");
-        status.setLabel("Estado del contrato anterior:");
+        status.setLabel("Estado del contrato:");
         status.setId("actualstatus");
 
         List<StatusContract> contractStatus = new ArrayList<>();

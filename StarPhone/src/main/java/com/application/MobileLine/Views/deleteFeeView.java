@@ -54,7 +54,7 @@ public class deleteFeeView extends VerticalLayout {
 
         titles = new Select<String>();
         titles.addClassName("activefield");
-        titles.setLabel("Tarifas:");
+        titles.setLabel("Tarifa:");
         if (titlesFee.size() > 0) {
             titles.setItems(titlesFee);
             titles.setValue(titlesFee.get(0));
