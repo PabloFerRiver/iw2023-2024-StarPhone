@@ -1,30 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
+?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.1</version>
+    </parent>
     <!-- Project from https://start.vaadin.com/project/e0c3a0bb-af87-4075-a9cd-939635fb257c -->
     <groupId>com.example.application</groupId>
-    <artifactId>mytodo</artifactId>
-    <name>mytodo</name>
+    <artifactId>starphonepackage</artifactId>
+    <name>StarPhonePackage</name>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
         <java.version>17</java.version>
         <vaadin.version>24.2.1</vaadin.version>
+        <sonar.organization>pabloferriver</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/mnpx01/iw2023-2024-StarPhone</url>
-        </repository>
-    </distributionManagement>
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.1</version>
-    </parent>
 
     <repositories>
         <repository>
@@ -49,8 +44,6 @@
     </dependencyManagement>
 
     <dependencies>
-
-
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
@@ -113,7 +106,21 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
+
+         <dependency>
+            <groupId>org.vaadin.addons.flowingcode</groupId>
+            <artifactId>chat-assistant-addon</artifactId>
+         <version>1.0.0</version>
+    </dependency>
     </dependencies>
+
+     <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/PabloFerRiver/iw2023-2024-StarPhone</url>
+        </repository>
+    </distributionManagement>
 
     <build>
         <defaultGoal>spring-boot:run</defaultGoal>
