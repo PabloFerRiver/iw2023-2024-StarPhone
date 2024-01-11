@@ -143,9 +143,8 @@ public class modifyPersonalDataView extends VerticalLayout {
     }
 
     public void onModifyButtonClick() {
-        if (!DNI.getValue().isEmpty()) {
-            User user = authenticatedUser.get().get();
-            confirm.setEnabled(false);
+        User user = authenticatedUser.get().get();
+        if (!DNI.getValue().isEmpty() && user.getId() != null && DNI.getValue().equals(user.getDNI())) {
             if (!username.getValue().isEmpty())
                 user.setUsername(username.getValue());
 
@@ -164,15 +163,15 @@ public class modifyPersonalDataView extends VerticalLayout {
                 if (!username.getValue().isEmpty()) {
                     authenticatedUser.logout();
                 } else {
-                    UI.getCurrent().navigate("/menu");
+                    UI.getCurrent().navigate("/usuario");
                 }
             } else {
-                Notification.show("Algo falló! Revise y/o cambie los datos.")
+                Notification.show("Error! Revise y/o cambie sus datos, podrían pertenecer a otro usuario.")
                         .addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
 
         } else {
-            Notification.show("Error! Rellene el campo DNI.").addThemeVariants(NotificationVariant.LUMO_ERROR);
+            Notification.show("Error! Revise el campo DNI.").addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
     }
 }

@@ -25,7 +25,7 @@ public class Contract extends AbstractEntity {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     @NotNull
     private User user;
 
@@ -46,13 +46,13 @@ public class Contract extends AbstractEntity {
     @Column(name = "endDate")
     private LocalDate endDate;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contract")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "contract")
     private List<MobileLine> mobileLines;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contract")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "contract")
     private List<Bill> bills;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contract")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "contract")
     private List<QueryComplaint> queryComplaints;
 
     @Override

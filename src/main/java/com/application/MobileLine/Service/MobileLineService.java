@@ -3,21 +3,20 @@ package com.application.MobileLine.Service;
 import com.application.MobileLine.Entities.BlockedNumbers;
 import com.application.MobileLine.Entities.MobileLine;
 import com.application.MobileLine.Repository.MobileLineRepository;
-
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import org.springframework.stereotype.Service;
 
 @Service
 public class MobileLineService {
     private final MobileLineRepository mobileLineRepository;
+    private final BlockedNumbersService blockedNumbersService;
 
-    public MobileLineService(MobileLineRepository mRepository) {
+    public MobileLineService(MobileLineRepository mRepository, BlockedNumbersService bNService) {
         this.mobileLineRepository = mRepository;
+        this.blockedNumbersService = bNService;
     }
 
     public boolean saveMobileLine(MobileLine mobileLine) {
@@ -34,6 +33,7 @@ public class MobileLineService {
         BlockedNumbers blockedNumber = new BlockedNumbers();
         MobileLine mLine = mobileLineRepository.findByPhoneNumber(phoneNumber);
         blockedNumber.setBlockedNumber(phoneNumberToBlock);
+        blockedNumber.setMobileLine(mLine);
         mLine.addBlockedNumber(blockedNumber);
         try {
             mobileLineRepository.save(mLine);
@@ -45,22 +45,21 @@ public class MobileLineService {
     }
 
     public boolean unblockNumber(int phoneNumberToUnblock, int phoneNumber) {
-        BlockedNumbers unblockedNumber = new BlockedNumbers();
         MobileLine mLine = mobileLineRepository.findByPhoneNumber(phoneNumber);
-        unblockedNumber.setBlockedNumber(phoneNumberToUnblock);
+        BlockedNumbers blockedNumber = blockedNumbersService
+                .getBlockedNumberByBlockedNumberAndMobileLine(phoneNumberToUnblock, mLine);
 
-        List<BlockedNumbers> bl = new ArrayList<>();
-        for (BlockedNumbers u : mLine.getBlockedNumbers()) {
-            if (!u.getBlockedNumber().equals(unblockedNumber.getBlockedNumber())) {
-                bl.add(u);
+        if (blockedNumber.getId() != null) {
+            mLine.getBlockedNumbers().remove(blockedNumber);
+            blockedNumbersService.deleteBlockedNumber(blockedNumber);
+            try {
+                mobileLineRepository.save(mLine);
+                return true;
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+                return false;
             }
-        }
-        mLine.setBlockedNumbers(bl);
-        try {
-            mobileLineRepository.save(mLine);
-            return true;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
+        } else {
             return false;
         }
     }
@@ -92,6 +91,17 @@ public class MobileLineService {
 
     public MobileLine getMobileLineByPhoneNumber(int phoneNumber) {
         return mobileLineRepository.findByPhoneNumber(phoneNumber);
+    }
+
+    public boolean isBlockedNumberByPhoneNumber(Integer phoneNumberBlocked, Integer phoneNumber) {
+        List<MobileLine> mobileLines = mobileLineRepository
+                .findMobileLinesByBlockedNumbers_BlockedNumber(phoneNumberBlocked);
+        for (MobileLine mobileLine : mobileLines) {
+            if (mobileLine.getPhoneNumber().equals(phoneNumber)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Transactional

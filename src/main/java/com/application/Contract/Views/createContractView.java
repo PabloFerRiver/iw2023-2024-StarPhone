@@ -193,11 +193,11 @@ public class createContractView extends VerticalLayout {
         if (fees.getValue().equals("No hay tarifas disponibles!")) {
             Notification.show("Error! No hay tarifas disponibles.")
                     .addThemeVariants(NotificationVariant.LUMO_ERROR);
-            UI.getCurrent().navigate("/menu");
+            UI.getCurrent().navigate("/contrato");
         } else if (DNI.getValue().isEmpty() || email.getValue().isEmpty() || user.getId() == null) {
             Notification.show("Error! Usuario no existente.")
                     .addThemeVariants(NotificationVariant.LUMO_ERROR);
-            UI.getCurrent().navigate("/menu");
+            UI.getCurrent().navigate("/contrato");
         } else if (binder.validate().isOk() && !status.isEmpty()) {
             Fee fee = feeService.getFeeByTitle(fees.getValue());
             binder.getBean().setUser(user);
@@ -207,7 +207,7 @@ public class createContractView extends VerticalLayout {
             if (contractService.saveContract(binder.getBean())) {
                 Notification.show("Genial. Contrato creado correctamente!!")
                         .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                UI.getCurrent().navigate("/menu");
+                UI.getCurrent().navigate("/contrato");
             } else {
                 Notification.show("Algo falló! Revise los datos.").addThemeVariants(
                         NotificationVariant.LUMO_ERROR);

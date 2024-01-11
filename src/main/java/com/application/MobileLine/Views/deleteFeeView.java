@@ -122,7 +122,7 @@ public class deleteFeeView extends VerticalLayout {
                 if (feeService.deleteFeeByTitle(titles.getValue())) {
                     Notification.show("Genial. Eliminada correctamente!!")
                             .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                    UI.getCurrent().navigate("/menu");
+                    UI.getCurrent().navigate("/tarifa");
                 } else {
                     Notification.show("Algo falló! Inténtelo de nuevo.")
                             .addThemeVariants(NotificationVariant.LUMO_ERROR);

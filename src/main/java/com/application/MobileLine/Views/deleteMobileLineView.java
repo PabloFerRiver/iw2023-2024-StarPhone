@@ -193,13 +193,13 @@ public class deleteMobileLineView extends VerticalLayout {
         if (mobileLinesSet.getValue().equals(0)) {
             Notification.show("Error! No existen números de móvil para este usuario!.")
                     .addThemeVariants(NotificationVariant.LUMO_ERROR);
-            UI.getCurrent().navigate("/menu");
+            UI.getCurrent().navigate("/linea");
         } else if (user.getId() != null && mobileLinesSet.getValue() != null) {
             MobileLine mLine = mobileLineService.getMobileLineByPhoneNumber(mobileLinesSet.getValue());
             if (mobileLineService.deleteMobileLineById(mLine.getId())) {
                 Notification.show("Línea de móvil eliminada correctamente!").addThemeVariants(
                         NotificationVariant.LUMO_SUCCESS);
-                UI.getCurrent().navigate("/menu");
+                UI.getCurrent().navigate("/linea");
             } else {
                 Notification.show("Error! Línea de móvil no eliminada.").addThemeVariants(
                         NotificationVariant.LUMO_ERROR);

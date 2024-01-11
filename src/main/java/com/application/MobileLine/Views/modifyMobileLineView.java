@@ -241,7 +241,7 @@ public class modifyMobileLineView extends VerticalLayout {
                     && contractsFees.getValue().equals("No hay tarifa asociada a este contrato!")) {
                 Notification.show("Error! No hay tarifa asociada a este contrato!.")
                         .addThemeVariants(NotificationVariant.LUMO_ERROR);
-                UI.getCurrent().navigate("/menu");
+                UI.getCurrent().navigate("/linea");
             } else {
                 MobileLine mLine = mobileLineService.getMobileLineByPhoneNumber(lines.getValue());
                 if (!contractsFees.isEmpty() && !status.isEmpty()) {
@@ -256,7 +256,7 @@ public class modifyMobileLineView extends VerticalLayout {
                 if (mobileLineService.saveMobileLine(mLine)) {
                     Notification.show("Contrato modificado correctamente!").addThemeVariants(
                             NotificationVariant.LUMO_SUCCESS);
-                    UI.getCurrent().navigate("/menu");
+                    UI.getCurrent().navigate("/linea");
                 } else {
                     Notification.show("Error inesperado! Contacte con un administrador.")
                             .addThemeVariants(NotificationVariant.LUMO_ERROR);

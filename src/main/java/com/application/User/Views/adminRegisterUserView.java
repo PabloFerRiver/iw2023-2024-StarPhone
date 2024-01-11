@@ -195,7 +195,7 @@ public class adminRegisterUserView extends VerticalLayout {
             if (service.registerUserByAdmin(binder.getBean())) {
                 String text = new String("Genial. Registrado correctamente!!");
                 Notification.show(text).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                UI.getCurrent().navigate("/menu");
+                UI.getCurrent().navigate("/usuario");
             } else {
                 String text = new String("Algo falló! Revise los datos.");
                 Notification.show(text).addThemeVariants(NotificationVariant.LUMO_ERROR);

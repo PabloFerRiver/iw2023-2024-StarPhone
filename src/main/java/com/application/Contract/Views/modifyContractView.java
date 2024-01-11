@@ -213,7 +213,7 @@ public class modifyContractView extends VerticalLayout {
         if (contractsFees.getValue().equals("No hay tarifa asociada a este contrato!")) {
             Notification.show("Error! No hay tarifa asociada a este contrato!.")
                     .addThemeVariants(NotificationVariant.LUMO_ERROR);
-            UI.getCurrent().navigate("/menu");
+            UI.getCurrent().navigate("/contrato");
         } else if (!actualStatus.isEmpty() && !newStatus.isEmpty()) {
             Fee fee = feeService.getFeeByTitle(contractsFees.getValue());
             Contract c = contractService.getContractByUserIdAndFeeIdAndStatus(user.getId(), fee.getId(),
@@ -230,7 +230,7 @@ public class modifyContractView extends VerticalLayout {
             if (contractService.saveContract(c)) {
                 Notification.show("Contrato modificado correctamente!").addThemeVariants(
                         NotificationVariant.LUMO_SUCCESS);
-                UI.getCurrent().navigate("/menu");
+                UI.getCurrent().navigate("/contrato");
             } else {
                 Notification.show("Error inesperado! Contacte con un administrador.").addThemeVariants(
                         NotificationVariant.LUMO_ERROR);

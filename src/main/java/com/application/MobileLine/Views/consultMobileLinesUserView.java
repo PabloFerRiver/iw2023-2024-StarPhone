@@ -2,6 +2,7 @@ package com.application.MobileLine.Views;
 
 import com.application.Contract.Entities.Contract;
 import com.application.Contract.Service.ContractService;
+import com.application.MobileLine.Entities.BlockedNumbers;
 import com.application.MobileLine.Entities.CallRecords;
 import com.application.MobileLine.Entities.DataUsageRecords;
 import com.application.MobileLine.Entities.MobileLine;
@@ -41,11 +42,11 @@ public class consultMobileLinesUserView extends VerticalLayout {
     Select<Integer> lines;
     Select<String> period;
     VerticalLayout bodyDiv, centerDiv, confirmSquare;
-    HorizontalLayout titleDiv, volume, bodySubDiv1, bodySubDiv2, bodySubDiv3, bodySubDiv4;
+    HorizontalLayout titleDiv, volume, bodySubDiv1, bodySubDiv2, bodySubDiv3, bodySubDiv4, bodySubDiv5;
     Scroller dataRecordsScroller, callRecordsScroller, smsRecordsScroller;
     TextField DNI;
     H3 titleDelete;
-    H4 dataText, callsText, smsText, shareDataText, roamingText;
+    H4 dataText, callsText, smsText, shareDataText, roamingText, blockedNumbersText;
     H4 dataRecords, callsRecords, smsRecords;
 
     Button confirm;
@@ -163,6 +164,8 @@ public class consultMobileLinesUserView extends VerticalLayout {
         roamingText.getStyle().set("font-size", "22px");
         shareDataText = new H4("");
         shareDataText.getStyle().set("font-size", "22px");
+        blockedNumbersText = new H4("");
+        blockedNumbersText.getStyle().set("font-size", "22px");
 
         dataRecords = new H4("");
         dataRecords.getStyle().set("font-size", "22px");
@@ -175,24 +178,29 @@ public class consultMobileLinesUserView extends VerticalLayout {
         bodySubDiv1.setSpacing(false);
         bodySubDiv1.setPadding(false);
         bodySubDiv1.addClassName("bodysregister");
-        bodySubDiv1.getStyle().set("border-bottom", "4px solid black");
+        bodySubDiv1.getStyle().set("border-bottom", "5px solid black");
         bodySubDiv2 = new HorizontalLayout();
         bodySubDiv2.setSpacing(false);
         bodySubDiv2.setPadding(false);
         bodySubDiv2.addClassName("bodysregister");
         bodySubDiv2.setJustifyContentMode(JustifyContentMode.CENTER);
-        bodySubDiv2.getStyle().set("border-bottom", "3px solid black");
+        bodySubDiv2.getStyle().set("border-bottom", "4px solid black");
         bodySubDiv3 = new HorizontalLayout();
         bodySubDiv3.setSpacing(false);
         bodySubDiv3.setPadding(false);
         bodySubDiv3.addClassName("bodysregister");
         bodySubDiv3.getStyle().set("gap", "400px");
-        bodySubDiv3.getStyle().set("border-bottom", "2px solid black");
+        bodySubDiv3.getStyle().set("border-bottom", "3px solid black");
         bodySubDiv4 = new HorizontalLayout();
         bodySubDiv4.setSpacing(false);
         bodySubDiv4.setPadding(false);
         bodySubDiv4.addClassName("bodysregister");
         bodySubDiv4.getStyle().set("gap", "30px");
+        bodySubDiv5 = new HorizontalLayout();
+        bodySubDiv5.setSpacing(false);
+        bodySubDiv5.setPadding(false);
+        bodySubDiv5.addClassName("bodysregister");
+        bodySubDiv5.getStyle().set("border-top", "2px solid black");
 
         bodyDiv = new VerticalLayout(bodySubDiv1);
         bodyDiv.setWidthFull();
@@ -220,7 +228,10 @@ public class consultMobileLinesUserView extends VerticalLayout {
             bodySubDiv2.removeAll();
             bodySubDiv3.removeAll();
             bodySubDiv4.removeAll();
-            bodyDiv.add(bodySubDiv2, bodySubDiv3, bodySubDiv4);
+            bodySubDiv5.removeAll();
+            bodyDiv.remove(bodySubDiv2, bodySubDiv3, bodySubDiv4, bodySubDiv5);
+            bodyDiv.add(bodySubDiv2, bodySubDiv3, bodySubDiv4, bodySubDiv5);
+
             // VOLUMEN
             MobileLine mobileLine = mobileService.getMobileLineByPhoneNumber(lines.getValue());
             boolean roaming = mobileLine.getRoaming();
@@ -282,38 +293,62 @@ public class consultMobileLinesUserView extends VerticalLayout {
                 callRecords = callRecordsService.getCallRecordsByMobileLineCurrentMonth(mobileLine);
                 smsRecords = smsRecordsService.getSmsRecordsByMobileLineCurrentMonth(mobileLine);
             }
-            // TEXTOS SCROLLERS
-            Pre dataUsageTextScroller = new Pre(dataUsageRecords.stream().map(x -> new H4(
-                    "(Megas: " + x.getMegas() + ", Fecha:" + x.getDataUsageDate() + ")"))
-                    .toArray(H4[]::new));
-
-            Pre callTextScroller = new Pre(callRecords.stream().map(x -> new H4(
-                    "(Destinatario: " + x.getDestinationPhoneNumber() + ", Segundos: " + x.getSeconds() + ", Fecha:"
-                            + x.getCallDate() + ")"))
-                    .toArray(H4[]::new));
-
-            Pre smsTextScroller = new Pre(smsRecords.stream().map(x -> new H4(
-                    "(Destinatario: " + x.getDestinationPhoneNumber() + ", Texto: " + x.getSmsText().substring(0, 30)
-                            + ", Fecha: "
-                            + x.getSmsDate() + ")"))
-                    .toArray(H4[]::new));
-
             // SCROLLERS
-            VerticalLayout dataVL = new VerticalLayout(dataUsageTextScroller);
-            dataRecordsScroller = new Scroller(dataVL);
-            dataRecordsScroller.addClassName("scroller");
-            //
-            VerticalLayout callVL = new VerticalLayout(callTextScroller);
-            callRecordsScroller = new Scroller(callVL);
-            callRecordsScroller.addClassName("scroller");
-            //
-            VerticalLayout smsVL = new VerticalLayout(smsTextScroller);
-            smsRecordsScroller = new Scroller(smsVL);
-            smsRecordsScroller.addClassName("scroller");
+            dataRecordsScroller = new Scroller();
+            callRecordsScroller = new Scroller();
+            smsRecordsScroller = new Scroller();
+
+            // TEXTOS SCROLLERS
+            if (dataUsageRecords.size() > 0) {
+                Pre dataUsageTextScroller = new Pre(dataUsageRecords.stream().map(x -> new H4(
+                        "(Megas: " + x.getMegas() + ", Fecha:" + x.getDataUsageDate() + ")"))
+                        .toArray(H4[]::new));
+                VerticalLayout dataVL = new VerticalLayout(dataUsageTextScroller);
+                dataVL.setPadding(false);
+                dataVL.setSpacing(false);
+                dataRecordsScroller = new Scroller(dataVL);
+                dataRecordsScroller.addClassName("scroller");
+            }
+
+            if (callRecords.size() > 0) {
+                Pre callTextScroller = new Pre(callRecords.stream().map(x -> new H4(
+                        "(Destinatario: " + x.getDestinationPhoneNumber() + ", Segundos: " + x.getSeconds() + ", Fecha:"
+                                + x.getCallDate() + ")"))
+                        .toArray(H4[]::new));
+                VerticalLayout callVL = new VerticalLayout(callTextScroller);
+                callVL.setPadding(false);
+                callVL.setSpacing(false);
+                callRecordsScroller = new Scroller(callVL);
+                callRecordsScroller.addClassName("scroller");
+            }
+
+            if (smsRecords.size() > 0) {
+                Pre smsTextScroller = new Pre(smsRecords.stream().map(x -> new H4(
+                        "(Destinatario: " + x.getDestinationPhoneNumber() + ", Texto: "
+                                + x.getSmsText().substring(0, Math.min(30, x.getSmsText().length()))
+                                + ", Fecha: "
+                                + x.getSmsDate() + ")"))
+                        .toArray(H4[]::new));
+                VerticalLayout smsVL = new VerticalLayout(smsTextScroller);
+                smsVL.setPadding(false);
+                smsVL.setSpacing(false);
+                smsRecordsScroller = new Scroller(smsVL);
+                smsRecordsScroller.addClassName("scroller");
+            }
 
             bodySubDiv4.setWidth("auto");
             bodySubDiv4.setHeight("auto");
             bodySubDiv4.add(dataRecordsScroller, callRecordsScroller, smsRecordsScroller);
+
+            // NUMEROS BLOQUEADOS
+            List<BlockedNumbers> blockedNumbers = mobileLine.getBlockedNumbers();
+            List<Integer> linesNumbers = new ArrayList<>();
+            for (BlockedNumbers b : blockedNumbers) {
+                linesNumbers.add(b.getBlockedNumber());
+            }
+            blockedNumbersText.setText("Números bloqueados: " + linesNumbers.toString());
+            bodySubDiv5.add(blockedNumbersText);
+            bodySubDiv5.setHeight("40px");
         } else {
             Notification.show("Por favor, rellene todos los campos")
                     .addThemeVariants(NotificationVariant.LUMO_ERROR);

@@ -21,11 +21,11 @@ public class QueryComplaint extends AbstractEntity {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "contract_id")
+    @JoinColumn(name = "contract_id", nullable = false)
     private Contract contract;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "mobileLine_id")
+    @JoinColumn(name = "mobileLine_id", nullable = false)
     private MobileLine mobileLine;
 
     @NotEmpty

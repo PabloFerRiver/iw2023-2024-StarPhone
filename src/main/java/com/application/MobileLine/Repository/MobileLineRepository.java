@@ -15,4 +15,6 @@ public interface MobileLineRepository extends JpaRepository<MobileLine, UUID> {
     List<MobileLine> findMobileLineByUser_Id(UUID user_id);
 
     MobileLine findByPhoneNumber(Integer phoneNumber);
+
+    List<MobileLine> findMobileLinesByBlockedNumbers_BlockedNumber(Integer phoneNumber);
 }

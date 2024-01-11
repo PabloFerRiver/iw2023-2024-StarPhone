@@ -4,7 +4,6 @@ import com.application.General.AbstractEntity;
 import com.application.User.Entities.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -30,8 +29,7 @@ public class ResponseComplaint extends AbstractEntity {
 
     // Trabajador que responde, es decir, el que tiene el rol de Atencion_Cliente
     @ManyToOne(fetch = FetchType.EAGER)
-    @NotNull
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Override

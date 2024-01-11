@@ -40,12 +40,12 @@ public class changePasswordView extends VerticalLayout {
         getStyle().set("font-family", "Kavoon");
 
         // Campos formulario
-        password = new PasswordField("Contraseña");
+        password = new PasswordField("Contraseña:");
         password.addClassName("activefield");
         password.setRequired(true);
         password.setId("password");
 
-        repeatPassword = new PasswordField("Repetir Contraseña");
+        repeatPassword = new PasswordField("Repetir Contraseña:");
         repeatPassword.addClassName("activefield");
         repeatPassword.setRequired(true);
         repeatPassword.setId("repeatPassword");
@@ -111,7 +111,7 @@ public class changePasswordView extends VerticalLayout {
                             .addThemeVariants(NotificationVariant.LUMO_ERROR);
                 }
             } else {
-                Notification.show("No coinciden las contraseñas").addThemeVariants(NotificationVariant.LUMO_ERROR);
+                Notification.show("No coinciden las contraseñas!").addThemeVariants(NotificationVariant.LUMO_ERROR);
                 confirm.setEnabled(true);
             }
         } else {

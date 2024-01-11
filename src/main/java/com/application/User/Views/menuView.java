@@ -68,7 +68,7 @@ public class menuView extends VerticalLayout {
         bodyDiv.getStyle().set("border-radius", "0 0 12px 12px");
         bodyDiv.getStyle().set("background-color", "rgb(255, 255, 255)");
 
-        p1 = new H3("Bienvenido a Starphone,");
+        p1 = new H3("Bienvenido a StarPhone,");
         p1.getStyle().set("font-size", "32px");
         p2 = new H3(authenticatedUser.get().get().getName() + "!");
         p2.getStyle().set("font-size", "32px");

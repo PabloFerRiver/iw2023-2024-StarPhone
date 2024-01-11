@@ -3,7 +3,6 @@ package com.application.MobileLine.Views;
 import com.application.Contract.Entities.Contract;
 import com.application.Contract.Service.ContractService;
 import com.application.MobileLine.Entities.MobileLine;
-import com.application.MobileLine.Service.BlockedNumbersService;
 import com.application.MobileLine.Service.MobileLineService;
 import com.application.User.Security.AuthenticatedUser;
 import com.application.User.Views.menu;
@@ -36,17 +35,14 @@ public class blockNumberUserView extends VerticalLayout {
     IntegerField phoneNumberToBlockUnblock;
     Button confirm;
 
-    private final MobileLineService mobileService;
+    private final MobileLineService mobileLineService;
     private final AuthenticatedUser authenticatedUser;
     private final ContractService contractService;
-    private final BlockedNumbersService blockedNumbersService;
 
-    public blockNumberUserView(AuthenticatedUser authUser, MobileLineService mService, ContractService cService,
-            BlockedNumbersService blockedNumbersService) {
+    public blockNumberUserView(AuthenticatedUser authUser, MobileLineService mLService, ContractService cService) {
         this.authenticatedUser = authUser;
-        this.mobileService = mService;
+        this.mobileLineService = mLService;
         this.contractService = cService;
-        this.blockedNumbersService = blockedNumbersService;
 
         setWidthFull();
         setHeightFull();
@@ -66,7 +62,7 @@ public class blockNumberUserView extends VerticalLayout {
         List<Contract> contracts = contractService.getContractsByUserId(authenticatedUser.get().get().getId());
         List<MobileLine> mobileLines = new ArrayList<>();
         for (var c : contracts) {
-            mobileLines.addAll(mobileService.getMobileLinesByContractId(c.getId()));
+            mobileLines.addAll(mobileLineService.getMobileLinesByContractId(c.getId()));
         }
 
         List<Integer> phoneNumberlines = new ArrayList<>();
@@ -139,11 +135,11 @@ public class blockNumberUserView extends VerticalLayout {
     public void onBlockNumberButton() {
         if (lines.getValue() != null && phoneNumberToBlockUnblock.getValue() != null) {
             if (actions.getValue().equals("Bloquear")) {
-                if (blockedNumbersService.isBlockedNumberByPhoneNumber(phoneNumberToBlockUnblock.getValue(),
+                if (mobileLineService.isBlockedNumberByPhoneNumber(phoneNumberToBlockUnblock.getValue(),
                         lines.getValue())) {
                     Notification.show("El número ya está bloqueado!").addThemeVariants(NotificationVariant.LUMO_ERROR);
                 } else {
-                    if (mobileService.blockNumber(phoneNumberToBlockUnblock.getValue(), lines.getValue())) {
+                    if (mobileLineService.blockNumber(phoneNumberToBlockUnblock.getValue(), lines.getValue())) {
                         Notification.show("Número bloqueado con éxito!")
                                 .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
                     } else {
@@ -152,11 +148,11 @@ public class blockNumberUserView extends VerticalLayout {
                     }
                 }
             } else if (actions.getValue().equals("Desbloquear")) {
-                if (!blockedNumbersService.isBlockedNumberByPhoneNumber(phoneNumberToBlockUnblock.getValue(),
+                if (!mobileLineService.isBlockedNumberByPhoneNumber(phoneNumberToBlockUnblock.getValue(),
                         lines.getValue())) {
                     Notification.show("El número no está bloqueado!").addThemeVariants(NotificationVariant.LUMO_ERROR);
                 } else {
-                    if (mobileService.unblockNumber(phoneNumberToBlockUnblock.getValue(), lines.getValue())) {
+                    if (mobileLineService.unblockNumber(phoneNumberToBlockUnblock.getValue(), lines.getValue())) {
                         Notification.show("Número desbloqueado con éxito!")
                                 .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
                     } else {
@@ -166,7 +162,7 @@ public class blockNumberUserView extends VerticalLayout {
                 }
             }
         } else {
-            Notification.show("Algo falló! Revise los datos introducidos.")
+            Notification.show("Error! Revise los datos introducidos.")
                     .addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
     }

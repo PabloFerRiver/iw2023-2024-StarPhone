@@ -175,13 +175,13 @@ public class createFeeView extends VerticalLayout {
         if (feeService.getFeeByStatus(StatusFee.ACTIVA).size() >= 4) {
             Notification.show("Error! No se pueden crear más tarifas.")
                     .addThemeVariants(NotificationVariant.LUMO_ERROR);
-            UI.getCurrent().navigate("/menu");
+            UI.getCurrent().navigate("/tarifa");
         } else if (binder.validate().isOk()) {
             binder.getBean().setStatus(StatusFee.ACTIVA);
             if (feeService.saveFee(binder.getBean())) {
                 Notification.show("Genial. Tarifa creada correctamente!!")
                         .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                UI.getCurrent().navigate("/menu");
+                UI.getCurrent().navigate("/tarifa");
             } else {
                 Notification.show("Algo falló! Revise los datos.").addThemeVariants(NotificationVariant.LUMO_ERROR);
             }

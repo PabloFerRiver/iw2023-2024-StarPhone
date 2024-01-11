@@ -197,13 +197,13 @@ public class deleteContractView extends VerticalLayout {
         if (contractsFees.getValue().equals("No hay tarifa asociada a este contrato!")) {
             Notification.show("Error! No hay tarifa asociada a este contrato!.")
                     .addThemeVariants(NotificationVariant.LUMO_ERROR);
-            UI.getCurrent().navigate("/menu");
+            UI.getCurrent().navigate("/contrato");
         } else if (user.getId() != null && contractsFees.getValue() != null && status.getValue() != null) {
             Fee fee = feeService.getFeeByTitle(contractsFees.getValue());
             if (contractService.deleteContractByUserIdAndFeeIdAndStatus(user.getId(), fee.getId(), status.getValue())) {
                 Notification.show("Contrato eliminado correctamente!").addThemeVariants(
                         NotificationVariant.LUMO_SUCCESS);
-                UI.getCurrent().navigate("/menu");
+                UI.getCurrent().navigate("/contrato");
             } else {
                 Notification.show("Error! Contrato no eliminado.").addThemeVariants(
                         NotificationVariant.LUMO_ERROR);

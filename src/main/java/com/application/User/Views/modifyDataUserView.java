@@ -189,7 +189,7 @@ public class modifyDataUserView extends VerticalLayout {
             if (userService.saveUser(u)) {
                 Notification.show("Genial. Datos modificados correctamente!!")
                         .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                UI.getCurrent().navigate("/menu");
+                UI.getCurrent().navigate("/usuario");
             } else {
                 Notification.show("Algo falló! Revise los datos.").addThemeVariants(NotificationVariant.LUMO_ERROR);
             }

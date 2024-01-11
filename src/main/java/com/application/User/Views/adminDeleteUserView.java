@@ -129,7 +129,7 @@ public class adminDeleteUserView extends VerticalLayout {
         if (userService.deleteByDNI(DNI.getValue())) {
             String text = new String("Genial. Eliminado correctamente!!");
             Notification.show(text).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-            UI.getCurrent().navigate("/menu");
+            UI.getCurrent().navigate("/usuario");
         } else {
             String text = new String("Algo falló! Inténtelo de nuevo.");
             Notification.show(text).addThemeVariants(NotificationVariant.LUMO_ERROR);

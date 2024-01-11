@@ -218,17 +218,17 @@ public class createMobileLineView extends VerticalLayout {
         if (contractsFees.getValue().equals("No hay contratos asociados a este DNI!")) {
             Notification.show("No hay contratos asociados a este DNI!")
                     .addThemeVariants(NotificationVariant.LUMO_ERROR);
-            UI.getCurrent().navigate("/menu");
+            UI.getCurrent().navigate("/linea");
         } else if (DNI.getValue().isEmpty() || user.getId() == null) {
             Notification.show("Error! Usuario inexistente. Revise los datos introducidos.")
                     .addThemeVariants(NotificationVariant.LUMO_ERROR);
-            UI.getCurrent().navigate("/menu");
+            UI.getCurrent().navigate("/linea");
         } else if (binder.validate().isOk() && phoneNumber.getValue() >= 100000000
                 && phoneNumber.getValue() <= 999999999) {
             Fee fee = feeService.getFeeByTitle(contractsFees.getValue());
             Contract cont = contractService.getContractByUserIdAndFeeIdAndStatus(user.getId(), fee.getId(),
                     status.getValue());
-            System.out.println("OK");
+
             List<MobileLine> mLinesOfContract = mobileLineService.getMobileLinesByContractId(cont.getId());
             if (mLinesOfContract.size() < fee.getMaxMobileLines()) {
                 MobileLine mL = new MobileLine();
@@ -240,7 +240,7 @@ public class createMobileLineView extends VerticalLayout {
                 if (mobileLineService.saveMobileLine(mL)) {
                     Notification.show("Línea Móvil creada correctamente!")
                             .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                    UI.getCurrent().navigate("/menu");
+                    UI.getCurrent().navigate("/linea");
                 } else {
                     Notification.show("Algo falló! No se ha podido crear la línea móvil.").addThemeVariants(
                             NotificationVariant.LUMO_ERROR);
@@ -248,7 +248,7 @@ public class createMobileLineView extends VerticalLayout {
             } else {
                 Notification.show("Error! Número máximo de líneas móviles alcanzado.").addThemeVariants(
                         NotificationVariant.LUMO_ERROR);
-                UI.getCurrent().navigate("/menu");
+                UI.getCurrent().navigate("/linea");
             }
         } else {
             Notification.show("Error inesperado! Contacte con un adminsitrador.").addThemeVariants(

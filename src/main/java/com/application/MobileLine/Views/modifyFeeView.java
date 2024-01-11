@@ -103,7 +103,7 @@ public class modifyFeeView extends VerticalLayout {
 
         maxMobileLines = new IntegerField();
         maxMobileLines.addClassName("modifyformfield");
-        maxMobileLines.setLabel("Líneas Móviles:");
+        maxMobileLines.setLabel("Máx. Líneas Móviles:");
         maxMobileLines.setId("maxMobileLines");
 
         descriptionMobile = new TextField();
@@ -199,10 +199,11 @@ public class modifyFeeView extends VerticalLayout {
         Fee fee = feeService.getFeeByTitle(title.getValue());
         if (title.getValue().equals("No hay tarifas disponibles!")) {
             Notification.show("No hay tarifas disponibles!").addThemeVariants(NotificationVariant.LUMO_ERROR);
-            UI.getCurrent().navigate("/menu");
+            UI.getCurrent().navigate("/tarifa");
         } else if (fee.getId() != null) {
             if (status.getValue() != null) {
-                if ((feeService.getFeeByStatus(status.getValue()).size() < 4 && status.getValue() == StatusFee.ACTIVA)
+                if ((feeService.getFeeByStatus(StatusFee.ACTIVA).size() < 4 && status.getValue() == StatusFee.ACTIVA)
+                        || fee.getStatus() == StatusFee.ACTIVA
                         || status.getValue() == StatusFee.INACTIVA) {
                     fee.setStatus(status.getValue());
 
@@ -245,7 +246,7 @@ public class modifyFeeView extends VerticalLayout {
                     if (feeService.saveFee(fee)) {
                         Notification.show("Tarifa modificada correctamente!")
                                 .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                        UI.getCurrent().navigate("/menu");
+                        UI.getCurrent().navigate("/tarifa");
                     } else {
                         Notification.show("Algo falló! Revise los datos.")
                                 .addThemeVariants(NotificationVariant.LUMO_ERROR);
@@ -253,7 +254,7 @@ public class modifyFeeView extends VerticalLayout {
                 } else {
                     Notification.show("No se pueden tener más de 4 tarifas activas!")
                             .addThemeVariants(NotificationVariant.LUMO_ERROR);
-                    UI.getCurrent().navigate("/menu");
+                    UI.getCurrent().navigate("/tarifa");
                 }
 
             }

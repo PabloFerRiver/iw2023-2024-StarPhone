@@ -26,12 +26,12 @@ public class MobileLine extends AbstractEntity {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     @NotNull
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "contract_id", nullable = false)
+    @JoinColumn(name = "contract_id")
     private Contract contract;
 
     @NotNull
@@ -44,20 +44,16 @@ public class MobileLine extends AbstractEntity {
     @Column(name = "shareData", nullable = false)
     private boolean shareData = false;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "mobileLine_id")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "mobileLine")
     private List<CallRecords> callRecords = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "mobileLine_id")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "mobileLine")
     private List<DataUsageRecords> dataUsageRecords = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "mobileLine_id")
-    private List<CallRecords> smsRecords = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "mobileLine")
+    private List<SmsRecords> smsRecords = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "mobileLine_id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "mobileLine")
     private List<BlockedNumbers> blockedNumbers = new ArrayList<>();
 
     @Override
