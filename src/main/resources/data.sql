@@ -43,16 +43,16 @@ INSERT INTO `user_roles` (`user_id`, `roles`) VALUES
 
 
 INSERT INTO `fee` (`id`, `title`, `description_mobile`, `description_fiber`, `descriptiontv`, `monthly_data`, `monthly_calls`, `monthlysms`, `monthlyprice`, `max_mobile_lines`) VALUES
-('2b01f0e9-ce70-4e18-9112-4a0d149f8d73', 'prueba', 'm', 'f', 't', 1, 1, 1, 1, 1);
+('2b01f0e9-ce70-4e18-9112-4a0d149f8d73', 'Plan Solitario', '100 minutos incluidos, el resto a 10 cent/min', '50Gb de internet ', 'Ninguna plataforma incluida', 1, 1, 1, 1, 1);
 
 INSERT INTO `fee` (`id`, `title`, `description_mobile`, `description_fiber`, `descriptiontv`, `monthly_data`, `monthly_calls`, `monthlysms`, `monthlyprice`, `max_mobile_lines`) VALUES
-('75f2f3c1-0e4f-448a-a00e-01350250506d', 'prueba3.3', 'mmmm', 'ffff', 'tttt', 122, 122, 122, 122, 5);
+('75f2f3c1-0e4f-448a-a00e-01350250506d', 'Plan Familiar', 'Llamadas iimitadas', 'Toda la casa conectada gracias a la fibra', 'Todas las plataformas incluidas', 122, 122, 122, 122, 5);
 
 INSERT INTO `fee` (`id`, `title`, `description_mobile`, `description_fiber`, `descriptiontv`, `monthly_data`, `monthly_calls`, `monthlysms`, `monthlyprice`, `max_mobile_lines`) VALUES
-('e0a6b3f3-d93b-472f-8540-afa5482c8a2e', 'prueba2.2', 'mmm', 'fff', 'ttt', 90, 90, 90, 21, 90);
+('e0a6b3f3-d93b-472f-8540-afa5482c8a2e', 'Plan Enamorados ', 'Llamadas ilimitadas entre líneas del contrato, el resto 5 cent/min', 'Incluida fibra óptica de última generación', 'Unicamente plataformas de Entretenimiento', 90, 90, 90, 21, 2);
 
 INSERT INTO `fee` (`id`, `title`, `description_mobile`, `description_fiber`, `descriptiontv`, `monthly_data`, `monthly_calls`, `monthlysms`, `monthlyprice`, `max_mobile_lines`) VALUES
-('e2e7461b-6041-47ac-b899-d3758d64f114', 'prueba4.4', 'dm', 'df', 'dtv', 14, 14, 14, 14, 14);
+('e2e7461b-6041-47ac-b899-d3758d64f114', 'Plan Streaming', 'No viene con minutos incluidos', '1Gbps de fibra óptica de última generación', 'Únicamente esta incluida Amazon Prime', 14, 14, 14, 14, 14);
 
 
 INSERT INTO `contract` (`id`, `user_id`, `status`, `fee_id`, `start_date`, `end_date`) VALUES
